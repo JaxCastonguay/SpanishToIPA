@@ -1,0 +1,7 @@
+package sounds;
+
+public enum soundTypes {
+	LATERAL, NASAL, BILABIAL, VELAR, VIBRANTE,
+	AFRICADO, DENTAL, INTERDENTAL, LABIODENTAL, SORDA,
+	SONORA
+}
