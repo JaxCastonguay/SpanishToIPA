@@ -6,7 +6,10 @@ public interface Letter {
 	Boolean hasNext();
 	Boolean hasPrevious();
 	Boolean isVowel();
-	Boolean isEffectedByNext();
-	public final List< soundTypes> soundTypes = null;
+	Boolean isEffectedByNext(Letter next);
+	Boolean isEffectedByPrevious(Letter prev);
+	public final List< soundType> soundTypes = null;
+	Character getSpanishLetter();
+	String getPhonem();
 	
 }
