@@ -3,21 +3,26 @@ package representative;
 import java.util.ArrayList;
 import java.util.List;
 
-import sounds.Letter;
-import sounds.LetterImpl;
-
 public class PhonemicWord implements Word{
 	
 	private String spanishWord;
-	private List<Letter> letters;
+	private List<LetterImpl> letters;
 	
 	PhonemicWord(String inputWord){
 		spanishWord = inputWord;
-		letters = new ArrayList<Letter>();
+		letters = new ArrayList<LetterImpl>();
 		
 		for(char c : inputWord.toCharArray()) {
-			letters.add(new LetterImpl(c));
+			LetterImpl letter = new LetterImpl(c);
+			letter.hasPrevious = true;
+			letter.hasNext = true;			
+			letters.add(letter);
+			
 		}
+		
+		letters.get(0).hasPrevious = false;
+		letters.get(letters.size() - 1).hasNext = false;
+		
 	}
 
 	@Override

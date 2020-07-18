@@ -1,6 +1,8 @@
-package sounds;
+package representative;
 
 import java.util.List;
+
+import sounds.soundType;
 
 public interface Letter {
 	Boolean hasNext();

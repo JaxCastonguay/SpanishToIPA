@@ -1,4 +1,6 @@
-package sounds;
+package representative;
+
+import sounds.CharacterClassification;
 
 public class LetterImpl implements Letter{
 	
@@ -34,7 +36,6 @@ public class LetterImpl implements Letter{
 
 	@Override
 	public Character getSpanishLetter() {
-		// TODO Auto-generated method stub
 		return spanishLetter.charValue();
 	}
 
