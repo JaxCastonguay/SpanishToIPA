@@ -4,15 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import representative.PhonemicWord;
-
 class PhoneticWordTest {
-
+	
 	@Test
-	void firstLetterShouldNotHavePrevious() {
-		PhonemicWord phonemicWord = new PhonemicWord("hello");
-		
-		assertFalse(phonemicWord.getFirstLetter().hasPrevious());
+	void lettersShouldReturnSpanishLettersAssigned() {
+		PhonemicWord phonemicWord = new PhonemicWord("test");
+		assertEquals(phonemicWord.getFirstLetter().getSpanishLetter(), 't');
+		assertEquals(phonemicWord.getLetter(1).getSpanishLetter(), 'e');
+		assertEquals(phonemicWord.getLetter(2).getSpanishLetter(), 's');
+		assertEquals(phonemicWord.getLastLetter().getSpanishLetter(), 't');
 	}
 
 }

@@ -2,26 +2,25 @@ package representative;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class PhonemicWord implements Word{
 	
 	private String spanishWord;
-	private List<LetterImpl> letters;
+	private List<Letter> letters;
 	
 	PhonemicWord(String inputWord){
 		spanishWord = inputWord;
-		letters = new ArrayList<LetterImpl>();
+		letters = new ArrayList<Letter>();
+		
+		//ListIterator li = letters.listIterator(); //should I use this?
+		
 		
 		for(char c : inputWord.toCharArray()) {
-			LetterImpl letter = new LetterImpl(c);
-			letter.hasPrevious = true;
-			letter.hasNext = true;			
+			Letter letter = new LetterImpl(c);
 			letters.add(letter);
 			
-		}
-		
-		letters.get(0).hasPrevious = false;
-		letters.get(letters.size() - 1).hasNext = false;
+		}	
 		
 	}
 
