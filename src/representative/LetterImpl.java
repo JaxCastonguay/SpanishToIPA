@@ -7,7 +7,6 @@ public class LetterImpl implements Letter{
 	private Character spanishLetter;
 	private String phonem;
 
-
 	public LetterImpl(char letter){
 		spanishLetter = letter;
 	}
@@ -30,10 +29,16 @@ public class LetterImpl implements Letter{
 
 	@Override
 	public String getPhonem() {
-		// TODO Auto-generated method stub
 		return phonem;
 	}
 
+
+	@Override
+	public void setPhonem(String phonem) {
+		this.phonem = phonem;
+		
+	}
+	
 	@Override
 	public Boolean isEffectedBy(Letter next) {
 		// TODO Auto-generated method stub

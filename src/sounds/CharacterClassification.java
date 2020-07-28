@@ -1,7 +1,10 @@
 package sounds;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CharacterClassification {
 	//Consonants
@@ -33,5 +36,14 @@ public class CharacterClassification {
 	public final static List<Character> diptongVowels = new ArrayList<Character>(List.of('i', 'u'));
 	
 	public final static List<Character> accentedVowels = new ArrayList<Character>(List.of('á','é', 'í', 'ó', 'ú'));
+	
+	
+	
+	public static final List<Character> nonPhonems = new ArrayList<Character>(List.of('c', 'h', 'q', 'v', 'x', 'y', 'z')); //v and z are pronounced in Spain.
+	
+	public static final List<Character> dependentPhonems = new ArrayList<Character>(List.of('c', 'g', 'l'));
+	
+	public static final List<Character> switchPhonemes = new ArrayList<Character>(List.of('j', 'u', 'i'));
+    
 
 }
