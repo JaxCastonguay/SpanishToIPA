@@ -24,12 +24,33 @@ public class PhonemicWord implements Word{
 			if(CharacterClassification.nonPhonems.contains(charArray[i]) || CharacterClassification.dependentPhonems.contains(charArray[i])
 					|| CharacterClassification.switchPhonemes.contains(charArray[i])) {
 				//change on the spot?
-
+				//Simple one possibility switch
 				if(charArray[i] == 'v') {
 					letter = new LetterImpl(charArray[i]);
 					letter.setPhonem("b");
+					//TODO: add soundTypes
+				}
+				//The following letters do not share a character with their phonem.
+				else if(charArray[i] == 'j'){
+					letter = new LetterImpl(charArray[i]);
+					letter.setPhonem("x");
+				}
+				else if(charArray[i] == 'u'){
+					letter = new LetterImpl(charArray[i]);
+					letter.setPhonem("u");
+				}
+				else if(charArray[i] == 'i'){
+					letter = new LetterImpl(charArray[i]);
+					letter.setPhonem("j");
+				}
+				//Things that require word length change
+				else if(charArray[i] == 'h'){
+					//Still need to add h for spanish word
+					letter = new LetterImpl(charArray[i]);
+					letter.setPhonem("");
 				}else{
-					throw new PhonemNotFoundException("Character: " + String.valueOf(charArray[i]) + "is not a legal character.");
+				
+					throw new PhonemNotFoundException("Character: '" + String.valueOf(charArray[i]) + "' is not a legal character.");
 				}
 				
 			}
@@ -37,6 +58,7 @@ public class PhonemicWord implements Word{
 				letter = new LetterImpl(charArray[i]);
 				letter.setPhonem(String.valueOf(charArray[i]));
 			}
+			
 			letters.add(letter);
 			
 		}	
@@ -63,7 +85,14 @@ public class PhonemicWord implements Word{
 		return letters.get(index);
 	}
 	
-	
+	@Override
+	public String getIPAWord() {
+		String word = "";
+		for(Letter letter : letters) {
+			word += letter.getPhonem();
+		}
+		return word;
+	}
 	
 	public class PhonemNotFoundException extends Exception {
 		 
