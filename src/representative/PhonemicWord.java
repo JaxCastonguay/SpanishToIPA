@@ -28,12 +28,16 @@ public class PhonemicWord implements Word{
 				setNextPhonemBlank = false;
 			}
 			else if(CharacterClassification.nonPhonems.contains(charArray[i]) || CharacterClassification.dependentPhonems.contains(charArray[i])
-					|| CharacterClassification.switchPhonemes.contains(charArray[i]) || charArray[i] == 'r') {
+					|| CharacterClassification.switchPhonemes.contains(charArray[i]) || CharacterClassification.accentedVowels.contains(charArray[i]) 
+					||charArray[i] == 'r') {
 				//change on the spot?
 				//Simple one possibility switch
 				if(charArray[i] == 'v') {
 					letter = vModifier(charArray, i);
 					//TODO: add soundTypes
+				}
+				else if(CharacterClassification.accentedVowels.contains(charArray[i])) {
+					letter = accentedModifier(charArray, i);
 				}
 				//The following letters do not share a character with their phonem.
 				else if(charArray[i] == 'j'){
@@ -118,6 +122,36 @@ public class PhonemicWord implements Word{
 		//System.out.println("End of method: letter count: " + String.valueOf(letters.size() + " word: " + getIPAWord()));
 		
 	}
+	
+	/******************
+	 *Letter Modifiers* 
+	 ******************/
+	private Letter accentedModifier(char[] charArray, int i) throws PhonemNotFoundException {
+		Letter letter;
+		if(charArray[i] == 'á') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("a");
+		}else if(charArray[i] == 'é') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("e");
+		}
+		else if(charArray[i] == 'í') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("i");
+		}
+		else if(charArray[i] == 'ó') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("o");
+		}
+		else if(charArray[i] == 'ú') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("u");
+		}
+		else {
+			throw new PhonemNotFoundException("Character: '" + String.valueOf(charArray[i]) + "' is not a legal character.");
+		}
+		return letter;
+	}
 
 	private Letter uModifier(char[] charArray, int i) {
 		Letter letter;
@@ -188,6 +222,110 @@ public class PhonemicWord implements Word{
 		}
 		return letter;
 	}
+	
+	/*******************
+	 *Syllable Creation*
+	 *******************/
+	public String getIPAWithSyllables() {
+		String word = getIPAWord();
+		List<Integer> points = new ArrayList();
+		int offset = 1;
+		points = findPointPositions(word);
+		
+		StringBuilder sb = new StringBuilder(word);
+		
+		for(int i = 0; i < points.size(); i++) {
+			sb.insert(points.get(i) + offset, '.');
+			offset++;
+			System.out.println(sb.toString() +", index " + Integer.toString(i));
+		}
+		
+		
+		return sb.toString();
+	}
+
+	private List<Integer> findPointPositions(String word) {
+		//WRITTEN BUT UNTESTED
+		List<Integer> points = new ArrayList();
+		//V (Any type of vowel)
+		for(int i = 0; i < word.length() - 1; i++) {
+			if(CharacterClassification.phoneticvowels.contains(word.charAt(i))) {
+				//[V]V Next is any type of vowel
+				if(CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
+					//[V]V -> V.V
+					//Current and next are both strong vowels. Separate.
+					if(CharacterClassification.vowels.contains(word.charAt(i))
+							&& CharacterClassification.vowels.contains(word.charAt(i+1))) {
+						points.add(i);
+					}
+					//else next or current is diptong and no change is needed.
+					
+				}
+				
+				//[V]C
+				//if VCC(joinable)
+	            //V.CC (add)
+	            //if VCC(not join)
+	            //VC.C (nothing)
+	            //if VC_(empty)
+	            //nothing
+	            //if VCV
+	            //V.CV (add)
+				else {
+					//Len check
+					if(word.length() > i + 2) {
+						//VCV -> V.CV
+						if(CharacterClassification.phoneticvowels.contains(word.charAt(i+2))) {
+							points.add(i);
+						}
+						//VCC
+						else {
+							
+							StringBuilder sb = new StringBuilder();
+							sb.append(word.charAt(i+1));
+							sb.append(word.charAt(i+2));
+							
+							//VCC (joinable) -> V.CC
+							if(CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
+								points.add(i);
+							}
+							//VC.C (handled by CC below)
+							
+						}
+					}
+					else //VC_ (do nothing)
+					{}
+				}
+			}
+			//C
+			else {
+				//CC
+				if(!CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(word.charAt(i));
+					sb.append(word.charAt(i+1));
+					//Not cons blend -> C.C
+					if(!CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
+						points.add(i);
+					}
+					//Cons blend
+					else {
+					}
+				}
+				//CV
+				else {
+					
+				}
+			}
+			
+		}
+		
+		return points;
+	}
+	
+	/****************************
+	 *Getters/Setters/Exceptions* 
+	 ****************************/
 
 	@Override
 	public String getSpanishWord() {

@@ -45,4 +45,15 @@ public class LetterImpl implements Letter{
 		return null;
 	}
 
+
+	@Override
+	public Boolean hasAccent() {
+		if(CharacterClassification.accentedVowels.contains(spanishLetter))
+			return true;
+		else
+			return false;
+	}
+
+
+
 }

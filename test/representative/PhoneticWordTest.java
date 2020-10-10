@@ -190,6 +190,24 @@ class PhoneticWordTest {
 	}
 	
 	@Test
+	void accentedLetterShouldReturnDifferentPhonems() throws Exception {
+		PhonemicWord phonemicWord;
+		try {
+			String input = "íe";
+			String expected = "ie";
+			phonemicWord = new PhonemicWord(input);
+			assertEquals(expected, phonemicWord.getIPAWord());
+			assertEquals(true, phonemicWord.getFirstLetter().hasAccent());
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
+			
+			
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
 	void yShouldReturnDifferentPhonem() throws Exception {
 		PhonemicWord phonemicWord;
 		try {
@@ -293,13 +311,6 @@ class PhoneticWordTest {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	@Test
 	void wordShouldReturnIPAWord() throws Exception{
 		PhonemicWord phonemicWord;
@@ -314,5 +325,48 @@ class PhoneticWordTest {
 			throw new Exception(e.getMessage());
 		}
 	}
+	
+	@Test
+	void cvcvShouldBeSplitInTwo() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "vato";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getIPAWithSyllables();
+			String expected = "ba.to";
+			assertEquals(expected, output);
+			
+			input = "gustar";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "gus.taɾ";
+			assertEquals(expected, output);
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void cvcvcvShouldBeSplitInThree() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "pareja";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getIPAWithSyllables();
+			String expected = "pa.ɾe.xa";
+			assertEquals(expected, output);
+			
+			input = "parejas";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "pa.ɾe.xas";
+			assertEquals(expected, output);
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
 
 }
