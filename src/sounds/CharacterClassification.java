@@ -13,7 +13,7 @@ public class CharacterClassification {
 	public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl"));
 
 	public final static List<Character> consonants = new ArrayList<Character>(List.of('b', 'ß', 'ʧ', 'd', 'ð', 'f', 'g', 'Ɣ', 'ʝ', 'ɉ', 'k', 'l', 'm', 'n', 'ɲ', 'p', 'r', 'ɾ', 's', 't', 'x', 'z')); //j & w are diptongs and are not consonants in this context
-	
+		
 	//Consonant modification
 	public final static List<Character> bdgNonModifiers = new ArrayList<Character>(List.of('|','m','n','ɲ'));//TODO: | is a place holder for no letter before.
 	
@@ -44,6 +44,18 @@ public class CharacterClassification {
 	public static final List<Character> dependentPhonems = new ArrayList<Character>(List.of('c', 'g', 'l'));
 	
 	public static final List<Character> switchPhonemes = new ArrayList<Character>(List.of('j', 'u', 'i'));
+	
+	
+	public static String getConsonantsAsString() {
+		List<Character> str =  consonants;
+        StringBuilder sb = new StringBuilder(); 
+  
+        for (Character ch : str) { 
+            sb.append(ch); 
+        } 
+  
+        return sb.toString(); 
+	}
     
 
 }

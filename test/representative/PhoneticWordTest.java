@@ -363,10 +363,49 @@ class PhoneticWordTest {
 			expected = "pa.ɾe.xas";
 			assertEquals(expected, output);
 			
+			input = "especifica";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "es.pe.si.fi.ka";
+			assertEquals(expected, output);
+			
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}
 
+	@Test
+	void spShouldSplit() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "espalda";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getIPAWithSyllables();
+			String expected = "es.pal.da";
+			assertEquals(expected, output);
+			
 
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void kstShouldSplitKs() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "extra";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getIPAWithSyllables();
+			String expected = "eks.tɾa";
+			assertEquals(expected, output);
+			
+
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 }

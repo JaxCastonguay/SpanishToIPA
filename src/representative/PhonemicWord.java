@@ -3,6 +3,8 @@ package representative;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import representative.PhonemicWord.PhonemNotFoundException;
 import sounds.CharacterClassification;
@@ -232,6 +234,8 @@ public class PhonemicWord implements Word{
 		int offset = 1;
 		points = findPointPositions(word);
 		
+		sJoinFix(word, points);
+		
 		StringBuilder sb = new StringBuilder(word);
 		
 		for(int i = 0; i < points.size(); i++) {
@@ -321,6 +325,38 @@ public class PhonemicWord implements Word{
 		}
 		
 		return points;
+	}
+	
+	//This whole method is searching backwards.... sk isn't the issue, ks is -> explicar -> eks.plicar
+	private void sJoinFix(String word, List<Integer> points) {
+		List<Integer> ruleBreakers = new ArrayList<Integer>();
+		
+		// st/sp/sk + consonant. ex: extranjero
+		Pattern p = Pattern.compile("ks["+ CharacterClassification.getConsonantsAsString() +"]"); 
+		Matcher m = p.matcher(word);
+		int temp = -1;
+		
+		if(m.find())
+			temp = m.start();
+		
+		//int temp = word.indexOf("sp");
+		if(temp > 0)
+			ruleBreakers.add(temp);
+		
+//		temp = word.indexOf("sk");
+//		
+//		if(temp > 0)
+//			ruleBreakers.add(temp);
+//		
+//		temp = word.indexOf("st");
+//		
+//		if(temp > 0)
+//			ruleBreakers.add(temp);
+		
+		for(Integer rb : ruleBreakers) {
+			points.remove(rb - 1);
+		}
+		
 	}
 	
 	/****************************
