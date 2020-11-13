@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import representative.PhonemicWord.PhonemNotFoundException;
 
-class PhoneticWordTest {
+class PhonemicTranslationsTests {
 	
 	@BeforeClass
     public static void beforeAllTestMethods() {
@@ -383,9 +383,7 @@ class PhoneticWordTest {
 			String output = phonemicWord.getIPAWithSyllables();
 			String expected = "es.pal.da";
 			assertEquals(expected, output);
-			
-
-			
+						
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
@@ -400,9 +398,7 @@ class PhoneticWordTest {
 			String output = phonemicWord.getIPAWithSyllables();
 			String expected = "eks.tɾa";
 			assertEquals(expected, output);
-			
-
-			
+					
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

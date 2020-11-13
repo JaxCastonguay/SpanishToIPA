@@ -39,7 +39,7 @@ public class CharacterClassification {
 	
 	
 	
-	public static final List<Character> nonPhonems = new ArrayList<Character>(List.of('c', 'h', 'q', 'v', 'x', 'y', 'z')); //v and z are pronounced in Spain.
+	public static final List<Character> nonPhonems = new ArrayList<Character>(List.of('c', 'h', 'q', 'v', 'x', 'y', 'z','ñ')); //v and z are pronounced in Spain.
 	
 	public static final List<Character> dependentPhonems = new ArrayList<Character>(List.of('c', 'g', 'l'));
 	

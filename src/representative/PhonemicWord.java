@@ -108,6 +108,9 @@ public class PhonemicWord implements Word{
 					letter = new LetterImpl(charArray[i]);
 					letter.setPhonem("");
 				}
+				else if(charArray[i] == 'ñ'){
+					letter = ñModifier(charArray, i);
+				}
 				else{
 					throw new PhonemNotFoundException("Character: '" + String.valueOf(charArray[i]) + "' is not a legal character.");
 				}
@@ -187,6 +190,13 @@ public class PhonemicWord implements Word{
 		Letter letter;
 		letter = new LetterImpl(charArray[i]);
 		letter.setPhonem("x");
+		return letter;
+	}
+	
+	private Letter ñModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("ɲ");
 		return letter;
 	}
 
@@ -327,7 +337,6 @@ public class PhonemicWord implements Word{
 		return points;
 	}
 	
-	//This whole method is searching backwards.... sk isn't the issue, ks is -> explicar -> eks.plicar
 	private void sJoinFix(String word, List<Integer> points) {
 		List<Integer> ruleBreakers = new ArrayList<Integer>();
 		
@@ -339,19 +348,8 @@ public class PhonemicWord implements Word{
 		if(m.find())
 			temp = m.start();
 		
-		//int temp = word.indexOf("sp");
 		if(temp > 0)
 			ruleBreakers.add(temp);
-		
-//		temp = word.indexOf("sk");
-//		
-//		if(temp > 0)
-//			ruleBreakers.add(temp);
-//		
-//		temp = word.indexOf("st");
-//		
-//		if(temp > 0)
-//			ruleBreakers.add(temp);
 		
 		for(Integer rb : ruleBreakers) {
 			points.remove(rb - 1);
