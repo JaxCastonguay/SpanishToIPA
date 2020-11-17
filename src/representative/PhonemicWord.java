@@ -17,16 +17,20 @@ public class PhonemicWord implements Word{
 	PhonemicWord(String inputWord) throws PhonemNotFoundException{
 		spanishWord = inputWord;
 		letters = new ArrayList<Letter>();
-		boolean setNextPhonemBlank = false;
 				
 		char[] charArray = inputWord.toCharArray();
 		
+		translateIntoPhonems(charArray);
+		//System.out.println("End of method: letter count: " + String.valueOf(letters.size() + " word: " + getIPAWord()));
+		
+	}
+
+	private void translateIntoPhonems(char[] charArray) throws PhonemNotFoundException {
+		boolean setNextPhonemBlank = false;
 		for(int i = 0; i < charArray.length; i++) {
 			Letter letter;
-			//NUMBER 1 TODO: GET BASIC LOOP TO GET RID OF NON-PHONEMIC LETTERS
 			if(setNextPhonemBlank) {
-				letter = new LetterImpl(charArray[i]);
-				letter.setPhonem("");
+				letter = hModifier(charArray, i);
 				setNextPhonemBlank = false;
 			}
 			else if(CharacterClassification.nonPhonems.contains(charArray[i]) || CharacterClassification.dependentPhonems.contains(charArray[i])
@@ -49,11 +53,23 @@ public class PhonemicWord implements Word{
 					letter = uModifier(charArray, i);
 				}
 				else if(charArray[i] == 'i'){
-					letter = imodifier(charArray, i);
+					letter = iModifier(charArray, i);
 				}
 				else if(charArray[i] == 'y') {
-					letter = new LetterImpl(charArray[i]);
-					letter.setPhonem("ʝ");
+					letter = yModifier(charArray, i);
+				}
+				else if(charArray[i] == 'ñ'){
+					letter = ñModifier(charArray, i);
+				}
+				else if(charArray[i] == 'z'){
+					letter = zModifier(charArray, i);
+				}
+				//Letter-phonems that are not 1-to-1 length
+				else if(charArray[i] == 'x') {
+					letter = xModifier(charArray, i);
+				}
+				else if(charArray[i] == 'h'){
+					letter = hModifier(charArray, i);
 				}
 				//Letters that change depending on the following characters
 				else if(charArray[i] == 'c'){
@@ -64,52 +80,20 @@ public class PhonemicWord implements Word{
 				}
 				//Letters that require word length change
 				else if(charArray[i] == 'l') {
-					if(charArray.length > i + 1 && charArray[i+1] == 'l') {
-						//turn to y.
-						letter = new LetterImpl(charArray[i]);
-						letter.setPhonem("y");
-						//Hide next
+					letter = lModifier(charArray, i);
+					if(letter.getPhonem() == "y")//ll needs the next skipped.
 						setNextPhonemBlank = true;
-						
-					}
-					else {
-						letter = new LetterImpl(charArray[i]);
-						letter.setPhonem("l");
-					}
 				}
 				else if(charArray[i] == 'r') {
-					if((charArray.length > i + 1 && charArray[i+1] == 'r') || i == 0) {//i == 0 > first letter is r > long r
-						letter = new LetterImpl(charArray[i]);
-						letter.setPhonem("r");
-						//Hide next
-						if(!(i == 0)) {
-							setNextPhonemBlank = true;
-						}
-						
-					}
-					else {
-						letter = new LetterImpl(charArray[i]);
-						letter.setPhonem("ɾ");
-					}
-				}
-				else if(charArray[i] == 'q') {
-					letter = new LetterImpl(charArray[i]);
-					letter.setPhonem("k");
-					//Hide next
-					if((charArray.length > i + 1) && (charArray[i+1] == 'u'))
+					letter = rModifier(charArray, i);
+					if(letter.getPhonem() == "r" && !(i == 0))//rr & needs to skip next, but r(first letter of word), needs to not be skipped.
 						setNextPhonemBlank = true;
 				}
-				else if(charArray[i] == 'x') {
-					letter = new LetterImpl(charArray[i]);
-					letter.setPhonem("ks");
-				}
-				else if(charArray[i] == 'h'){
-					//Still need to add h for Spanish word
-					letter = new LetterImpl(charArray[i]);
-					letter.setPhonem("");
-				}
-				else if(charArray[i] == 'ñ'){
-					letter = ñModifier(charArray, i);
+				else if(charArray[i] == 'q') {
+					letter = qModifier(charArray, i);
+					//Hide next if it's 'u'
+					if((charArray.length > i + 1) && (charArray[i+1] == 'u'))
+						setNextPhonemBlank = true;
 				}
 				else{
 					throw new PhonemNotFoundException("Character: '" + String.valueOf(charArray[i]) + "' is not a legal character.");
@@ -124,9 +108,8 @@ public class PhonemicWord implements Word{
 			letters.add(letter);
 			
 		}
-		//System.out.println("End of method: letter count: " + String.valueOf(letters.size() + " word: " + getIPAWord()));
-		
 	}
+
 	
 	/******************
 	 *Letter Modifiers* 
@@ -157,53 +140,20 @@ public class PhonemicWord implements Word{
 		}
 		return letter;
 	}
-
-	private Letter uModifier(char[] charArray, int i) {
-		Letter letter;
-		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
-				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
-			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("w");
-		}
-		else {						
-			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("u");
-		}
-		return letter;
-	}
-
-	private Letter imodifier(char[] charArray, int i) {
-		Letter letter;
-		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
-				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
-			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("j");
-		}
-		else {						
-			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("i");
-		}
-		return letter;
-	}
-
-	private Letter jModifier(char[] charArray, int i) {
-		Letter letter;
-		letter = new LetterImpl(charArray[i]);
-		letter.setPhonem("x");
-		return letter;
-	}
 	
-	private Letter ñModifier(char[] charArray, int i) {
+	private Letter cModifier(char[] charArray, int i) {
 		Letter letter;
-		letter = new LetterImpl(charArray[i]);
-		letter.setPhonem("ɲ");
-		return letter;
-	}
-
-	private Letter vModifier(char[] charArray, int i) {
-		Letter letter;
-		letter = new LetterImpl(charArray[i]);
-		letter.setPhonem("b");
+		if(charArray.length > i + 1 && charArray[i+1] == 'h') {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("ʧ");
+		}
+		else if(charArray.length > i + 1 && (charArray[i+1] == 'i' || charArray[i+1] == 'e')) {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("s");
+		}
+		else{
+			letter = qModifier(charArray, i);
+		}
 		return letter;
 	}
 
@@ -217,21 +167,118 @@ public class PhonemicWord implements Word{
 		}
 		return letter;
 	}
-
-	private Letter cModifier(char[] charArray, int i) {
+	
+	private Letter hModifier(char[] charArray, int i) {
 		Letter letter;
-		if(charArray.length > i + 1 && charArray[i+1] == 'h') {
+		//Still need to add h for Spanish word
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("");
+		return letter;
+	}
+	
+	private Letter iModifier(char[] charArray, int i) {
+		Letter letter;
+		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
+				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
 			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("ʧ");
+			letter.setPhonem("j");
 		}
-		else if(charArray.length > i + 1 && (charArray[i+1] == 'i' || charArray[i+1] == 'e')) {
+		else {						
 			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("s");
+			letter.setPhonem("i");
 		}
-		else{
+		return letter;
+	}
+	
+	private Letter jModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("x");
+		return letter;
+	}
+	
+	private Letter lModifier(char[] charArray, int i) {
+		Letter letter;
+		if(charArray.length > i + 1 && charArray[i+1] == 'l') {
+			//turn to y.
 			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("k");
+			letter.setPhonem("y");
+			//Hide next
+			//setNextPhonemBlank = true; (done after letter returned)
+			
 		}
+		else {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("l");
+		}
+		return letter;
+	}
+	
+	private Letter ñModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("ɲ");
+		return letter;
+	}
+	
+	private Letter qModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("k");
+		return letter;
+	}
+	
+	private Letter rModifier(char[] charArray, int i) {
+		Letter letter;
+		if((charArray.length > i + 1 && charArray[i+1] == 'r') || i == 0) {//i == 0 > first letter is r > long r
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("r");			
+		}
+		else {
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("ɾ");
+		}
+		return letter;
+	}
+	
+	private Letter uModifier(char[] charArray, int i) {
+		Letter letter;
+		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
+				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("w");
+		}
+		else {						
+			letter = new LetterImpl(charArray[i]);
+			letter.setPhonem("u");
+		}
+		return letter;
+	}
+	
+	private Letter vModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("b");
+		return letter;
+	}
+	
+	private Letter xModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("ks");
+		return letter;
+	}
+	
+	private Letter yModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("ʝ");
+		return letter;
+	}
+	private Letter zModifier(char[] charArray, int i) {
+		Letter letter;
+		letter = new LetterImpl(charArray[i]);
+		letter.setPhonem("s");
 		return letter;
 	}
 	
@@ -244,7 +291,7 @@ public class PhonemicWord implements Word{
 		int offset = 1;
 		points = findPointPositions(word);
 		
-		sJoinFix(word, points);
+		ksJoinFix(word, points);
 		
 		StringBuilder sb = new StringBuilder(word);
 		
@@ -252,14 +299,12 @@ public class PhonemicWord implements Word{
 			sb.insert(points.get(i) + offset, '.');
 			offset++;
 			System.out.println(sb.toString() +", index " + Integer.toString(i));
-		}
-		
+		}	
 		
 		return sb.toString();
 	}
 
 	private List<Integer> findPointPositions(String word) {
-		//WRITTEN BUT UNTESTED
 		List<Integer> points = new ArrayList();
 		//V (Any type of vowel)
 		for(int i = 0; i < word.length() - 1; i++) {
@@ -337,10 +382,10 @@ public class PhonemicWord implements Word{
 		return points;
 	}
 	
-	private void sJoinFix(String word, List<Integer> points) {
+	private void ksJoinFix(String word, List<Integer> points) {
 		List<Integer> ruleBreakers = new ArrayList<Integer>();
 		
-		// st/sp/sk + consonant. ex: extranjero
+		//ex: extraño. -> eks.tɾa.ɲo. st/sp/sk should never join
 		Pattern p = Pattern.compile("ks["+ CharacterClassification.getConsonantsAsString() +"]"); 
 		Matcher m = p.matcher(word);
 		int temp = -1;

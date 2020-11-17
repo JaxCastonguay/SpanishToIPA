@@ -111,8 +111,9 @@ class variousWordTest {
 		}
 	}
 
-	
-	//###SPECIAL CASES
+	/*#################
+	###SPECIAL CASES###
+	###################*/
 	@Test
 	void spShouldSplit() throws Exception{
 		PhonemicWord phonemicWord;
@@ -136,6 +137,36 @@ class variousWordTest {
 			phonemicWord = new PhonemicWord(input);
 			String output = phonemicWord.getIPAWithSyllables();
 			String expected = "eks.tɾa";
+			assertEquals(expected, output);
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	/*#############
+	###Mechanics###
+	###############*/
+	@Test
+	void getSpanishWordReturnsOrginalWord() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "extra";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getSpanishWord();
+			String expected = "extra";
+			assertEquals(expected, output);
+			
+			input = "desde";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getSpanishWord();
+			expected = "desde";
+			assertEquals(expected, output);
+			
+			input = "abcdefghijklmnopqrstuvwxyzllch";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getSpanishWord();
+			expected = "abcdefghijklmnopqrstuvwxyzllch";
 			assertEquals(expected, output);
 					
 		} catch (Exception e) {
@@ -196,6 +227,12 @@ class variousWordTest {
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "ke.ɾeɾ";
+			assertEquals(expected, output);
+			
+			input = "llamar";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "ya.maɾ";
 			assertEquals(expected, output);
 						
 		} catch (Exception e) {
