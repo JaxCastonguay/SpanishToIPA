@@ -197,7 +197,7 @@ class PhonemicTranslationsTests {
 			String expected = "ie";
 			phonemicWord = new PhonemicWord(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
-			assertEquals(true, phonemicWord.getFirstLetter().hasAccent());
+			assertEquals(true, phonemicWord.getFirstLetter().isAccented());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			

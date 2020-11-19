@@ -13,8 +13,10 @@ public class PhonemicWord implements Word{
 	
 	private String spanishWord;
 	private List<Letter> letters;
+	private int accentedVowelIndex;
 	
 	PhonemicWord(String inputWord) throws PhonemNotFoundException{
+		accentedVowelIndex = -1;
 		spanishWord = inputWord;
 		letters = new ArrayList<Letter>();
 				
@@ -22,6 +24,11 @@ public class PhonemicWord implements Word{
 		
 		translateIntoPhonems(charArray);
 		//System.out.println("End of method: letter count: " + String.valueOf(letters.size() + " word: " + getIPAWord()));
+		//Put TranslateIntoPhonetics here?
+		//"general" international slurring should always be done when translated phonetically
+		//input accent desired? Might want a "get oddities" method beforehand
+		//How should I keep both phonemic and phonetic? Do I need to?
+		//Thinking they need to re-translate if they want to go back to phonems
 		
 	}
 
@@ -288,7 +295,7 @@ public class PhonemicWord implements Word{
 	public String getIPAWithSyllables() {
 		String word = getIPAWord();
 		List<Integer> points = new ArrayList();
-		int offset = 1;
+		int wordOffset = 1;
 		points = findPointPositions(word);
 		
 		ksJoinFix(word, points);
@@ -296,10 +303,28 @@ public class PhonemicWord implements Word{
 		StringBuilder sb = new StringBuilder(word);
 		
 		for(int i = 0; i < points.size(); i++) {
-			sb.insert(points.get(i) + offset, '.');
-			offset++;
-			System.out.println(sb.toString() +", index " + Integer.toString(i));
-		}	
+			sb.insert(points.get(i) + wordOffset, '.');
+			wordOffset++;
+			//System.out.println(sb.toString() +", index " + Integer.toString(i));
+		}
+		
+		for(Integer point : points) {
+			if(point < accentedVowelIndex) {
+				accentedVowelIndex++;
+			}
+		}
+		if(accentedVowelIndex > -1) {
+			String beforeAccent = sb.substring(0, accentedVowelIndex);
+			int indexOfAccentuatedDot = beforeAccent.lastIndexOf('.');
+			if(indexOfAccentuatedDot > -1) {
+				//Plus one because we would otherwise be on the wrong side of the dot.
+				sb.insert(indexOfAccentuatedDot + 1, '\'');
+			}else {
+				//has accent on first syllable. ie no dot
+				sb.insert(0, '\'');
+			}
+
+		}
 		
 		return sb.toString();
 	}
@@ -402,6 +427,13 @@ public class PhonemicWord implements Word{
 		
 	}
 	
+	
+	private void findAccentuationIndex() {
+		if(accentedVowelIndex > 1) {
+			
+		}
+	}
+	
 	/****************************
 	 *Getters/Setters/Exceptions* 
 	 ****************************/
@@ -431,6 +463,9 @@ public class PhonemicWord implements Word{
 		String word = "";
 		for(int i = 0; i < letters.size(); i++) {
 			word += letters.get(i).getPhonem();
+			if(letters.get(i).isAccented()) {
+				accentedVowelIndex = i;
+			}
 		}
 		return word;
 	}

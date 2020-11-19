@@ -6,9 +6,16 @@ public class LetterImpl implements Letter{
 	
 	private Character spanishLetter;
 	private String phonem;
+	private Boolean hasAccent;
 
 	public LetterImpl(char letter){
 		spanishLetter = letter;
+		if(CharacterClassification.accentedVowels.contains(letter)) {
+			hasAccent = true;
+		}
+		else {
+			hasAccent = false;
+		}
 	}
 	
 
@@ -47,13 +54,8 @@ public class LetterImpl implements Letter{
 
 
 	@Override
-	public Boolean hasAccent() {
-		if(CharacterClassification.accentedVowels.contains(spanishLetter))
-			return true;
-		else
-			return false;
+	public Boolean isAccented() {
+		return hasAccent;
 	}
-
-
 
 }

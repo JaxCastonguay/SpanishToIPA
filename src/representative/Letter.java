@@ -12,5 +12,5 @@ public interface Letter {
 	Character getSpanishLetter();
 	String getPhonem();
 	void setPhonem(String phonem);
-	Boolean hasAccent();
+	Boolean isAccented();
 }

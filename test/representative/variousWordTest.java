@@ -22,6 +22,33 @@ class variousWordTest {
 	}
 	
 	@Test
+	void accentedWordShouldntHaveAccentInIPA() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "día";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getIPAWithSyllables();
+			String expected = "'di.a";
+			assertEquals(expected, output);
+			
+			input = "sábado";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "'sa.ba.do";
+			assertEquals(expected, output);
+			
+			input = "pasé";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getIPAWithSyllables();
+			expected = "pa.'se";
+			assertEquals(expected, output);
+			
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
 	void cvcvShouldBeSplitInTwo() throws Exception{
 		PhonemicWord phonemicWord;
 		try {
@@ -186,55 +213,64 @@ class variousWordTest {
 			String output = phonemicWord.getIPAWithSyllables();
 			String expected = "es.pal.da";
 			assertEquals(expected, output);
+			System.out.println(input + ": " + output);
 			
 			input = "desde";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "des.de";
 			assertEquals(expected, output);
+			System.out.println(input + ": " + output);
 			
 			input = "escuchar";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "es.ku.ʧaɾ";
 			assertEquals(expected, output);
+			System.out.println(input + ": " + output);
 			
 			input = "ver";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "beɾ";
 			assertEquals(expected, output);
-			
+			System.out.println(input + ": " + output);
+
 			input = "extrañar";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "eks.tɾa.ɲaɾ";
 			assertEquals(expected, output);
-			
+			System.out.println(input + ": " + output);
+
 			input = "traer";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "tɾa.eɾ";
 			assertEquals(expected, output);
-			
+			System.out.println(input + ": " + output);
+
 			input = "bien";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "bjen";
 			assertEquals(expected, output);
-			
+			System.out.println(input + ": " + output);
+
 			input = "querer";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "ke.ɾeɾ";
 			assertEquals(expected, output);
-			
+			System.out.println(input + ": " + output);
+
 			input = "llamar";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getIPAWithSyllables();
 			expected = "ya.maɾ";
 			assertEquals(expected, output);
-						
+			System.out.println(input + ": " + output);
+	
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
