@@ -295,38 +295,68 @@ public class PhonemicWord implements Word{
 	public String getIPAWithSyllables() {
 		String word = getIPAWord();
 		List<Integer> points = new ArrayList();
-		int wordOffset = 1;
 		points = findPointPositions(word);
 		
 		ksJoinFix(word, points);
 		
 		StringBuilder sb = new StringBuilder(word);
 		
+		insertDots(points, sb);
+				
+		insertAccentuationPoint(points, sb);
+		
+		return sb.toString();
+	}
+
+	private void insertAccentuationPoint(List<Integer> points, StringBuilder sb) {
+		//Start simple. single syllable word
+		if(points.size() == 0) {
+			sb.insert(0, '\'');
+		}
+		//Multiple syllables
+		else {
+			//Already know that the stress is on an accented syllable
+			if(accentedVowelIndex != -1) {
+				//correct accent index
+				for(Integer point : points) {
+					if(point < accentedVowelIndex) {
+						accentedVowelIndex++;
+					}
+				}
+				//insert accent
+				String beforeAccent = sb.substring(0, accentedVowelIndex);
+				int indexOfAccentuatedDot = beforeAccent.lastIndexOf('.');
+				//Plus one because we would otherwise be on the wrong side of the dot.
+				sb.insert(indexOfAccentuatedDot + 1, '\'');
+				
+			}
+			//No accented vowel need to find which syllable to accentuate
+			else {
+				int indexOfAccentuatedDot = getAccentIndex(sb);
+				sb.insert(indexOfAccentuatedDot + 1, '\'');				
+			}			
+		}
+	}
+
+	private void insertDots(List<Integer> points, StringBuilder sb) {
+		int wordOffset = 1;
 		for(int i = 0; i < points.size(); i++) {
 			sb.insert(points.get(i) + wordOffset, '.');
 			wordOffset++;
-			//System.out.println(sb.toString() +", index " + Integer.toString(i));
 		}
-		
-		for(Integer point : points) {
-			if(point < accentedVowelIndex) {
-				accentedVowelIndex++;
-			}
-		}
-		if(accentedVowelIndex > -1) {
-			String beforeAccent = sb.substring(0, accentedVowelIndex);
-			int indexOfAccentuatedDot = beforeAccent.lastIndexOf('.');
-			if(indexOfAccentuatedDot > -1) {
-				//Plus one because we would otherwise be on the wrong side of the dot.
-				sb.insert(indexOfAccentuatedDot + 1, '\'');
-			}else {
-				//has accent on first syllable. ie no dot
-				sb.insert(0, '\'');
-			}
+	}
 
-		}
+	private int getAccentIndex(StringBuilder sb) {
+		//Assume last syllable stress
+		int indexOfLastDot = sb.lastIndexOf(".");
 		
-		return sb.toString();
+		//Second to last syllable stressed 
+		if(CharacterClassification.penultimas.contains(sb.charAt(sb.length() - 1))) {
+			String lastSyllableRemoved = sb.substring(0, indexOfLastDot);
+			//Now second point
+			indexOfLastDot = lastSyllableRemoved.lastIndexOf('.');			
+		}
+		return indexOfLastDot;
 	}
 
 	private List<Integer> findPointPositions(String word) {
@@ -343,7 +373,6 @@ public class PhonemicWord implements Word{
 						points.add(i);
 					}
 					//else next or current is diptong and no change is needed.
-					
 				}
 				
 				//[V]C
@@ -373,8 +402,7 @@ public class PhonemicWord implements Word{
 							if(CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
 								points.add(i);
 							}
-							//VC.C (handled by CC below)
-							
+							//VC.C (handled by CC below)			
 						}
 					}
 					else //VC_ (do nothing)
@@ -425,13 +453,6 @@ public class PhonemicWord implements Word{
 			points.remove(rb - 1);
 		}
 		
-	}
-	
-	
-	private void findAccentuationIndex() {
-		if(accentedVowelIndex > 1) {
-			
-		}
 	}
 	
 	/****************************
