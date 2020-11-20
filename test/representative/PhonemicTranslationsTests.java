@@ -5,10 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
-
-
-import representative.PhonemicWord.PhonemNotFoundException;
-
 class PhonemicTranslationsTests {
 	
 	@BeforeClass
