@@ -2,12 +2,12 @@ package representative;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import errors.PhonemNotFoundException;
 import logic.Translator;
+import logic.CustomPhoneticsDTO;
 import sounds.CharacterClassification;
 
 public class PhonemicWord implements Word{
@@ -22,8 +22,6 @@ public class PhonemicWord implements Word{
 				
 		Translator translator = new Translator();
 		letters = translator.translateIntoPhonems(inputWord.toCharArray());
-		//translateIntoPhonems(charArray);
-		//System.out.println("End of method: letter count: " + String.valueOf(letters.size() + " word: " + getIPAWord()));
 		//Put TranslateIntoPhonetics here?
 		//"general" international slurring should always be done when translated phonetically
 		//input accent desired? Might want a "get oddities" method beforehand
@@ -36,7 +34,16 @@ public class PhonemicWord implements Word{
 	 *Syllable Creation*
 	 *******************/
 	public String getIPAWithSyllables() {
-		String word = getIPAWord();
+		return getWordWithSyllables(getIPAWord());
+	}
+	public String getPhoneticsWithSyllables(List<CustomPhoneticsDTO> CustomPhonetics) {
+		Translator translator = new Translator();
+		
+		String phonetics = translator.translateIntoCustomPhonetics(getIPAWord().toCharArray(), CustomPhonetics);
+		return getWordWithSyllables(phonetics);
+	}
+	
+	private String getWordWithSyllables(String word) {
 		List<Integer> points = new ArrayList<Integer>();
 		points = findPointPositions(word);
 		
@@ -103,7 +110,7 @@ public class PhonemicWord implements Word{
 	}
 
 	private List<Integer> findPointPositions(String word) {
-		List<Integer> points = new ArrayList();
+		List<Integer> points = new ArrayList<Integer>();
 		//V (Any type of vowel)
 		for(int i = 0; i < word.length() - 1; i++) {
 			if(CharacterClassification.phoneticvowels.contains(word.charAt(i))) {

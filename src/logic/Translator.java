@@ -6,6 +6,7 @@ import java.util.List;
 import errors.PhonemNotFoundException;
 import representative.Letter;
 import representative.LetterImpl;
+import sounds.AlternatePronunciations;
 import sounds.CharacterClassification;
 
 public class Translator {
@@ -70,7 +71,7 @@ public class Translator {
 				//Letters that require word length change
 				else if(charArray[i] == 'l') {
 					letter = lModifier(charArray, i);
-					if(letter.getPhonem() == "y")//ll needs the next skipped.
+					if(letter.getPhonem() == "ɟ")//ll needs the next skipped.
 						setNextPhonemBlank = true;
 				}
 				else if(charArray[i] == 'r') {
@@ -100,6 +101,129 @@ public class Translator {
 		return letters;
 	}
 	
+	
+	
+	
+	
+	public String translateIntoBasePhonetics(char[] charArray, List<AlternatePronunciations> alternatePronunciations) {
+		for(int i = 0; i < charArray.length; i++) {
+			
+			if(charArray[i] == 'b') {
+				charArray[i] = bPhoneticExamination(charArray, i);
+			}
+			else if(charArray[i] == 'd') {
+				charArray[i] = dPhoneticExamination(charArray, i);
+			}
+			else if(charArray[i] == 'g') {
+				charArray[i] = gPhoneticExamination(charArray, i);
+			}
+			else if(charArray[i] == 's') {
+				charArray[i] = sPhoneticExamination(charArray, i);
+			}
+		}
+			
+		 return null;
+	}
+	
+	public String translateIntoCustomPhonetics(char[] charArray, List<CustomPhoneticsDTO> customPhonetics) {
+		List<Character> bases = new ArrayList<Character>();
+		for(int i = 0; i< customPhonetics.size(); i++)
+			bases.add(customPhonetics.get(i).getBase());
+		
+		
+		for (int i = 0; i < charArray.length; i++) {
+			if (bases.contains(charArray[i])) {
+				//Get DTO index based on base
+				int index = bases.indexOf(charArray[i]);
+				CustomPhoneticsDTO phonetic = customPhonetics.get(index);
+				
+				//Check if before or after
+				if(phonetic.determineIsCheckingBefore()) {
+					//check if previous exists and is changer
+					if(i - 1 >=0 
+							&& phonetic.getModifiers().contains(charArray[i - 1])) {
+						charArray[i] = phonetic.getReplacement();
+					} else if (i == 0 && phonetic.determineisEffectedByPause()) {
+						charArray[i] = phonetic.getReplacement();
+					}
+				} else if(!phonetic.determineIsCheckingBefore()) {
+					//check if next exists and is changer
+					if(i + 1 < charArray.length 
+							&& phonetic.getModifiers().contains(charArray[i + 1])) {
+						charArray[i] = phonetic.getReplacement();
+					}
+				}
+			}
+		}
+
+		return new String(charArray);
+	}
+	
+	
+	
+	
+	private char bPhoneticExamination(char[] charArray, int i) {
+		if (i != 0 
+				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1])) {
+			return 'ß';
+		} else {
+			return 'b';
+		}
+	}
+	
+	private char dPhoneticExamination(char[] charArray, int i) {
+		if (i != 0 
+				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
+				&& charArray[i - 1] != 'l') {
+			return 'ð';
+		} else {
+			return 'd';
+		}
+	}
+	
+	private char gPhoneticExamination(char[] charArray, int i) {
+		if (i != 0 
+				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1])) {
+			return 'Ɣ';
+		} else {
+			return 'g';
+		}
+	}
+	
+	private char sPhoneticExamination(char[] charArray, int i) {
+		if (i < charArray.length - 1
+				&& CharacterClassification.sonoras.contains(charArray[i + 1])) {
+			return 'z';
+		} else {
+			return 's';
+		}
+	}
+	
+	//TODO: This is one valid config. But many places just use all ʝ.
+	private char ɟPhoneticExamination(char[] charArray, int i) {
+		if (i != 0 
+				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
+				&& charArray[i - 1] != 'l') {
+			return 'ʝ';
+		} else {
+			return 'ɟ';
+		}
+	}
+	
+	//TODO: n
+	
+	//TODO: e
+	
+	//TODO: neutralization> p>b, t>d, k>g (all to approx)
+	
+	//TODO: nasal
+	
+	
+	
+	
+	/*##########################################################################################
+	 *### Phonemic modifiers ###################################################################
+	  ##########################################################################################*/
 	private Letter accentedModifier(char[] charArray, int i) throws PhonemNotFoundException {
 		Letter letter;
 		if(charArray[i] == 'á') {
@@ -186,9 +310,9 @@ public class Translator {
 	private Letter lModifier(char[] charArray, int i) {
 		Letter letter;
 		if(charArray.length > i + 1 && charArray[i+1] == 'l') {
-			//turn to y.
+			//turn to y.(ɟ)
 			letter = new LetterImpl(charArray[i]);
-			letter.setPhonem("y");
+			letter.setPhonem("ɟ");
 			//Hide next
 			//setNextPhonemBlank = true; (done after letter returned)
 			
@@ -258,7 +382,7 @@ public class Translator {
 	private Letter yModifier(char[] charArray, int i) {
 		Letter letter;
 		letter = new LetterImpl(charArray[i]);
-		letter.setPhonem("ʝ");
+		letter.setPhonem("ɟ");
 		return letter;
 	}
 	private Letter zModifier(char[] charArray, int i) {
