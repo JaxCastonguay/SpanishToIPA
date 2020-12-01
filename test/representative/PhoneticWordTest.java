@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import logic.CustomPhoneticsDTO;
+import sounds.AlternatePronunciations;
+import sounds.CharacterClassification;
 
 public class PhoneticWordTest {
 	@Test
@@ -17,14 +19,14 @@ public class PhoneticWordTest {
 			
 			List<CustomPhoneticsDTO> customPhonetics = new ArrayList<CustomPhoneticsDTO>();
 			//TODO: issue encountered. Approxes use NOTs to determine replacements
-			CustomPhoneticsDTO s = new CustomPhoneticsDTO('s', 'z',List.of('b', 'd', 'ɉ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'), false, false);
 			
-			customPhonetics.add(s);
+			customPhonetics.add(AlternatePronunciations.dToð);
+			customPhonetics.add(AlternatePronunciations.sToZ);
 			
 			String input = "desde";
 			phonemicWord = new PhonemicWord(input);
 			String output = phonemicWord.getPhoneticsWithSyllables(customPhonetics);
-			String expected = "'dez.de";//TEMP
+			String expected = "'dez.ðe";
 			assertEquals(expected, output);
 					
 		} catch (Exception e) {

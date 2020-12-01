@@ -140,16 +140,27 @@ public class Translator {
 				//Check if before or after
 				if(phonetic.determineIsCheckingBefore()) {
 					//check if previous exists and is changer
-					if(i - 1 >=0 
+					
+					if (i == 0 && phonetic.determineisEffectedByPause()
+							&& !phonetic.determineisChangesUnlessModifiers()) {
+						charArray[i] = phonetic.getReplacement();
+					} else if(i - 1 >=0 
 							&& phonetic.getModifiers().contains(charArray[i - 1])) {
 						charArray[i] = phonetic.getReplacement();
-					} else if (i == 0 && phonetic.determineisEffectedByPause()) {
+					}else if(i - 1 >=0 
+							&& phonetic.determineisChangesUnlessModifiers() //If size is not zero then we will change if nonModifiers DOESN'T contain
+							&& !phonetic.getModifiers().contains(charArray[i - 1])) {
 						charArray[i] = phonetic.getReplacement();
 					}
-				} else if(!phonetic.determineIsCheckingBefore()) {
+				} else {
 					//check if next exists and is changer
 					if(i + 1 < charArray.length 
 							&& phonetic.getModifiers().contains(charArray[i + 1])) {
+						charArray[i] = phonetic.getReplacement();
+					}//TODO need to do nonModifiers
+					else if(i + 1 < charArray.length
+							&& phonetic.determineisChangesUnlessModifiers()
+							&& !phonetic.getModifiers().contains(charArray[i + 1])) {
 						charArray[i] = phonetic.getReplacement();
 					}
 				}
