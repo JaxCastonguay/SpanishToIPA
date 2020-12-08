@@ -157,7 +157,7 @@ public class Translator {
 					if(i + 1 < charArray.length 
 							&& phonetic.getModifiers().contains(charArray[i + 1])) {
 						charArray[i] = phonetic.getReplacement();
-					}//TODO need to do nonModifiers
+					}//TODO: Written but untested.
 					else if(i + 1 < charArray.length
 							&& phonetic.determineisChangesUnlessModifiers()
 							&& !phonetic.getModifiers().contains(charArray[i + 1])) {
