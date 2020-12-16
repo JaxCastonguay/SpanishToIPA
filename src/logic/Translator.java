@@ -26,7 +26,6 @@ public class Translator {
 			else if(CharacterClassification.nonPhonems.contains(charArray[i]) || CharacterClassification.dependentPhonems.contains(charArray[i])
 					|| CharacterClassification.switchPhonemes.contains(charArray[i]) || CharacterClassification.accentedVowels.contains(charArray[i]) 
 					||charArray[i] == 'r') {
-				//change on the spot?
 				//Simple one possibility switch
 				if(charArray[i] == 'v') {
 					letter = vModifier(charArray, i);
@@ -127,8 +126,11 @@ public class Translator {
 	
 	public String translateIntoCustomPhonetics(char[] charArray, List<CustomPhoneticsDTO> customPhonetics) {
 		List<Character> bases = new ArrayList<Character>();
+		if(customPhonetics != null && customPhonetics.size() > 0) {
 		for(int i = 0; i< customPhonetics.size(); i++)
-			bases.add(customPhonetics.get(i).getBase());
+			bases.add(customPhonetics.get(i).getBase());	
+		}
+
 		
 		
 		for (int i = 0; i < charArray.length; i++) {
