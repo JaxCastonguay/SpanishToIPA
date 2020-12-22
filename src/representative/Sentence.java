@@ -3,6 +3,8 @@ package representative;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import errors.PhonemNotFoundException;
 
@@ -17,20 +19,18 @@ public class Sentence {
 	
 	public String getPhoneticSentence() throws PhonemNotFoundException {
 		//Scrub input
-		//lowercase - done
-		//space - done
-		//no numbers
-		//period - done
-		//no special chars besides '|'
-		if(spanishSentence.matches("\\d+")) {//TODO: this isn't working
-			throw new PhonemNotFoundException("Numbers symbols are not allowed.");
+		Pattern pattern = Pattern.compile("^[a-zA-Z·ÈÌÛ˙¡…Õ”⁄¸‹Ò—,.?ø!° ]*$");
+		Matcher matcher = pattern.matcher(spanishSentence);
+			
+		if(!matcher.find()) {
+			throw new PhonemNotFoundException("Only letter and punctuation characters are allowed");
 		}
+		//TODO: add , ø °
 		if(spanishSentence.contains(".") || spanishSentence.contains("!") || spanishSentence.contains("?")) {//TODO: want to put other non chars/period catch here
 			spanishSentence.replace('!', '|');
 			spanishSentence.replace('?', '|');
 			spanishSentence.replace('.', '|');
 		}
-		//TODO: catch all non-pause special characters
 		
 		List<String> words = populateWordsList();
 		StringBuilder string = new StringBuilder();
