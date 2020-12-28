@@ -168,7 +168,7 @@ class PhonemicTranslationsTests {
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "lla";
-			expected = "ya";
+			expected = "ɟa";
 			phonemicWord = new PhonemicWord(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
@@ -208,13 +208,13 @@ class PhonemicTranslationsTests {
 		PhonemicWord phonemicWord;
 		try {
 			String input = "y";
-			String expected = "ʝ";
+			String expected = "ɟ";
 			phonemicWord = new PhonemicWord(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "yo";
-			expected = "ʝo";
+			expected = "ɟo";
 			phonemicWord = new PhonemicWord(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());

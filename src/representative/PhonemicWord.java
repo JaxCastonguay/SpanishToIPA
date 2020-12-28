@@ -36,10 +36,18 @@ public class PhonemicWord implements Word{
 	public String getIPAWithSyllables() {
 		return getWordWithSyllables(getIPAWord());
 	}
-	public String getPhoneticsWithSyllables(List<CustomPhoneticsDTO> CustomPhonetics) {
+	
+	public String getCustomPhoneticsWithSyllables(List<CustomPhoneticsDTO> CustomPhonetics) {
 		Translator translator = new Translator();
 		
 		String phonetics = translator.translateIntoCustomPhonetics(getIPAWord().toCharArray(), CustomPhonetics);
+		return getWordWithSyllables(phonetics);
+	}
+	
+	public String getPhoneticsWithSyllables() {
+		Translator translator = new Translator();
+		
+		String phonetics = translator.translateIntoBasePhonetics(getIPAWord().toCharArray());
 		return getWordWithSyllables(phonetics);
 	}
 	

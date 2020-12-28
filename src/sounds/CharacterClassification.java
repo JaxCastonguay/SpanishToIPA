@@ -27,9 +27,9 @@ public class CharacterClassification {
 	public final static List<Character> sonoras = new ArrayList<Character>(List.of('b', 'd', 'ɉ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'));
 	
 	//Vowels
-	public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'i', 'o', 'u'));
+	public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'i', 'o', 'u'));
 	
-	public final static List<Character> phoneticvowels = new ArrayList<Character>(List.of('a', 'e', 'o', 'i', 'u', 'w', 'j'));
+	public final static List<Character> phoneticvowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'o', 'i', 'u', 'w', 'j'));
 
 	public final static List<Character> strongVowels = new ArrayList<Character>(List.of('a', 'e', 'o'));
 

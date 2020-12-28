@@ -6,7 +6,6 @@ import java.util.List;
 import errors.PhonemNotFoundException;
 import representative.Letter;
 import representative.LetterImpl;
-import sounds.AlternatePronunciations;
 import sounds.CharacterClassification;
 
 public class Translator {
@@ -104,7 +103,7 @@ public class Translator {
 	
 	
 	
-	public String translateIntoBasePhonetics(char[] charArray, List<AlternatePronunciations> alternatePronunciations) {
+	public String translateIntoBasePhonetics(char[] charArray) {
 		for(int i = 0; i < charArray.length; i++) {
 			
 			if(charArray[i] == 'b') {
@@ -119,9 +118,15 @@ public class Translator {
 			else if(charArray[i] == 's') {
 				charArray[i] = sPhoneticExamination(charArray, i);
 			}
+			else if(charArray[i] == 'ɟ') {
+				charArray[i] = ɟPhoneticExamination(charArray, i);
+			}
+			else if(charArray[i] == 'e') {
+				charArray[i] = ePhoneticExamination(charArray, i);
+			}
 		}
 			
-		 return null;
+		 return new String(charArray);
 	}
 	
 	public String translateIntoCustomPhonetics(char[] charArray, List<CustomPhoneticsDTO> customPhonetics) {
@@ -223,15 +228,56 @@ public class Translator {
 		}
 	}
 	
+	private char ePhoneticExamination(char[] charArray, int i) {
+		
+		//option 1: next is [r] or [x] //TODO: will need to refine to check if /ɾ/ changes to [r]
+		if(i < charArray.length - 1
+				&& (charArray[i+1] == 'r' || charArray[i+1] == 'x')) {
+			return 'ɜ';
+		}
+		//option 2: next is coda & coda is not [s]. Hint: yes even [j] it would seem (ex: peine)
+		else if(i < charArray.length - 1
+				&& isCoda(charArray, i + 1)
+				&& charArray[i + 1] != 's') {
+			return 'ɜ';		
+		}
+		else {
+			return 'e';
+		}
+	}
+	
 	//TODO: n
 	
-	//TODO: e
 	
 	//TODO: neutralization> p>b, t>d, k>g (all to approx)
 	
 	//TODO: nasal
 	
-	
+	private Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
+		//1) potential coda is consonant
+		//2) next letter is consonant
+		if(indexOfPotentialCoda + 1 < charArray.length
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda + 1])) {
+			//3) they do not for a consonant blend
+			char potentialCoda = charArray[indexOfPotentialCoda];
+			char nextLetter = charArray[indexOfPotentialCoda + 1];
+			String potentialBlend = String.valueOf(potentialCoda) + String.valueOf(nextLetter);
+			if(!CharacterClassification.consonantBlends.contains(potentialBlend)) {
+				return true;
+			}
+			else {
+				return false;
+
+			}
+					}
+		else if(indexOfPotentialCoda == charArray.length - 1
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 	/*##########################################################################################
