@@ -26,6 +26,12 @@ public class CharacterClassification {
 	//TODO: do nasales count as sonoras?
 	public final static List<Character> sonoras = new ArrayList<Character>(List.of('b', 'd', 'ɉ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'));
 	
+	public final static List<Character> nasal = new ArrayList<Character>(List.of('n', 'n', 'ɱ', 'ŋ', 'ɲ', '̪'));//n̪ but, so far don't check for n<con> + '̪' + <con> TODO: might need to change this
+	
+	public final static List<Character> lateral = new ArrayList<Character>(List.of('l', 'ʎ', '̪'));//l̪^TODO: might need to changed
+	
+	public final static List<Character> sibilante = new ArrayList<Character>(List.of('s', 'z', '̺', 'ʒ', 'ʃ'));//s̺z̺ ^TODO: might need to changed
+	
 	//Vowels
 	public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'i', 'o', 'u'));
 	

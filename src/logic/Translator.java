@@ -124,6 +124,9 @@ public class Translator {
 			else if(charArray[i] == 'e') {
 				charArray[i] = ePhoneticExamination(charArray, i);
 			}
+			else if(charArray[i] == 'ɾ') {
+				charArray[i] = ɾPhoneticExamination(charArray, i);
+			}
 		}
 			
 		 return new String(charArray);
@@ -244,10 +247,21 @@ public class Translator {
 		else {
 			return 'e';
 		}
-		//TODO: peine not working
 	}
 	
-	//TODO: n
+	private char ɾPhoneticExamination(char[] charArray, int i) {
+		//r for nasal, lateral o sibilante
+		if(i != 0 
+				&& (CharacterClassification.nasal.contains(charArray[i - 1])
+				|| CharacterClassification.lateral.contains(charArray[i - 1])
+				|| CharacterClassification.sibilante.contains(charArray[i - 1]))) {
+			return 'r';			
+		}
+		
+		return 'ɾ';
+	}
+	
+	//TODO: n, m, ɲ
 	
 	
 	//TODO: neutralization> p>b, t>d, k>g (all to approx)

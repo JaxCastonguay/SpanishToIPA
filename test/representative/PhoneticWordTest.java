@@ -13,7 +13,7 @@ import sounds.CharacterClassification;
 
 public class PhoneticWordTest {
 	@Test
-	void basicPhoneticSwitch() throws Exception{
+	void customPhoneticSwitch() throws Exception{
 		PhonemicWord phonemicWord;
 		try {
 			//CUSTOM TEST
@@ -43,15 +43,22 @@ public class PhoneticWordTest {
 			output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
 			expected = "ɟa.'maɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
-			assertEquals(expected, output);
+			assertEquals(expected, output);			
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void bdgPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
 			
-			
-			//STANDARD TEST
-			//b/d/g
-			input = "desde";
+			String input = "desde";
 			phonemicWord = new PhonemicWord(input);
-			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "'dez.ðe";
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "'dez.ðe";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -60,22 +67,43 @@ public class PhoneticWordTest {
 			output = phonemicWord.getPhoneticsWithSyllables();
 			expected = "bi.la.'ßjal";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
-			assertEquals(expected, output);
+			assertEquals(expected, output);	
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void jPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
 			
 			//ɟ
-			input = "llamar";
+			String input = "llamar";
 			phonemicWord = new PhonemicWord(input);
-			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "ɟa.'maɾ";
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "ɟa.'maɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
+			
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void ePhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			
 			//e
-			//TODO: ɜ needs to be added as a vowel
-			input = "vender";
+			String input = "vender";
 			phonemicWord = new PhonemicWord(input);
-			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "bɜn.'dɜɾ";
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "bɜn.'dɜɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -106,9 +134,66 @@ public class PhoneticWordTest {
 			expected = "'dez.ðe";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
+			
 					
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}
+	
+	@Test
+	void ɾPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			//Stay ɾ
+			String input = "coro";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "'ko.ɾo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "arte";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'aɾ.te";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "tres";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'tɾes";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//Stay r
+			input = "carro";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'ka.ro";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//ɾ to r
+			//first one should be handled by phonemic.
+			input = "rico";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'ri.ko";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "enrique";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "ɜn.'ri.ke";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 }
