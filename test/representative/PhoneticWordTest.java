@@ -79,6 +79,20 @@ public class PhoneticWordTest {
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
+			input = "viene";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'bje.ne";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "peine";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'pɜj.ne";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
 			input = "venir";
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getPhoneticsWithSyllables();

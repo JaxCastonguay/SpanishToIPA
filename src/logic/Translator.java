@@ -244,6 +244,7 @@ public class Translator {
 		else {
 			return 'e';
 		}
+		//TODO: peine not working
 	}
 	
 	//TODO: n
@@ -271,8 +272,16 @@ public class Translator {
 
 			}
 					}
+		//End of word consonant
 		else if(indexOfPotentialCoda == charArray.length - 1
 				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])) {
+			return true;
+		}
+		//j or w as coda
+		else if(indexOfPotentialCoda > 0
+				&& CharacterClassification.vowels.contains(charArray[indexOfPotentialCoda - 1])
+				&& CharacterClassification.diptongAsConsonants.contains(charArray[indexOfPotentialCoda])
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda+1])) {
 			return true;
 		}
 		

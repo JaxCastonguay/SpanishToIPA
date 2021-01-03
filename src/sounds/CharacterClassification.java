@@ -35,6 +35,8 @@ public class CharacterClassification {
 
 	public final static List<Character> diptongVowels = new ArrayList<Character>(List.of('i', 'u'));
 	
+	public final static List<Character> diptongAsConsonants = new ArrayList<Character>(List.of('j', 'w'));
+	
 	public final static List<Character> accentedVowels = new ArrayList<Character>(List.of('á','é', 'í', 'ó', 'ú'));
 	
 	
