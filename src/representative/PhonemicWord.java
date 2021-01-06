@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import errors.PhonemNotFoundException;
 import logic.Translator;
 import logic.CustomPhoneticsDTO;
+import logic.SyllableHelper;
 import sounds.CharacterClassification;
 
 public class PhonemicWord implements Word{
@@ -53,7 +54,7 @@ public class PhonemicWord implements Word{
 	
 	private String getWordWithSyllables(String word) {
 		List<Integer> points = new ArrayList<Integer>();
-		points = findPointPositions(word);
+		points = SyllableHelper.findPointPositions(word);
 		
 		ksJoinFix(word, points);
 		
@@ -117,81 +118,81 @@ public class PhonemicWord implements Word{
 		return indexOfLastDot;
 	}
 
-	private List<Integer> findPointPositions(String word) {
-		List<Integer> points = new ArrayList<Integer>();
-		//V (Any type of vowel)
-		for(int i = 0; i < word.length() - 1; i++) {
-			if(CharacterClassification.phoneticvowels.contains(word.charAt(i))) {
-				//[V]V Next is any type of vowel
-				if(CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
-					//[V]V -> V.V
-					//Current and next are both strong vowels. Separate.
-					if(CharacterClassification.vowels.contains(word.charAt(i))
-							&& CharacterClassification.vowels.contains(word.charAt(i+1))) {
-						points.add(i);
-					}
-					//else next or current is diptong and no change is needed.
-				}
-				
-				//[V]C
-				//if VCC(joinable)
-	            //V.CC (add)
-	            //if VCC(not join)
-	            //VC.C (nothing)
-	            //if VC_(empty)
-	            //nothing
-	            //if VCV
-	            //V.CV (add)
-				else {
-					//Len check
-					if(word.length() > i + 2) {
-						//VCV -> V.CV
-						if(CharacterClassification.phoneticvowels.contains(word.charAt(i+2))) {
-							points.add(i);
-						}
-						//VCC
-						else {
-							
-							StringBuilder sb = new StringBuilder();
-							sb.append(word.charAt(i+1));
-							sb.append(word.charAt(i+2));
-							
-							//VCC (joinable) -> V.CC
-							if(CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
-								points.add(i);
-							}
-							//VC.C (handled by CC below)			
-						}
-					}
-					else //VC_ (do nothing)
-					{}
-				}
-			}
-			//C
-			else {
-				//CC
-				if(!CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
-					StringBuilder sb = new StringBuilder();
-					sb.append(word.charAt(i));
-					sb.append(word.charAt(i+1));
-					//Not cons blend -> C.C
-					if(!CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
-						points.add(i);
-					}
-					//Cons blend
-					else {
-					}
-				}
-				//CV
-				else {
-					
-				}
-			}
-			
-		}
-		
-		return points;
-	}
+//	private List<Integer> findPointPositions(String word) {
+//		List<Integer> points = new ArrayList<Integer>();
+//		//V (Any type of vowel)
+//		for(int i = 0; i < word.length() - 1; i++) {
+//			if(CharacterClassification.phoneticvowels.contains(word.charAt(i))) {
+//				//[V]V Next is any type of vowel
+//				if(CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
+//					//[V]V -> V.V
+//					//Current and next are both strong vowels. Separate.
+//					if(CharacterClassification.vowels.contains(word.charAt(i))//TODO: error found. These should both be strong vowels
+//							&& CharacterClassification.vowels.contains(word.charAt(i+1))) {
+//						points.add(i);
+//					}
+//					//else next or current is diptong and no change is needed.
+//				}
+//				
+//				//[V]C
+//				//if VCC(joinable)
+//	            //V.CC (add)
+//	            //if VCC(not join)
+//	            //VC.C (nothing)
+//	            //if VC_(empty)
+//	            //nothing
+//	            //if VCV
+//	            //V.CV (add)
+//				else {
+//					//Len check
+//					if(word.length() > i + 2) {
+//						//VCV -> V.CV
+//						if(CharacterClassification.phoneticvowels.contains(word.charAt(i+2))) {
+//							points.add(i);
+//						}
+//						//VCC
+//						else {
+//							
+//							StringBuilder sb = new StringBuilder();
+//							sb.append(word.charAt(i+1));
+//							sb.append(word.charAt(i+2));
+//							
+//							//VCC (joinable) -> V.CC
+//							if(CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
+//								points.add(i);
+//							}
+//							//VC.C (handled by CC below)			
+//						}
+//					}
+//					else //VC_ (do nothing)
+//					{}
+//				}
+//			}
+//			//C
+//			else {
+//				//CC
+//				if(!CharacterClassification.phoneticvowels.contains(word.charAt(i+1))) {
+//					StringBuilder sb = new StringBuilder();
+//					sb.append(word.charAt(i));
+//					sb.append(word.charAt(i+1));
+//					//Not cons blend -> C.C
+//					if(!CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
+//						points.add(i);
+//					}
+//					//Cons blend
+//					else {
+//					}
+//				}
+//				//CV
+//				else {
+//					
+//				}
+//			}
+//			
+//		}
+//		
+//		return points;
+//	}
 	
 	private void ksJoinFix(String word, List<Integer> points) {
 		List<Integer> ruleBreakers = new ArrayList<Integer>();

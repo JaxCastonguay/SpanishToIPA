@@ -196,4 +196,44 @@ public class PhoneticWordTest {
 		}
 	}
 	
+	@Test
+	void lPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			
+			//normal
+			String input = "algo";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "'al.Ɣo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "alto";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'al̪.to";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "altro"; //made up word. need to examine CCC with dental
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'al̪.tɾo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "elchico"; //made up word.
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "ɜl.'ʧi.ko";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+						
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 }

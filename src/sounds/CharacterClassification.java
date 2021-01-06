@@ -10,7 +10,7 @@ public class CharacterClassification {
 	//Consonants
 	public final static List<String> consonantBlends = new ArrayList<String>(List.of("bl", "fl", "cl", "gl", "pl", "cr", "br", "tr", "gr", "fr", "pr", "dr", "tl"));
 	
-	public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl"));
+	public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl", "t̪", "l̪"));
 
 	public final static List<Character> consonants = new ArrayList<Character>(List.of('b', 'ß', 'ʧ', 'd', 'ð', 'f', 'g', 'Ɣ', 'ʝ', 'ɉ', 'k', 'l', 'm', 'n', 'ɲ', 'p', 'r', 'ɾ', 's', 't', 'x', 'z')); //j & w are diptongs and are not consonants in this context
 		
@@ -26,11 +26,15 @@ public class CharacterClassification {
 	//TODO: do nasales count as sonoras?
 	public final static List<Character> sonoras = new ArrayList<Character>(List.of('b', 'd', 'ɉ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'));
 	
-	public final static List<Character> nasal = new ArrayList<Character>(List.of('n', 'n', 'ɱ', 'ŋ', 'ɲ', '̪'));//n̪ but, so far don't check for n<con> + '̪' + <con> TODO: might need to change this
+	public final static List<String> nasales = new ArrayList<String>(List.of("n", "m", "ɱ", "ŋ", "ɲ", "n̪"));
 	
-	public final static List<Character> lateral = new ArrayList<Character>(List.of('l', 'ʎ', '̪'));//l̪^TODO: might need to changed
+	public final static List<String> laterales = new ArrayList<String>(List.of("l", "ʎ", "̪l"));
 	
-	public final static List<Character> sibilante = new ArrayList<Character>(List.of('s', 'z', '̺', 'ʒ', 'ʃ'));//s̺z̺ ^TODO: might need to changed
+	public final static List<String> sibilante = new ArrayList<String>(List.of("s", "z", "s̺", "z̺", "ʒ", "ʃ"));
+	
+	public final static List<String> dentales = new ArrayList<String>(List.of("t", "d", "ð", "θ", "̪l", "n̪"));
+	
+	public final static List<Character> palatales = new ArrayList<Character>(List.of('ɉ', 'ʝ', 'ʒ', 'ʃ', 'ʧ', 'ɲ', 'ɲ'));
 	
 	//Vowels
 	public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'i', 'o', 'u'));

@@ -127,6 +127,34 @@ public class Translator {
 			else if(charArray[i] == 'ɾ') {
 				charArray[i] = ɾPhoneticExamination(charArray, i);
 			}
+			else if(charArray[i] == 'l') {
+				//See which is returned
+				CharPair lPair = lPhoneticExamination(charArray, i);
+				// return char, isDental
+				//insert letter
+				charArray[i] = lPair.getResponseChar();
+				if(lPair.getAdditionalChar() != '*') {
+					//if needed:
+					//resize array
+					int newLen = charArray.length + 1;
+					char[] newArray = new char[newLen];
+					int dentalPos = i + 1;
+					//copy vals
+					for(int k = 0; k < newLen; k++) {
+						if(k < dentalPos) {
+							newArray[k] = charArray[k];
+						}else if(k == dentalPos) {
+							//insert dental
+							newArray[k] = lPair.getAdditionalChar();
+						}
+						else {
+							newArray[k] = charArray[k - 1];
+						}
+					}
+				charArray = newArray;
+				i++;
+				}
+			}
 		}
 			
 		 return new String(charArray);
@@ -251,14 +279,36 @@ public class Translator {
 	
 	private char ɾPhoneticExamination(char[] charArray, int i) {
 		//r for nasal, lateral o sibilante
-		if(i != 0 
-				&& (CharacterClassification.nasal.contains(charArray[i - 1])
-				|| CharacterClassification.lateral.contains(charArray[i - 1])
-				|| CharacterClassification.sibilante.contains(charArray[i - 1]))) {
+		if(isRolledR(charArray, i)) {
 			return 'r';			
 		}
 		
 		return 'ɾ';
+	}
+	
+	private boolean isRolledR(char[] charArray, int i) {
+		//If previous char is the last of any of these strings we return true. 
+		//This is because in this specific case, any '̪' or '̺' at all results in a change,
+		//and those are the only two letter combos for these classifications.
+		//Note: due to this I could've just changed the classifications to a char list, but this allows easier expansion of phonetic rules later.
+		return i != 0 
+				&& (CharacterClassification.nasales.contains(String.valueOf(charArray[i - 1]))
+				|| CharacterClassification.laterales.contains(String.valueOf(charArray[i - 1]))
+				|| CharacterClassification.sibilante.contains(String.valueOf(charArray[i - 1])));
+	}
+	
+	private CharPair lPhoneticExamination(char[] charArray, int i) {
+		//set * for no addition
+		//only need to check last of the dentales strings because a '̪' is an automatic dental
+		if(i < charArray.length - 1
+				&& CharacterClassification.dentales.contains(String.valueOf(charArray[i + 1]))) {
+			return new CharPair('l', '̪');
+		}
+		else if(i < charArray.length - 1
+				&& CharacterClassification.palatales.contains(charArray[i + 1])) {
+			return new CharPair('ʎ', '*');
+		}
+		return new CharPair('l', '*');
 	}
 	
 	//TODO: n, m, ɲ
@@ -472,5 +522,26 @@ public class Translator {
 		letter = new LetterImpl(charArray[i]);
 		letter.setPhonem("s");
 		return letter;
+	}
+	
+	
+	
+	private class CharPair{
+		private char responseChar;
+		private char additionalChar;
+		
+		public CharPair(char responseChar, char additionalChar) {
+			this.responseChar = responseChar;
+			this.additionalChar = additionalChar;
+		}
+
+		public char getResponseChar() {
+			return responseChar;
+		}
+
+		public char getAdditionalChar() {
+			return additionalChar;
+		}
+		
 	}
 }
