@@ -20,9 +20,18 @@ public class SentenceTests {
 	}
 	
 	@Test
-	public void numbersInSentenceShouldThrowError() throws PhonemNotFoundException {
+	public void numbersInSentenceShouldThrowError() {
 		Sentence sentence = new Sentence("Tengo 2 gatos");
+		//This is a bad way to test. Fix this later.
+		Boolean exceptionTriggered = false;
+		try {
+			sentence.getPhoneticSentence();
+		} catch (PhonemNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			exceptionTriggered = true;
+		}
 		
-		String result = sentence.getPhoneticSentence();
+		assertTrue(exceptionTriggered);
 	}
 }

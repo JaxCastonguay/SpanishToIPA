@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import logic.CustomPhoneticsDTO;
 import sounds.AlternatePronunciations;
-import sounds.CharacterClassification;
 
 public class PhoneticWordTest {
 	@Test
@@ -103,7 +102,8 @@ public class PhoneticWordTest {
 			String input = "vender";
 			phonemicWord = new PhonemicWord(input);
 			String output = phonemicWord.getPhoneticsWithSyllables();
-			String expected = "bɜn.'dɜɾ";
+			//TODO: d is checking for nonModifiers but dental gets in the way...
+			String expected = "bɜn̪.'dɜɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -226,11 +226,37 @@ public class PhoneticWordTest {
 			input = "elchico"; //made up word.
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "ɜl.'ʧi.ko";
+			expected = "ɜʎ.'ʧi.ko";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 						
 					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	@Test
+	void mnɲPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			
+			//Change to m
+			String input = "unpoco";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "um.'po.ko";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "umbroso";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "um.'bɾo.so";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

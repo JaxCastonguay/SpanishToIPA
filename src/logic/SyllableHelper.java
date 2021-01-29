@@ -81,7 +81,7 @@ public class SyllableHelper {
 				//VCC (joinable) -> V.CC
 				if(CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {
 					//could be l̪ ex: al̪.to
-					if(word.charAt(i+2) != '̪') {
+					if(word.charAt(i+2) != '̪' &&word.charAt(i+2) != '̺') {
 						points.add(i);
 					}
 				}
