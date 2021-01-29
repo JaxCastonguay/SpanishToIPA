@@ -244,8 +244,8 @@ public class Translator {
 			return 'd';
 		}
 		else if (i != 0 
-				&& (CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
-						|| charArray[i - 1] != 'l')) {
+				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
+				&& charArray[i - 1] != 'l') {
 			
 			return 'ð';
 		}

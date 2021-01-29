@@ -102,7 +102,6 @@ public class PhoneticWordTest {
 			String input = "vender";
 			phonemicWord = new PhonemicWord(input);
 			String output = phonemicWord.getPhoneticsWithSyllables();
-			//TODO: d is checking for nonModifiers but dental gets in the way...
 			String expected = "bɜn̪.'dɜɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
@@ -253,6 +252,61 @@ public class PhoneticWordTest {
 			phonemicWord = new PhonemicWord(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
 			expected = "um.'bɾo.so";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to ɱ
+			input = "unfaro";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "uɱ.'fa.ɾo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to n̪
+			input = "untar";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "un̪.'taɾ";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "untrar";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "un̪.'tɾaɾ";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to n
+			input = "unlitro";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "un.'li.tɾo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to ɲ
+			input = "unchico";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "uɲ.'ʧi.ko";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to ɲ
+			input = "unchico";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "uɲ.'ʧi.ko";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//change to ŋ
+			input = "ungiro";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "uŋ.'xi.ɾo";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
