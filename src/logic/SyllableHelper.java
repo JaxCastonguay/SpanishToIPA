@@ -95,7 +95,7 @@ public class SyllableHelper {
 	private static void evaluateIndexAsVowelWithVowelNext(String word, List<Integer> points, int i) {
 		//[V]V -> V.V
 		//Current and next are both strong vowels. Separate.
-		if(CharacterClassification.vowels.contains(word.charAt(i))//TODO: error found. These should both be strong vowels
+		if(CharacterClassification.vowels.contains(word.charAt(i))//TODO: Examine. Should this be comparing vowels or strong vowels?
 				&& CharacterClassification.vowels.contains(word.charAt(i+1))) {
 			points.add(i);
 		}

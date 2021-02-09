@@ -519,8 +519,8 @@ public class Translator {
 	
 	private Letter iModifier(char[] charArray, int i) {
 		Letter letter;
-		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
-				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
+		if(((i > 0) && (CharacterClassification.strongVowels.contains(charArray[i - 1]) || CharacterClassification.accentedVowels.contains(charArray[i - 1]))) //Previous
+				|| ((charArray.length > i + 1) && (CharacterClassification.strongVowels.contains(charArray[i + 1]) || CharacterClassification.accentedVowels.contains(charArray[i + 1])))) {//Next
 			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("j");
 		}
@@ -584,8 +584,8 @@ public class Translator {
 	
 	private Letter uModifier(char[] charArray, int i) {
 		Letter letter;
-		if(((i > 0) && CharacterClassification.strongVowels.contains(charArray[i - 1])) //Previous
-				|| ((charArray.length > i + 1) && CharacterClassification.strongVowels.contains(charArray[i + 1]))) {//Next
+		if(((i > 0) && (CharacterClassification.strongVowels.contains(charArray[i - 1]) || CharacterClassification.accentedVowels.contains(charArray[i - 1]))) //Previous
+				|| ((charArray.length > i + 1) && (CharacterClassification.strongVowels.contains(charArray[i + 1]) || CharacterClassification.accentedVowels.contains(charArray[i + 1])))) {//Next
 			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("w");
 		}

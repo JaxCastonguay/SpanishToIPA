@@ -341,7 +341,15 @@ public class PhoneticWordTest {
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
-			//Just realized this s&ɾ will not occur
+			//quick unrelated test for oración
+			input = "oración";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "o.ɾa.'sjon";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//Just realized this s&ɾ will not occuroración
 //			input = "losricos";
 //			phonemicWord = new PhonemicWord(input);
 //			output = phonemicWord.getPhoneticsWithSyllables();
