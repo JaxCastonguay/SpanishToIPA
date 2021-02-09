@@ -116,7 +116,13 @@ public class Translator {
 				charArray[i] = gPhoneticExamination(charArray, i);
 			}
 			else if(charArray[i] == 's') {
-				charArray[i] = sPhoneticExamination(charArray, i);
+				if(i + 1 < charArray.length
+						&& charArray[i+1] == 'r') {
+					//remove here
+					charArray = resizedCharArrayRemoveI(charArray, i);
+				}else {
+					charArray[i] = sPhoneticExamination(charArray, i);
+				}
 			}
 			else if(charArray[i] == 'ɟ') {
 				charArray[i] = ɟPhoneticExamination(charArray, i);
@@ -149,6 +155,14 @@ public class Translator {
 					i++;
 				}
 			}
+//			else if(charArray[i] == 's') {
+//				//This will just be removing and s if [r] follows
+//				if(i + 1 < charArray.length
+//						&& charArray[i+1] == 'r') {
+//					//remove here
+//					charArray = resizedCharArrayRemoveI(charArray, i);
+//				}
+//			}
 		}
 			
 		 return new String(charArray);
@@ -169,6 +183,24 @@ public class Translator {
 			}
 			else {
 				newArray[k] = charArray[k - 1];
+			}
+		}
+		charArray = newArray;
+		return charArray;
+	}
+	
+	private char[] resizedCharArrayRemoveI(char[] charArray, int i) {
+		//if needed:
+		//resize array
+		int newLen = charArray.length - 1;
+		char[] newArray = new char[newLen];
+		//copy vals
+		for(int k = 0; k < newLen; k++) {
+			if(k < i) {
+				newArray[k] = charArray[k];
+			}
+			else { //k >= i
+				newArray[k] = charArray[k + 1];
 			}
 		}
 		charArray = newArray;

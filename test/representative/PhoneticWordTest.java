@@ -316,4 +316,44 @@ public class PhoneticWordTest {
 		}
 	}
 	
+	@Test
+	void sPhoneticSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			String input = "losrricos";//not a real word
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "lo.'ri.kos";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "desde";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'dez.ðe";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "mismo";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'mis.mo";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			//Just realized this s&ɾ will not occur
+//			input = "losricos";
+//			phonemicWord = new PhonemicWord(input);
+//			output = phonemicWord.getPhoneticsWithSyllables();
+//			expected = "los.'ɾi.kos";
+//			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+//			assertEquals(expected, output);
+			
+			
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 }
