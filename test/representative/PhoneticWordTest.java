@@ -364,4 +364,58 @@ public class PhoneticWordTest {
 		}
 	}
 	
+	@Test
+	void neutralizaSwitch() throws Exception{
+		PhonemicWord phonemicWord;
+		try {
+			
+			//normal
+			String input = "optimista";
+			phonemicWord = new PhonemicWord(input);
+			String output = phonemicWord.getPhoneticsWithSyllables();
+			String expected = "oß.ti.'mis.ta";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "para";
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'pa.ɾa";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "palabra";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "pa.'la.ßɾa";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "probar";//dental will need to be accounted for in sentence. ex: el taco
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "pɾo.'ßaɾ";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "doctor"; //made up word. need to examine CCC with dental
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "doƔ.'toɾ";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+			
+			input = "toca"; //made up word. need to examine CCC with dental
+			phonemicWord = new PhonemicWord(input);
+			output = phonemicWord.getPhoneticsWithSyllables();
+			expected = "'to.ka";
+			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+			assertEquals(expected, output);
+						
+					
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 }

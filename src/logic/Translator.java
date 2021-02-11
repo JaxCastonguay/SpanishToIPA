@@ -24,7 +24,7 @@ public class Translator {
 			}
 			else if(CharacterClassification.nonPhonems.contains(charArray[i]) || CharacterClassification.dependentPhonems.contains(charArray[i])
 					|| CharacterClassification.switchPhonemes.contains(charArray[i]) || CharacterClassification.accentedVowels.contains(charArray[i]) 
-					||charArray[i] == 'r') {
+					|| charArray[i] == 'r' || charArray[i] == 'p' || charArray[i] == 't' || charArray[i] == 'k') {
 				//Simple one possibility switch
 				if(charArray[i] == 'v') {
 					letter = vModifier(charArray, i);
@@ -82,6 +82,15 @@ public class Translator {
 					//Hide next if it's 'u'
 					if((charArray.length > i + 1) && (charArray[i+1] == 'u'))
 						setNextPhonemBlank = true;
+				}
+				else if(charArray[i] == 'p') {
+					letter = pModifier(charArray, i);
+				}
+				else if(charArray[i] == 't') {
+					letter = tModifier(charArray, i);
+				}
+				else if(charArray[i] == 'k') {
+					letter = kModifier(charArray, i);
 				}
 				else{
 					throw new PhonemNotFoundException("Character: '" + String.valueOf(charArray[i]) + "' is not a legal character.");
@@ -483,14 +492,15 @@ public class Translator {
 	}
 	
 	private Letter cModifier(char[] charArray, int i) {
-		Letter letter;
+		Letter letter = new LetterImpl(charArray[i]);
 		if(charArray.length > i + 1 && charArray[i+1] == 'h') {
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("ʧ");
 		}
 		else if(charArray.length > i + 1 && (charArray[i+1] == 'i' || charArray[i+1] == 'e')) {
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("s");
+		}
+		else if(isCoda(charArray, i)) {
+			letter.setPhonem("g");
 		}
 		else{
 			letter = qModifier(charArray, i);
@@ -518,14 +528,12 @@ public class Translator {
 	}
 	
 	private Letter iModifier(char[] charArray, int i) {
-		Letter letter;
+		Letter letter = new LetterImpl(charArray[i]);
 		if(((i > 0) && (CharacterClassification.strongVowels.contains(charArray[i - 1]) || CharacterClassification.accentedVowels.contains(charArray[i - 1]))) //Previous
 				|| ((charArray.length > i + 1) && (CharacterClassification.strongVowels.contains(charArray[i + 1]) || CharacterClassification.accentedVowels.contains(charArray[i + 1])))) {//Next
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("j");
 		}
 		else {						
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("i");
 		}
 		return letter;
@@ -538,18 +546,26 @@ public class Translator {
 		return letter;
 	}
 	
+	private Letter kModifier(char[] charArray, int i) {
+		Letter letter = new LetterImpl(charArray[i]);
+		if(isCoda(charArray, i)) {
+			letter.setPhonem("g");
+		}else {
+			letter.setPhonem("k");
+		}
+		return letter;
+	}
+	
 	private Letter lModifier(char[] charArray, int i) {
-		Letter letter;
+		Letter letter = new LetterImpl(charArray[i]);
 		if(charArray.length > i + 1 && charArray[i+1] == 'l') {
 			//turn to y.(ɟ)
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("ɟ");
 			//Hide next
 			//setNextPhonemBlank = true; (done after letter returned)
 			
 		}
 		else {
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("l");
 		}
 		return letter;
@@ -562,6 +578,16 @@ public class Translator {
 		return letter;
 	}
 	
+	private Letter pModifier(char[] charArray, int i) {
+		Letter letter = new LetterImpl(charArray[i]);
+		if(isCoda(charArray, i)) {
+			letter.setPhonem("b");
+		}else {
+			letter.setPhonem("p");
+		}
+		return letter;
+	}
+	
 	private Letter qModifier(char[] charArray, int i) {
 		Letter letter;
 		letter = new LetterImpl(charArray[i]);
@@ -570,27 +596,33 @@ public class Translator {
 	}
 	
 	private Letter rModifier(char[] charArray, int i) {
-		Letter letter;
+		Letter letter = new LetterImpl(charArray[i]);
 		if((charArray.length > i + 1 && charArray[i+1] == 'r') || i == 0) {//i == 0 > first letter is r > long r
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("r");			
 		}
 		else {
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("ɾ");
 		}
 		return letter;
 	}
 	
+	private Letter tModifier(char[] charArray, int i) {
+		Letter letter = new LetterImpl(charArray[i]);
+		if(isCoda(charArray, i)) {
+			letter.setPhonem("d");
+		}else {
+			letter.setPhonem("t");
+		}
+		return letter;
+	}
+	
 	private Letter uModifier(char[] charArray, int i) {
-		Letter letter;
+		Letter letter = new LetterImpl(charArray[i]);
 		if(((i > 0) && (CharacterClassification.strongVowels.contains(charArray[i - 1]) || CharacterClassification.accentedVowels.contains(charArray[i - 1]))) //Previous
 				|| ((charArray.length > i + 1) && (CharacterClassification.strongVowels.contains(charArray[i + 1]) || CharacterClassification.accentedVowels.contains(charArray[i + 1])))) {//Next
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("w");
 		}
 		else {						
-			letter = new LetterImpl(charArray[i]);
 			letter.setPhonem("u");
 		}
 		return letter;
