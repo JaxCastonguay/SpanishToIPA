@@ -2,10 +2,16 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import sounds.CharacterClassification;
 
 public class SyllableHelper {
+	//##########################################
+	//###Finding syllable break location########
+	//##########################################
+
 	public static List<Integer> findPointPositions(String word) {
 		List<Integer> points = new ArrayList<Integer>();
 		//V (Any type of vowel)
@@ -99,5 +105,97 @@ public class SyllableHelper {
 				&& CharacterClassification.vowels.contains(word.charAt(i+1))) {
 			points.add(i);
 		}
+	}
+	
+	
+	//####################################
+	//##Dot insertion and correction######
+	//####################################
+	
+	public static String getWordWithSyllables(String word, int accentedVowelIndex) {
+		List<Integer> points = new ArrayList<Integer>();
+		points = SyllableHelper.findPointPositions(word);
+		
+		SyllableHelper.ksJoinFix(word, points);
+		
+		StringBuilder sb = new StringBuilder(word);
+		
+		SyllableHelper.insertDots(points, sb);
+				
+		SyllableHelper.insertAccentuationPoint(points, sb, accentedVowelIndex);
+		
+		return sb.toString();
+	}
+	
+	private static void ksJoinFix(String word, List<Integer> points) {
+		List<Integer> ruleBreakers = new ArrayList<Integer>();
+		
+		//ex: extraño. -> eks.tɾa.ɲo. st/sp/sk should never join
+		Pattern p = Pattern.compile("ks["+ CharacterClassification.getConsonantsAsString() +"]"); 
+		Matcher m = p.matcher(word);
+		int temp = -1;
+		
+		if(m.find())
+			temp = m.start();
+		
+		if(temp > 0)
+			ruleBreakers.add(temp);
+		
+		for(Integer rb : ruleBreakers) {
+			points.remove(rb - 1);
+		}
+		
+	}
+	
+	
+	private static void insertDots(List<Integer> points, StringBuilder sb) {
+		int wordOffset = 1;
+		for(int i = 0; i < points.size(); i++) {
+			sb.insert(points.get(i) + wordOffset, '.');
+			wordOffset++;
+		}
+	}
+	
+	private static void insertAccentuationPoint(List<Integer> points, StringBuilder sb, int accentedVowelIndex) {
+		//Start simple. single syllable word
+		if(points.size() == 0) {
+			sb.insert(0, '\'');
+		}
+		//Multiple syllables
+		else {
+			//Already know that the stress is on an accented syllable
+			if(accentedVowelIndex != -1) {
+				//correct accent index
+				for(Integer point : points) {
+					if(point < accentedVowelIndex) {
+						accentedVowelIndex++;
+					}
+				}
+				//insert accent
+				String beforeAccent = sb.substring(0, accentedVowelIndex);
+				int indexOfAccentuatedDot = beforeAccent.lastIndexOf('.');
+				//Plus one because we would otherwise be on the wrong side of the dot.
+				sb.insert(indexOfAccentuatedDot + 1, '\'');
+				
+			}
+			//No accented vowel need to find which syllable to accentuate
+			else {
+				int indexOfAccentuatedDot = getAccentIndex(sb);
+				sb.insert(indexOfAccentuatedDot + 1, '\'');				
+			}			
+		}
+	}
+	
+	private static int getAccentIndex(StringBuilder sb) {
+		//Assume last syllable stress
+		int indexOfLastDot = sb.lastIndexOf(".");
+		
+		//Second to last syllable stressed 
+		if(CharacterClassification.penultimas.contains(sb.charAt(sb.length() - 1))) {
+			String lastSyllableRemoved = sb.substring(0, indexOfLastDot);
+			//Now second point
+			indexOfLastDot = lastSyllableRemoved.lastIndexOf('.');			
+		}
+		return indexOfLastDot;
 	}
 }

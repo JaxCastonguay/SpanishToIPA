@@ -14,7 +14,7 @@ public class SentenceTests {
 		//TODO: discovered syll needs testing as oración split into ci.ón
 		
 		String output = sentence.getPhoneticSentence();
-		String expected = "/'es.to.'e.'su.na.o.ɾa.si.'on/";//should end in sjon but testing other feature rn.
+		String expected = "/'es.to.'e.'su.na.o.ɾa.'sjon/";//should end in sjon but testing other feature rn.
 		assertEquals(expected, output);
 
 	}

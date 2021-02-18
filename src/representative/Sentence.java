@@ -51,7 +51,7 @@ public class Sentence {
 		List<String> words = new ArrayList<>();
 		//Fill words with phonetic words with syllables.
 		for(int i = 0; i < list.size(); i++) {		
-			PhonemicWord word = new PhonemicWord(list.get(i));
+			Word word = new Word(list.get(i));
 			words.add(word.getCustomPhoneticsWithSyllables(null));
 		}
 		return words;

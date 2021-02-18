@@ -411,9 +411,8 @@ public class Translator {
 	}
 	
 	
-	//TODO: neutralization> p>b, t>d, k>g (all to approx)
 	
-	//TODO: nasal
+	//TODO: nasal (vowels)
 	
 	private Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
 		//1) potential coda is consonant

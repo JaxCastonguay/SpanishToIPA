@@ -14,9 +14,9 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void lettersShouldReturnSpanishLettersAssigned() throws Exception{
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
-			phonemicWord = new PhonemicWord("test");
+			phonemicWord = new Word("test");
 			assertEquals(phonemicWord.getFirstLetter().getSpanishLetter(), 't');
 			assertEquals(phonemicWord.getLetter(1).getSpanishLetter(), 'e');
 			assertEquals(phonemicWord.getLetter(2).getSpanishLetter(), 's');
@@ -29,65 +29,65 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void singleLettersChange() throws Exception{
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "v";
 			String expected = "b";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getFirstLetter().getPhonem());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "j";
 			expected = "x";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getFirstLetter().getPhonem());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "u";
 			expected = "u";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getFirstLetter().getPhonem());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "eu";
 			expected = "ew";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ua";
 			expected = "wa";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "tu";
 			expected = "tu";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "i";
 			expected = "i";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ei";
 			expected = "ej";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ia";
 			expected = "ja";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ti";
 			expected = "ti";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -98,29 +98,29 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void ksShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {			
 			String input = "ce";
 			String expected = "se";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ch";
 			expected = "ʧ";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ca";
 			expected = "ka";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "doctor";
 			expected = "dogtoɾ";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -131,23 +131,23 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void gsShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "g";
 			String expected = "g";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ge";
 			expected = "xe";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ga";
 			expected = "ga";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -159,23 +159,23 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void lsShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "l";
 			String expected = "l";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "lla";
 			expected = "ɟa";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "la";
 			expected = "la";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -187,17 +187,17 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void psShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "oposicion";
 			String expected = "oposisjon";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "optimista";
 			expected = "obtimista";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -210,17 +210,17 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void tsShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "toca";
 			String expected = "toka";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ritmo";
 			expected = "ridmo";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -233,11 +233,11 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void accentedLetterShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "íe";
 			String expected = "ie";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			assertEquals(true, phonemicWord.getFirstLetter().isAccented());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
@@ -251,17 +251,17 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void yShouldReturnDifferentPhonem() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "y";
 			String expected = "ɟ";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "yo";
 			expected = "ɟo";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -273,17 +273,17 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void qShouldReturnK() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "que";
 			String expected = "ke";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "iraq";
 			expected = "iɾak";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -295,23 +295,23 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void rShouldReturnDifferentPhonems() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "ra";
 			String expected = "ra";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "erre";
 			expected = "ere";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
 			input = "ere";
 			expected = "eɾe";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -323,11 +323,11 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void xShouldReturnKs() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "xa";
 			String expected = "ksa";
-			phonemicWord = new PhonemicWord(input);
+			phonemicWord = new Word(input);
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
@@ -339,11 +339,11 @@ class PhonemicTranslationsTests {
 	
 	@Test
 	void hShouldNotBeAdded() throws Exception {
-		PhonemicWord phonemicWord;
+		Word phonemicWord;
 		try {
 			String input = "ha";
 			String expected = "a";
-			phonemicWord = new PhonemicWord("ha");
+			phonemicWord = new Word("ha");
 			assertEquals(expected, phonemicWord.getIPAWord());
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + phonemicWord.getIPAWord());
 			
