@@ -116,13 +116,13 @@ public class Translator {
 		for(int i = 0; i < charArray.length; i++) {
 			
 			if(charArray[i] == 'b') {
-				charArray[i] = bPhoneticExamination(charArray, i);
+				charArray[i] = bPhoneticExamination(safeReturnPreviousChar(charArray, i));
 			}
 			else if(charArray[i] == 'd') {
-				charArray[i] = dPhoneticExamination(charArray, i);
+				charArray[i] = dPhoneticExamination(safeReturnPreviousChar(charArray, i), safeReturnPreviousChar(charArray, i-1));
 			}
 			else if(charArray[i] == 'g') {
-				charArray[i] = gPhoneticExamination(charArray, i);
+				charArray[i] = gPhoneticExamination(safeReturnPreviousChar(charArray, i));
 			}
 			else if(charArray[i] == 's') {
 				if(i + 1 < charArray.length
@@ -130,17 +130,17 @@ public class Translator {
 					//remove here
 					charArray = resizedCharArrayRemoveI(charArray, i);
 				}else {
-					charArray[i] = sPhoneticExamination(charArray, i);
+					charArray[i] = sPhoneticExamination(safeReturnNextChar(charArray, i));
 				}
 			}
 			else if(charArray[i] == 'ɟ') {
-				charArray[i] = ɟPhoneticExamination(charArray, i);
+				charArray[i] = ɟPhoneticExamination(safeReturnPreviousChar(charArray, i));
 			}
 			else if(charArray[i] == 'e') {
-				charArray[i] = ePhoneticExamination(charArray, i);
+				charArray[i] = ePhoneticExamination(safeReturnNextChar(charArray, i), isCoda(charArray, i+1));
 			}
 			else if(charArray[i] == 'ɾ') {
-				charArray[i] = ɾPhoneticExamination(charArray, i);
+				charArray[i] = ɾPhoneticExamination(safeReturnPreviousChar(charArray, i));
 			}
 			else if(charArray[i] == 'l') {
 				//See which is returned
@@ -267,26 +267,28 @@ public class Translator {
 	
 	
 	
-	private char bPhoneticExamination(char[] charArray, int i) {
-		if (i != 0 
-				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1])) {
+	private char bPhoneticExamination(char previousChar) {
+		//check char before
+		if (previousChar != '!' 
+				&& !CharacterClassification.bdgNonModifiers.contains(previousChar)) {
 			return 'ß';
 		} else {
 			return 'b';
 		}
 	}
 	
-	private char dPhoneticExamination(char[] charArray, int i) {
+	//private char dPhoneticExamination(char[] charArray, int i) {
+	private char dPhoneticExamination(char iMinus1, char iMinus2) {	
 		
-		if(i > 1 //1 because both index - 2 will be looked at 
-				&& charArray[i - 1] == '̪'
-				&& (CharacterClassification.bdgNonModifiers.contains(charArray[i - 2])
-						|| charArray[i - 2] == 'l')) {
+		if(iMinus2 != '!' //1 because both index - 2 will be looked at 
+				&& iMinus1 == '̪'
+				&& (CharacterClassification.bdgNonModifiers.contains(iMinus2)
+						|| iMinus2 == 'l')) {
 			return 'd';
 		}
-		else if (i != 0 
-				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
-				&& charArray[i - 1] != 'l') {
+		else if (iMinus1 != '!' 
+				&& !CharacterClassification.bdgNonModifiers.contains(iMinus1) 
+				&& iMinus1 != 'l') {
 			
 			return 'ð';
 		}
@@ -295,18 +297,17 @@ public class Translator {
 		}
 	}
 	
-	private char gPhoneticExamination(char[] charArray, int i) {
-		if (i != 0 
-				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1])) {
+	private char gPhoneticExamination(char previousChar) {
+		if (previousChar != '!' 
+				&& !CharacterClassification.bdgNonModifiers.contains(previousChar)) {
 			return 'Ɣ';
 		} else {
 			return 'g';
 		}
 	}
 	
-	private char sPhoneticExamination(char[] charArray, int i) {
-		if (i < charArray.length - 1
-				&& CharacterClassification.sonoras.contains(charArray[i + 1])) {
+	private char sPhoneticExamination(char nextChar) {
+		if (CharacterClassification.sonoras.contains(nextChar)) {
 			return 'z';
 		} else {
 			return 's';
@@ -314,27 +315,25 @@ public class Translator {
 	}
 	
 	//TODO: This is one valid config. But many places just use all ʝ.
-	private char ɟPhoneticExamination(char[] charArray, int i) {
-		if (i != 0 
-				&& !CharacterClassification.bdgNonModifiers.contains(charArray[i - 1]) 
-				&& charArray[i - 1] != 'l') {
+	private char ɟPhoneticExamination(char previousChar) {
+		if (previousChar != '!' 
+				&& !CharacterClassification.bdgNonModifiers.contains(previousChar) 
+				&& previousChar != 'l') {
 			return 'ʝ';
 		} else {
 			return 'ɟ';
 		}
 	}
 	
-	private char ePhoneticExamination(char[] charArray, int i) {
+	private char ePhoneticExamination(char nextChar, boolean nextCharIsCoda) {
 		
 		//option 1: next is [r] or [x] //TODO: will need to refine to check if /ɾ/ changes to [r]
-		if(i < charArray.length - 1
-				&& (charArray[i+1] == 'r' || charArray[i+1] == 'x')) {
+		if(nextChar == 'r' || nextChar == 'x') {
 			return 'ɜ';
 		}
 		//option 2: next is coda & coda is not [s]. Hint: yes even [j] it would seem (ex: peine)
-		else if(i < charArray.length - 1
-				&& isCoda(charArray, i + 1)
-				&& charArray[i + 1] != 's') {
+		else if(nextCharIsCoda
+				&& nextChar != 's') {
 			return 'ɜ';		
 		}
 		else {
@@ -342,9 +341,27 @@ public class Translator {
 		}
 	}
 	
-	private char ɾPhoneticExamination(char[] charArray, int i) {
+//private char ePhoneticExamination(char[] charArray, int i) {
+//		
+//		//option 1: next is [r] or [x] //TODO: will need to refine to check if /ɾ/ changes to [r]
+//		if(i < charArray.length - 1
+//				&& (charArray[i+1] == 'r' || charArray[i+1] == 'x')) {
+//			return 'ɜ';
+//		}
+//		//option 2: next is coda & coda is not [s]. Hint: yes even [j] it would seem (ex: peine)
+//		else if(i < charArray.length - 1
+//				&& isCoda(charArray, i + 1)
+//				&& charArray[i + 1] != 's') {
+//			return 'ɜ';		
+//		}
+//		else {
+//			return 'e';
+//		}
+//	}
+	
+	private char ɾPhoneticExamination(char previousChar) {
 		//r for nasal, lateral o sibilante
-		if(isRolledR(charArray, i)) {
+		if(isRolledR(previousChar)) {
 			return 'r';			
 		}
 		
@@ -415,6 +432,7 @@ public class Translator {
 	//TODO: nasal (vowels)
 	
 	private Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
+		//TODO: this should really get more testing
 		//1) potential coda is consonant
 		//2) next letter is consonant
 		if(indexOfPotentialCoda + 1 < charArray.length
@@ -439,6 +457,7 @@ public class Translator {
 		}
 		//j or w as coda
 		else if(indexOfPotentialCoda > 0
+				&& indexOfPotentialCoda + 1 < charArray.length
 				&& CharacterClassification.vowels.contains(charArray[indexOfPotentialCoda - 1])
 				&& CharacterClassification.diptongAsConsonants.contains(charArray[indexOfPotentialCoda])
 				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda+1])) {
@@ -448,17 +467,35 @@ public class Translator {
 		return false;
 	}
 	
-	private boolean isRolledR(char[] charArray, int i) {
+	private boolean isRolledR(char previousChar) {
 		//If previous char is the last of any of these strings we return true. 
 		//This is because in this specific case, any '̪' or '̺' at all results in a change,
 		//and those are the only two letter combos for these classifications.
 		//Note: due to this I could've just changed the classifications to a char list, but this allows easier expansion of phonetic rules later.
-		return i != 0 
-				&& (CharacterClassification.nasales.contains(String.valueOf(charArray[i - 1]))
-				|| CharacterClassification.laterales.contains(String.valueOf(charArray[i - 1]))
-				|| CharacterClassification.sibilante.contains(String.valueOf(charArray[i - 1])));
+		return CharacterClassification.nasales.contains(String.valueOf(previousChar))
+				|| CharacterClassification.laterales.contains(String.valueOf(previousChar))
+				|| CharacterClassification.sibilante.contains(String.valueOf(previousChar));
 	}
 	
+	
+	
+	private char safeReturnPreviousChar(char[] charArray, int i) {
+		if(i > 0) {
+			return charArray[i-1];
+		}
+		else {
+			return '!';
+		}
+	}
+	
+	private char safeReturnNextChar(char[] charArray, int i) {
+		if(i < charArray.length - 1) {
+			return charArray[i+1];
+		}
+		else {
+			return '!';
+		}
+	}
 	
 	/*##########################################################################################
 	 *### Phonemic modifiers ###################################################################

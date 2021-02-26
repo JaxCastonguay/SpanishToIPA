@@ -35,9 +35,9 @@ public class Sentence {
 		List<String> words = populateWordsList();
 		StringBuilder string = new StringBuilder();
 		
-		moveApplicableEndConsonants(words);
+		alterOuterSyllables(words);
 		
-		joinWords(words, string);
+		joinWordsIntoString(words, string);
 		
 		string.append("/");
 		string.insert(0, '/');
@@ -57,37 +57,57 @@ public class Sentence {
 		return words;
 	}
 
-	private void joinWords(List<String> words, StringBuilder string) {
+	private void joinWordsIntoString(List<String> words, StringBuilder string) {
 		for(int i = 0; i < words.size(); i++) {
 			if(i != 0)
 				string.append(".");
 			string.append(words.get(i));
 		}
 	}
+	
+//	private void AlterOuterSyllables(List<String> words) {
+//		for(int i = 1; i < words.size(); i++) {
+//			//Prep
+//			StringBuilder currentWord = new StringBuilder(words.get(i));
+//			boolean startsWithApostrophy = (currentWord.charAt(0) == '\'');
+//			if(startsWithApostrophy) {
+//				currentWord = new StringBuilder(currentWord.substring(1, currentWord.length()));
+//			}
+//			
+//			//
+//		}
+//	}
+	
 
-	private void moveApplicableEndConsonants(List<String> words) {
-		for(int i = 0; i < words.size(); i++) {
-			if(i > 0) {
-				StringBuilder currentWord = new StringBuilder(words.get(i));
-				boolean startsWithApostrophy = (currentWord.charAt(0) == '\'');
-				if(startsWithApostrophy) {
-					currentWord = new StringBuilder(currentWord.substring(1, currentWord.length()));
-				}
-				Letter currentWordFirstLetter = new LetterImpl(currentWord.charAt(0));
-				
-				if(currentWordFirstLetter.isVowel()) {
-					String previousWord = words.get(i - 1);
-					Letter previousWordLastLetter = new LetterImpl(previousWord.charAt(previousWord.length() - 1));
-					if(!previousWordLastLetter.isVowel()) {
-						currentWord.insert(0, previousWordLastLetter.getSpanishLetter());
-						if(startsWithApostrophy)
-							currentWord.insert(0, '\'');
-						words.set(i, currentWord.toString());
-						previousWord = previousWord.substring(0, previousWord.length() - 1);
-						words.set(i - 1, previousWord);
-					}
-				}
+	private void alterOuterSyllables(List<String> words) {
+		for(int i = 1; i < words.size(); i++) {
+			//Prep
+			StringBuilder currentWord = new StringBuilder(words.get(i));
+			boolean needsApostrophyAdded = (currentWord.charAt(0) == '\'');
+			if(needsApostrophyAdded) {
+				currentWord = new StringBuilder(currentWord.substring(1, currentWord.length()));
 			}
+			Letter currentWordFirstLetter = new LetterImpl(currentWord.charAt(0));
+			
+			String previousWord = words.get(i - 1);
+			Letter previousWordLastLetter = new LetterImpl(previousWord.charAt(previousWord.length() - 1));
+			//Check if consonant should be moved
+			if (currentWordFirstLetter.isVowel() && !previousWordLastLetter.isVowel()) {
+				currentWord.insert(0, previousWordLastLetter.getSpanishLetter());
+				if (needsApostrophyAdded) {
+					currentWord.insert(0, '\'');
+					needsApostrophyAdded = false;
+				}
+				words.set(i, currentWord.toString());
+				previousWord = previousWord.substring(0, previousWord.length() - 1);
+				words.set(i - 1, previousWord);
+			}
+			//now I have to go through all of the translator again. 
+			//Should I reformat the translator in some way to do this? 
+				//or make another phonetic go through. 
+			//Need phomemic go through???
+			
+					
 		}
 	}
 }

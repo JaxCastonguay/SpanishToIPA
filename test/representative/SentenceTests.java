@@ -11,10 +11,14 @@ public class SentenceTests {
 	@Test
 	public void listOfWordsShouldBeCreated() throws PhonemNotFoundException {
 		Sentence sentence = new Sentence("Esto es una oración");
-		//TODO: discovered syll needs testing as oración split into ci.ón
 		
 		String output = sentence.getPhoneticSentence();
-		String expected = "/'es.to.'e.'su.na.o.ɾa.'sjon/";//should end in sjon but testing other feature rn.
+		String expected = "/'es.to.'e.'su.na.o.ɾa.'sjon/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("Este ojo");
+		output = sentence.getPhoneticSentence();
+		expected = "/'es.te.'o.xo/";
 		assertEquals(expected, output);
 
 	}
@@ -34,4 +38,26 @@ public class SentenceTests {
 		
 		assertTrue(exceptionTriggered);
 	}
+	
+	//commented cause not positive on result expected
+//	@Test
+//	public void SyllablesShouldJoinWithLikeLetter() throws PhonemNotFoundException {
+//		Sentence sentence = new Sentence("para abrir");
+//		
+//		String output = sentence.getPhoneticSentence();
+//		String expected = "/'pa.ɾa.bɾiɾ/";
+//		assertEquals(expected, output);
+//
+//	}
+	
+	//TODO: uncomment this once returning to working on sentences
+//	@Test
+//	public void OuterSyllablesShouldEffectOtherWords() throws PhonemNotFoundException {
+//		Sentence sentence = new Sentence("el taco");
+//		
+//		String output = sentence.getPhoneticSentence();
+//		String expected = "/'ɜl̪.'ta.ko/";
+//		assertEquals(expected, output);
+//
+//	}
 }
