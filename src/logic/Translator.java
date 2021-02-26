@@ -164,17 +164,15 @@ public class Translator {
 					i++;
 				}
 			}
-//			else if(charArray[i] == 's') {
-//				//This will just be removing and s if [r] follows
-//				if(i + 1 < charArray.length
-//						&& charArray[i+1] == 'r') {
-//					//remove here
-//					charArray = resizedCharArrayRemoveI(charArray, i);
-//				}
-//			}
 		}
 			
 		 return new String(charArray);
+	}
+	
+	public char getPhoneticBasedOnNextChars(char currentChar, char nextChar, char nextCharAfer) {
+		
+		return '@';
+		
 	}
 	private char[] resizedCharArrayWithAddedChar(char[] charArray, int i, CharPair lPair) {
 		//if needed:
@@ -269,8 +267,7 @@ public class Translator {
 	
 	private char bPhoneticExamination(char previousChar) {
 		//check char before
-		if (previousChar != '!' 
-				&& !CharacterClassification.bdgNonModifiers.contains(previousChar)) {
+		if (!CharacterClassification.bdgNonModifiers.contains(previousChar)) {
 			return 'ß';
 		} else {
 			return 'b';
@@ -280,13 +277,13 @@ public class Translator {
 	//private char dPhoneticExamination(char[] charArray, int i) {
 	private char dPhoneticExamination(char iMinus1, char iMinus2) {	
 		
-		if(iMinus2 != '!' //1 because both index - 2 will be looked at 
+		if(iMinus2 != '|' //1 because both index - 2 will be looked at 
 				&& iMinus1 == '̪'
 				&& (CharacterClassification.bdgNonModifiers.contains(iMinus2)
 						|| iMinus2 == 'l')) {
 			return 'd';
 		}
-		else if (iMinus1 != '!' 
+		else if (iMinus1 != '|' 
 				&& !CharacterClassification.bdgNonModifiers.contains(iMinus1) 
 				&& iMinus1 != 'l') {
 			
@@ -298,8 +295,7 @@ public class Translator {
 	}
 	
 	private char gPhoneticExamination(char previousChar) {
-		if (previousChar != '!' 
-				&& !CharacterClassification.bdgNonModifiers.contains(previousChar)) {
+		if (!CharacterClassification.bdgNonModifiers.contains(previousChar)) {
 			return 'Ɣ';
 		} else {
 			return 'g';
@@ -316,8 +312,7 @@ public class Translator {
 	
 	//TODO: This is one valid config. But many places just use all ʝ.
 	private char ɟPhoneticExamination(char previousChar) {
-		if (previousChar != '!' 
-				&& !CharacterClassification.bdgNonModifiers.contains(previousChar) 
+		if (!CharacterClassification.bdgNonModifiers.contains(previousChar) 
 				&& previousChar != 'l') {
 			return 'ʝ';
 		} else {
@@ -340,24 +335,6 @@ public class Translator {
 			return 'e';
 		}
 	}
-	
-//private char ePhoneticExamination(char[] charArray, int i) {
-//		
-//		//option 1: next is [r] or [x] //TODO: will need to refine to check if /ɾ/ changes to [r]
-//		if(i < charArray.length - 1
-//				&& (charArray[i+1] == 'r' || charArray[i+1] == 'x')) {
-//			return 'ɜ';
-//		}
-//		//option 2: next is coda & coda is not [s]. Hint: yes even [j] it would seem (ex: peine)
-//		else if(i < charArray.length - 1
-//				&& isCoda(charArray, i + 1)
-//				&& charArray[i + 1] != 's') {
-//			return 'ɜ';		
-//		}
-//		else {
-//			return 'e';
-//		}
-//	}
 	
 	private char ɾPhoneticExamination(char previousChar) {
 		//r for nasal, lateral o sibilante
@@ -484,7 +461,7 @@ public class Translator {
 			return charArray[i-1];
 		}
 		else {
-			return '!';
+			return '|';
 		}
 	}
 	
@@ -493,7 +470,7 @@ public class Translator {
 			return charArray[i+1];
 		}
 		else {
-			return '!';
+			return '|';
 		}
 	}
 	
