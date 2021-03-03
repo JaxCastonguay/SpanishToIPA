@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import errors.PhonemNotFoundException;
+import logic.Translator;
 
 public class Sentence {
 	
@@ -35,7 +36,8 @@ public class Sentence {
 		List<String> words = populateWordsList();
 		StringBuilder string = new StringBuilder();
 		
-		alterOuterSyllables(words);
+		adjustConsonantPlacements(words);
+		AlterOuterPhonetics(words);
 		
 		joinWordsIntoString(words, string);
 		
@@ -52,7 +54,7 @@ public class Sentence {
 		//Fill words with phonetic words with syllables.
 		for(int i = 0; i < list.size(); i++) {		
 			Word word = new Word(list.get(i));
-			words.add(word.getCustomPhoneticsWithSyllables(null));
+			words.add(word.getPhoneticsWithSyllables());
 		}
 		return words;
 	}
@@ -79,35 +81,65 @@ public class Sentence {
 //	}
 	
 
-	private void alterOuterSyllables(List<String> words) {
+	private void adjustConsonantPlacements(List<String> words) {
 		for(int i = 1; i < words.size(); i++) {
 			//Prep
 			StringBuilder currentWord = new StringBuilder(words.get(i));
-			boolean needsApostrophyAdded = (currentWord.charAt(0) == '\'');
-			if(needsApostrophyAdded) {
+			boolean wordBeganWithApostrophy = (currentWord.charAt(0) == '\'');
+			if(wordBeganWithApostrophy) {
 				currentWord = new StringBuilder(currentWord.substring(1, currentWord.length()));
 			}
 			Letter currentWordFirstLetter = new LetterImpl(currentWord.charAt(0));
 			
 			String previousWord = words.get(i - 1);
 			Letter previousWordLastLetter = new LetterImpl(previousWord.charAt(previousWord.length() - 1));
+			
 			//Check if consonant should be moved
 			if (currentWordFirstLetter.isVowel() && !previousWordLastLetter.isVowel()) {
 				currentWord.insert(0, previousWordLastLetter.getSpanishLetter());
-				if (needsApostrophyAdded) {
+				if (wordBeganWithApostrophy) {
 					currentWord.insert(0, '\'');
-					needsApostrophyAdded = false;
 				}
 				words.set(i, currentWord.toString());
 				previousWord = previousWord.substring(0, previousWord.length() - 1);
 				words.set(i - 1, previousWord);
+			}					
+		}
+	}
+	
+	public void AlterOuterPhonetics(List<String> words) {
+		for(int i = 0; i < words.size(); i++) {
+			Translator translator = new Translator();
+			StringBuilder currentWord = new StringBuilder(words.get(i));
+			StringBuilder nextWord = new StringBuilder("|");
+			if(i < words.size() - 1) {
+				nextWord = new StringBuilder(words.get(i + 1));
 			}
-			//now I have to go through all of the translator again. 
-			//Should I reformat the translator in some way to do this? 
-				//or make another phonetic go through. 
-			//Need phomemic go through???
+			boolean wordBeganWithApostrophy = (nextWord.charAt(0) == '\'');
+			if(wordBeganWithApostrophy) {
+				nextWord = new StringBuilder(nextWord.substring(1, nextWord.length()));
+			}
 			
-					
+			//first letter will never be coda
+			//TODO: join both of the 'next' methods
+			String currentWordLastCharUpdated = Character.toString(translator.getPhoneticBasedOnNextChar(currentWord.charAt(currentWord.length() - 1), nextWord.charAt(0), false));
+			currentWordLastCharUpdated = translator.getPhoneticsWithArrayResize(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0));
+			currentWord = currentWord.replace(currentWord.length() - 1, currentWord.length(), currentWordLastCharUpdated);
+			
+			char secondToLastOfCurrent = '|';
+			if(currentWord.length() > 1) {
+				secondToLastOfCurrent = currentWord.charAt(currentWord.length() - 2);
+			}
+			char nextWordFirstCharUpdated = translator.getPhoneticBasedOnPreviousChars(secondToLastOfCurrent, currentWord.charAt(currentWord.length() - 1), nextWord.charAt(0));
+			nextWord = nextWord.replace(0, 1, Character.toString(nextWordFirstCharUpdated));
+			
+			if (wordBeganWithApostrophy) {
+				nextWord.insert(0, '\'');
+			}
+			words.set(i, currentWord.toString());
+			if(i < words.size() - 1) {
+				words.set(i + 1, nextWord.toString());
+			}
 		}
 	}
 }

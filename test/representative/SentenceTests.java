@@ -2,6 +2,9 @@ package representative;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import errors.PhonemNotFoundException;
@@ -50,14 +53,12 @@ public class SentenceTests {
 //
 //	}
 	
-	//TODO: uncomment this once returning to working on sentences
-//	@Test
-//	public void OuterSyllablesShouldEffectOtherWords() throws PhonemNotFoundException {
-//		Sentence sentence = new Sentence("el taco");
-//		
-//		String output = sentence.getPhoneticSentence();
-//		String expected = "/'ɜl̪.'ta.ko/";
-//		assertEquals(expected, output);
-//
-//	}
+	@Test
+	public void OuterSyllablesShouldEffectOtherWords() throws PhonemNotFoundException {
+		Sentence sentence = new Sentence("el taco");
+		String output = sentence.getPhoneticSentence();
+		String expected = "/'ɜl̪.'ta.ko/";
+		assertEquals(expected, output);
+
+	}
 }

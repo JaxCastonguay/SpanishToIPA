@@ -4,6 +4,7 @@ encoding//src/logic/Translator.java=UTF-8
 encoding//src/representative/Word.java=UTF-8
 encoding//src/sounds/AlternatePronunciations.java=UTF-8
 encoding//src/sounds/CharacterClassification.java=UTF-8
+encoding//test/logic/TranslatorTest.java=UTF-8
 encoding//test/representative/PhonemicTranslationsTests.java=UTF-8
 encoding//test/representative/PhoneticWordTest.java=UTF-8
 encoding//test/representative/SentenceTests.java=UTF-8

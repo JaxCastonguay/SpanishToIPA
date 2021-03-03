@@ -144,7 +144,7 @@ public class Translator {
 			}
 			else if(charArray[i] == 'l') {
 				//See which is returned
-				CharPair lPair = lPhoneticExamination(charArray, i);
+				CharPair lPair = lPhoneticExamination(safeReturnNextChar(charArray, i));
 				// return char, isDental
 				//insert letter
 				charArray[i] = lPair.getResponseChar();
@@ -156,7 +156,7 @@ public class Translator {
 			else if(charArray[i] == 'm'
 					|| charArray[i] == 'n'
 					|| charArray[i] == 'ɲ') {
-				CharPair nPair = mnɲPhoneticExamination(charArray, i);
+				CharPair nPair = mnɲPhoneticExamination(charArray[i], safeReturnNextChar(charArray, i), safeReturnNextChar(charArray, i+1));
 				
 				charArray[i] = nPair.getResponseChar();
 				if(nPair.getAdditionalChar() != '*') {
@@ -169,11 +169,58 @@ public class Translator {
 		 return new String(charArray);
 	}
 	
-	public char getPhoneticBasedOnNextChars(char currentChar, char nextChar, char nextCharAfer) {
-		
-		return '@';
+	public char getPhoneticBasedOnNextChar(char currentChar, char nextChar, boolean nextCharIsCoda) {
+		//This method won't really be doing much. It's more to do with the spirit of reusability :)
+		if(currentChar == 'e') {
+			return ePhoneticExamination(nextChar, nextCharIsCoda);
+		}
+		else if(currentChar == 's') {
+			return sPhoneticExamination(nextChar);
+		}
+
+		return currentChar;
 		
 	}
+	
+	public char getPhoneticBasedOnPreviousChars(char previousPreviousChar, char previousChar, char currentChar) {
+		if(currentChar == 'b') {
+			return bPhoneticExamination(previousChar);
+		}
+		else if(currentChar == 'd') {
+			return dPhoneticExamination(previousChar, previousPreviousChar);
+		}
+		else if(currentChar == 'g') {
+			return gPhoneticExamination(previousChar);
+		}
+		else if(currentChar == 'ɟ') {
+			return ɟPhoneticExamination(previousChar);
+		}
+		else if(currentChar == 'ɾ') {
+			return ɾPhoneticExamination(previousChar);
+		}
+		
+		return currentChar;
+	}
+	
+	public String getPhoneticsWithArrayResize(String currentChar, char nextChar) {
+		if(currentChar.equals("l")) {
+			CharPair lPair = lPhoneticExamination(nextChar);
+			// return char, isDental
+			//insert letter
+			currentChar = Character.toString(lPair.getResponseChar());
+			if(lPair.getAdditionalChar() != '*') {
+				currentChar+= Character.toString(lPair.getAdditionalChar());
+			}
+		}else if(currentChar.equals("s")){
+			if(nextChar == 'r') {
+				//remove here
+				currentChar = "";
+			}
+		}
+		
+		return currentChar;
+	}
+	
 	private char[] resizedCharArrayWithAddedChar(char[] charArray, int i, CharPair lPair) {
 		//if needed:
 		//resize array
@@ -345,43 +392,35 @@ public class Translator {
 		return 'ɾ';
 	}
 	
-	private CharPair lPhoneticExamination(char[] charArray, int i) {
+	private CharPair lPhoneticExamination(char nextChar) {
 		//set * for no addition
 		//only need to check last of the dentales strings because a '̪' is an automatic dental
-		if(i < charArray.length - 1
-				&& CharacterClassification.dentales.contains(String.valueOf(charArray[i + 1]))) {
+		if(CharacterClassification.dentales.contains(String.valueOf(nextChar))) {
 			return new CharPair('l', '̪');
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.palatales.contains(charArray[i + 1])) {
+		else if(CharacterClassification.palatales.contains(nextChar)) {
 			return new CharPair('ʎ', '*');
 		}
 		return new CharPair('l', '*');
 	}
 	
-	private CharPair mnɲPhoneticExamination(char[] charArray, int i) {
+	private CharPair mnɲPhoneticExamination(char currentChar, char nextChar, char nextNextChar) {
 		
-		if(i < charArray.length - 1
-				&& CharacterClassification.bilabiales.contains(charArray[i + 1])) {
+		if(CharacterClassification.bilabiales.contains(nextChar)) {
 			return new CharPair('m', '*');
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.labiodentales.contains(charArray[i + 1])) {
+		else if(CharacterClassification.labiodentales.contains(nextChar)) {
 			return new CharPair('ɱ', '*');
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.palatales.contains(charArray[i + 1])) {
+		else if(CharacterClassification.palatales.contains(nextChar)) {
 			return new CharPair('ɲ', '*');
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.velares.contains(charArray[i + 1])) {
+		else if(CharacterClassification.velares.contains(nextChar)) {
 			return new CharPair('ŋ', '*');
 		}
-		else if(i < charArray.length - 1
-				&& (charArray[i + 1] == 'n'
-					|| charArray[i + 1] == 'l')) {
-			if(i < charArray.length - 2
-					&& charArray[i + 2] == '̪') {
+		else if(nextChar == 'n'
+					|| nextChar == 'l') {
+			if(nextNextChar == '̪') {
 				return new CharPair('n', '̪');
 			}
 			else
@@ -389,20 +428,63 @@ public class Translator {
 				return new CharPair('n', '*');
 			}
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.alveolares.contains(String.valueOf(charArray[i + 1]))) {
+		else if(CharacterClassification.alveolares.contains(String.valueOf(nextChar))) {
 			return new CharPair('n', '*');
 		}
-		else if(i < charArray.length - 1
-				&& CharacterClassification.dentales.contains(String.valueOf(charArray[i + 1]))) {
+		else if(CharacterClassification.dentales.contains(String.valueOf(nextChar))) {
 			return new CharPair('n', '̪');
 		}
 		
 		//check aveolar before dental for easy
 		
 		//Only chance this happens is uvular or glotal next
-		return new CharPair(charArray[i], '*');
+		return new CharPair(currentChar, '*');
 	}
+	
+//private CharPair mnɲPhoneticExamination(char[] charArray, int i) {
+//		
+//		if(i < charArray.length - 1
+//				&& CharacterClassification.bilabiales.contains(charArray[i + 1])) {
+//			return new CharPair('m', '*');
+//		}
+//		else if(i < charArray.length - 1
+//				&& CharacterClassification.labiodentales.contains(charArray[i + 1])) {
+//			return new CharPair('ɱ', '*');
+//		}
+//		else if(i < charArray.length - 1
+//				&& CharacterClassification.palatales.contains(charArray[i + 1])) {
+//			return new CharPair('ɲ', '*');
+//		}
+//		else if(i < charArray.length - 1
+//				&& CharacterClassification.velares.contains(charArray[i + 1])) {
+//			return new CharPair('ŋ', '*');
+//		}
+//		else if(i < charArray.length - 1
+//				&& (charArray[i + 1] == 'n'
+//					|| charArray[i + 1] == 'l')) {
+//			if(i < charArray.length - 2
+//					&& charArray[i + 2] == '̪') {
+//				return new CharPair('n', '̪');
+//			}
+//			else
+//			{
+//				return new CharPair('n', '*');
+//			}
+//		}
+//		else if(i < charArray.length - 1
+//				&& CharacterClassification.alveolares.contains(String.valueOf(charArray[i + 1]))) {
+//			return new CharPair('n', '*');
+//		}
+//		else if(i < charArray.length - 1
+//				&& CharacterClassification.dentales.contains(String.valueOf(charArray[i + 1]))) {
+//			return new CharPair('n', '̪');
+//		}
+//		
+//		//check aveolar before dental for easy
+//		
+//		//Only chance this happens is uvular or glotal next
+//		return new CharPair(charArray[i], '*');
+//	}
 	
 	
 	
