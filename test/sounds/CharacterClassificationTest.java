@@ -9,8 +9,6 @@ class CharacterClassificationTest {
 	@Test
 	void arraylistsShouldInitialize() {
 		assertTrue(CharacterClassification.consonantBlends.get(0).equalsIgnoreCase("bl"));
-		
-		assertTrue(CharacterClassification.vowels.size() == 5);
 	}
 
 }

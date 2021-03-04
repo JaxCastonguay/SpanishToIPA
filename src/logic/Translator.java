@@ -108,10 +108,6 @@ public class Translator {
 		return letters;
 	}
 	
-	
-	
-	
-	
 	public String translateIntoBasePhonetics(char[] charArray) {
 		for(int i = 0; i < charArray.length; i++) {
 			
@@ -168,18 +164,29 @@ public class Translator {
 			
 		 return new String(charArray);
 	}
-	
-	public char getPhoneticBasedOnNextChar(char currentChar, char nextChar, boolean nextCharIsCoda) {
-		//This method won't really be doing much. It's more to do with the spirit of reusability :)
-		if(currentChar == 'e') {
-			return ePhoneticExamination(nextChar, nextCharIsCoda);
-		}
-		else if(currentChar == 's') {
-			return sPhoneticExamination(nextChar);
-		}
-
-		return currentChar;
 		
+	public String getPhoneticsBasedOnNextChar(String currentChar, char nextChar, boolean nextCharIsCoda) {
+		if(currentChar.equals("l")) {
+			CharPair lPair = lPhoneticExamination(nextChar);
+			// return char, isDental
+			//insert letter
+			currentChar = Character.toString(lPair.getResponseChar());
+			if(lPair.getAdditionalChar() != '*') {
+				currentChar+= Character.toString(lPair.getAdditionalChar());
+			}
+		}else if(currentChar.equals("s")){
+			if(nextChar == 'r') {
+				//remove here
+				currentChar = "";
+			}
+			else {
+				return Character.toString(sPhoneticExamination(nextChar));
+			}
+		} else if(currentChar.equals("e")) {
+			return Character.toString(ePhoneticExamination(nextChar, nextCharIsCoda));
+		}
+		
+		return currentChar;
 	}
 	
 	public char getPhoneticBasedOnPreviousChars(char previousPreviousChar, char previousChar, char currentChar) {
@@ -202,24 +209,9 @@ public class Translator {
 		return currentChar;
 	}
 	
-	public String getPhoneticsWithArrayResize(String currentChar, char nextChar) {
-		if(currentChar.equals("l")) {
-			CharPair lPair = lPhoneticExamination(nextChar);
-			// return char, isDental
-			//insert letter
-			currentChar = Character.toString(lPair.getResponseChar());
-			if(lPair.getAdditionalChar() != '*') {
-				currentChar+= Character.toString(lPair.getAdditionalChar());
-			}
-		}else if(currentChar.equals("s")){
-			if(nextChar == 'r') {
-				//remove here
-				currentChar = "";
-			}
-		}
-		
-		return currentChar;
-	}
+	//##############################################
+	//Logic Helpers
+	//##############################################
 	
 	private char[] resizedCharArrayWithAddedChar(char[] charArray, int i, CharPair lPair) {
 		//if needed:
@@ -261,56 +253,123 @@ public class Translator {
 		return charArray;
 	}
 	
-	public String translateIntoCustomPhonetics(char[] charArray, List<CustomPhoneticsDTO> customPhonetics) {
-		List<Character> bases = new ArrayList<Character>();
-		if(customPhonetics != null && customPhonetics.size() > 0) {
-		for(int i = 0; i< customPhonetics.size(); i++)
-			bases.add(customPhonetics.get(i).getBase());	
-		}
-
-		
-		
-		for (int i = 0; i < charArray.length; i++) {
-			if (bases.contains(charArray[i])) {
-				//Get DTO index based on base
-				int index = bases.indexOf(charArray[i]);
-				CustomPhoneticsDTO phonetic = customPhonetics.get(index);
-				
-				//Check if before or after
-				if(phonetic.determineIsCheckingBefore()) {
-					//check if previous exists and is changer
-					
-					if (i == 0 && phonetic.determineisEffectedByPause()
-							&& !phonetic.determineisChangesUnlessModifiers()) {
-						charArray[i] = phonetic.getReplacement();
-					} else if(i - 1 >=0 
-							&& phonetic.getModifiers().contains(charArray[i - 1])) {
-						charArray[i] = phonetic.getReplacement();
-					}else if(i - 1 >=0 
-							&& phonetic.determineisChangesUnlessModifiers() //If size is not zero then we will change if nonModifiers DOESN'T contain
-							&& !phonetic.getModifiers().contains(charArray[i - 1])) {
-						charArray[i] = phonetic.getReplacement();
-					}
-				} else {
-					//check if next exists and is changer
-					if(i + 1 < charArray.length 
-							&& phonetic.getModifiers().contains(charArray[i + 1])) {
-						charArray[i] = phonetic.getReplacement();
-					}//TODO: Written but untested.
-					else if(i + 1 < charArray.length
-							&& phonetic.determineisChangesUnlessModifiers()
-							&& !phonetic.getModifiers().contains(charArray[i + 1])) {
-						charArray[i] = phonetic.getReplacement();
-					}
-				}
+	//NOTE: currently does not handle if a word was already translated and has syllable markings (.)
+	public Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
+		//TODO: this should really get more testing
+		//1) potential coda is consonant
+		//2) next letter is consonant
+		if(indexOfPotentialCoda + 1 < charArray.length
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda + 1])) {
+			//3) they do not for a consonant blend
+			char potentialCoda = charArray[indexOfPotentialCoda];
+			char nextLetter = charArray[indexOfPotentialCoda + 1];
+			String potentialBlend = String.valueOf(potentialCoda) + String.valueOf(nextLetter);
+			if(!CharacterClassification.consonantBlends.contains(potentialBlend)) {
+				return true;
 			}
-		}
+			else {
+				return false;
 
-		return new String(charArray);
+			}
+					}
+		//End of word consonant
+		else if(indexOfPotentialCoda == charArray.length - 1
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])) {
+			return true;
+		}
+		//j or w as coda
+		else if(indexOfPotentialCoda > 0
+				&& indexOfPotentialCoda + 1 < charArray.length
+				&& CharacterClassification.vowels.contains(charArray[indexOfPotentialCoda - 1])
+				&& CharacterClassification.diptongAsConsonants.contains(charArray[indexOfPotentialCoda])
+				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda+1])) {
+			return true;
+		}
+		
+		return false;
 	}
 	
+	public boolean isRolledR(char previousChar) {
+		//If previous char is the last of any of these strings we return true. 
+		//This is because in this specific case, any '̪' or '̺' at all results in a change,
+		//and those are the only two letter combos for these classifications.
+		//Note: due to this I could've just changed the classifications to a char list, but this allows easier expansion of phonetic rules later.
+		return CharacterClassification.nasales.contains(String.valueOf(previousChar))
+				|| CharacterClassification.laterales.contains(String.valueOf(previousChar))
+				|| CharacterClassification.sibilante.contains(String.valueOf(previousChar));
+	}
+		
+	private char safeReturnPreviousChar(char[] charArray, int i) {
+		if(i > 0) {
+			return charArray[i-1];
+		}
+		else {
+			return '|';
+		}
+	}
 	
+	private char safeReturnNextChar(char[] charArray, int i) {
+		if(i < charArray.length - 1) {
+			return charArray[i+1];
+		}
+		else {
+			return '|';
+		}
+	}
+
+// I've move away from this logic but may want to revisit it later
+//	public String translateIntoCustomPhonetics(char[] charArray, List<CustomPhoneticsDTO> customPhonetics) {
+//		List<Character> bases = new ArrayList<Character>();
+//		if(customPhonetics != null && customPhonetics.size() > 0) {
+//		for(int i = 0; i< customPhonetics.size(); i++)
+//			bases.add(customPhonetics.get(i).getBase());	
+//		}
+//
+//		
+//		
+//		for (int i = 0; i < charArray.length; i++) {
+//			if (bases.contains(charArray[i])) {
+//				//Get DTO index based on base
+//				int index = bases.indexOf(charArray[i]);
+//				CustomPhoneticsDTO phonetic = customPhonetics.get(index);
+//				
+//				//Check if before or after
+//				if(phonetic.determineIsCheckingBefore()) {
+//					//check if previous exists and is changer
+//					
+//					if (i == 0 && phonetic.determineisEffectedByPause()
+//							&& !phonetic.determineisChangesUnlessModifiers()) {
+//						charArray[i] = phonetic.getReplacement();
+//					} else if(i - 1 >=0 
+//							&& phonetic.getModifiers().contains(charArray[i - 1])) {
+//						charArray[i] = phonetic.getReplacement();
+//					}else if(i - 1 >=0 
+//							&& phonetic.determineisChangesUnlessModifiers() //If size is not zero then we will change if nonModifiers DOESN'T contain
+//							&& !phonetic.getModifiers().contains(charArray[i - 1])) {
+//						charArray[i] = phonetic.getReplacement();
+//					}
+//				} else {
+//					//check if next exists and is changer
+//					if(i + 1 < charArray.length 
+//							&& phonetic.getModifiers().contains(charArray[i + 1])) {
+//						charArray[i] = phonetic.getReplacement();
+//					}//TODO: Written but untested.
+//					else if(i + 1 < charArray.length
+//							&& phonetic.determineisChangesUnlessModifiers()
+//							&& !phonetic.getModifiers().contains(charArray[i + 1])) {
+//						charArray[i] = phonetic.getReplacement();
+//					}
+//				}
+//			}
+//		}
+//
+//		return new String(charArray);
+//	}
 	
+	//#############################################
+	//PHONETIC examinations
+	//###########################################
 	
 	private char bPhoneticExamination(char previousChar) {
 		//check char before
@@ -440,124 +499,11 @@ public class Translator {
 		//Only chance this happens is uvular or glotal next
 		return new CharPair(currentChar, '*');
 	}
-	
-//private CharPair mnɲPhoneticExamination(char[] charArray, int i) {
-//		
-//		if(i < charArray.length - 1
-//				&& CharacterClassification.bilabiales.contains(charArray[i + 1])) {
-//			return new CharPair('m', '*');
-//		}
-//		else if(i < charArray.length - 1
-//				&& CharacterClassification.labiodentales.contains(charArray[i + 1])) {
-//			return new CharPair('ɱ', '*');
-//		}
-//		else if(i < charArray.length - 1
-//				&& CharacterClassification.palatales.contains(charArray[i + 1])) {
-//			return new CharPair('ɲ', '*');
-//		}
-//		else if(i < charArray.length - 1
-//				&& CharacterClassification.velares.contains(charArray[i + 1])) {
-//			return new CharPair('ŋ', '*');
-//		}
-//		else if(i < charArray.length - 1
-//				&& (charArray[i + 1] == 'n'
-//					|| charArray[i + 1] == 'l')) {
-//			if(i < charArray.length - 2
-//					&& charArray[i + 2] == '̪') {
-//				return new CharPair('n', '̪');
-//			}
-//			else
-//			{
-//				return new CharPair('n', '*');
-//			}
-//		}
-//		else if(i < charArray.length - 1
-//				&& CharacterClassification.alveolares.contains(String.valueOf(charArray[i + 1]))) {
-//			return new CharPair('n', '*');
-//		}
-//		else if(i < charArray.length - 1
-//				&& CharacterClassification.dentales.contains(String.valueOf(charArray[i + 1]))) {
-//			return new CharPair('n', '̪');
-//		}
-//		
-//		//check aveolar before dental for easy
-//		
-//		//Only chance this happens is uvular or glotal next
-//		return new CharPair(charArray[i], '*');
-//	}
-	
-	
-	
+		
 	//TODO: nasal (vowels)
 	
-	private Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
-		//TODO: this should really get more testing
-		//1) potential coda is consonant
-		//2) next letter is consonant
-		if(indexOfPotentialCoda + 1 < charArray.length
-				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])
-				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda + 1])) {
-			//3) they do not for a consonant blend
-			char potentialCoda = charArray[indexOfPotentialCoda];
-			char nextLetter = charArray[indexOfPotentialCoda + 1];
-			String potentialBlend = String.valueOf(potentialCoda) + String.valueOf(nextLetter);
-			if(!CharacterClassification.consonantBlends.contains(potentialBlend)) {
-				return true;
-			}
-			else {
-				return false;
-
-			}
-					}
-		//End of word consonant
-		else if(indexOfPotentialCoda == charArray.length - 1
-				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda])) {
-			return true;
-		}
-		//j or w as coda
-		else if(indexOfPotentialCoda > 0
-				&& indexOfPotentialCoda + 1 < charArray.length
-				&& CharacterClassification.vowels.contains(charArray[indexOfPotentialCoda - 1])
-				&& CharacterClassification.diptongAsConsonants.contains(charArray[indexOfPotentialCoda])
-				&& CharacterClassification.consonants.contains(charArray[indexOfPotentialCoda+1])) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	private boolean isRolledR(char previousChar) {
-		//If previous char is the last of any of these strings we return true. 
-		//This is because in this specific case, any '̪' or '̺' at all results in a change,
-		//and those are the only two letter combos for these classifications.
-		//Note: due to this I could've just changed the classifications to a char list, but this allows easier expansion of phonetic rules later.
-		return CharacterClassification.nasales.contains(String.valueOf(previousChar))
-				|| CharacterClassification.laterales.contains(String.valueOf(previousChar))
-				|| CharacterClassification.sibilante.contains(String.valueOf(previousChar));
-	}
-	
-	
-	
-	private char safeReturnPreviousChar(char[] charArray, int i) {
-		if(i > 0) {
-			return charArray[i-1];
-		}
-		else {
-			return '|';
-		}
-	}
-	
-	private char safeReturnNextChar(char[] charArray, int i) {
-		if(i < charArray.length - 1) {
-			return charArray[i+1];
-		}
-		else {
-			return '|';
-		}
-	}
-	
 	/*##########################################################################################
-	 *### Phonemic modifiers ###################################################################
+	 *### PHONEMIC modifiers ###################################################################
 	  ##########################################################################################*/
 	private Letter accentedModifier(char[] charArray, int i) throws PhonemNotFoundException {
 		Letter letter;

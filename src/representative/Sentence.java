@@ -122,8 +122,7 @@ public class Sentence {
 			
 			//first letter will never be coda
 			//TODO: join both of the 'next' methods
-			String currentWordLastCharUpdated = Character.toString(translator.getPhoneticBasedOnNextChar(currentWord.charAt(currentWord.length() - 1), nextWord.charAt(0), false));
-			currentWordLastCharUpdated = translator.getPhoneticsWithArrayResize(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0));
+			String currentWordLastCharUpdated = translator.getPhoneticsBasedOnNextChar(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0), false);
 			currentWord = currentWord.replace(currentWord.length() - 1, currentWord.length(), currentWordLastCharUpdated);
 			
 			char secondToLastOfCurrent = '|';

@@ -59,6 +59,26 @@ public class SentenceTests {
 		String output = sentence.getPhoneticSentence();
 		String expected = "/'ɜl̪.'ta.ko/";
 		assertEquals(expected, output);
+		
+		sentence = new Sentence("los ricos");
+		output = sentence.getPhoneticSentence();
+		expected = "/'lo.'ri.kos/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("el drogo");
+		output = sentence.getPhoneticSentence();
+		expected = "/'ɜl̪.'dɾo.Ɣo/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("los drogos");
+		output = sentence.getPhoneticSentence();
+		expected = "/'loz.'ðɾo.Ɣos/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("tan dramatica");
+		output = sentence.getPhoneticSentence();
+		expected = "/'tan.dɾa.ma.'ti.ka/";
+		assertEquals(expected, output);
 
 	}
 }

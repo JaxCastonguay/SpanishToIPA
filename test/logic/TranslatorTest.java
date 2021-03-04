@@ -5,24 +5,24 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class TranslatorTest {
-	@Test
-	public void getPhoneticBasedOnNextCharTest() {
-		Translator translator = new Translator();
-		assertEquals(translator.getPhoneticBasedOnNextChar('e', 'r', true), 'ɜ');
-		assertEquals(translator.getPhoneticBasedOnNextChar('e', 'r', false), 'ɜ');
-		assertEquals(translator.getPhoneticBasedOnNextChar('e', 's', true), 'e');
-		assertEquals(translator.getPhoneticBasedOnNextChar('e', 't', false), 'e');
-		
-		//Note: for s, isCoda does not matter
-		assertEquals(translator.getPhoneticBasedOnNextChar('s', 't', false), 's');
-		assertEquals(translator.getPhoneticBasedOnNextChar('s', 't', true), 's');
-		assertEquals(translator.getPhoneticBasedOnNextChar('s', 'd', false), 'z');
-		assertEquals(translator.getPhoneticBasedOnNextChar('s', 'd', true), 'z');
-		
-		//just a random char
-		assertEquals(translator.getPhoneticBasedOnNextChar('a', 'd', false), 'a');
-		assertEquals(translator.getPhoneticBasedOnNextChar('b', 'd', true), 'b');
-	}
+//	@Test
+//	public void getPhoneticBasedOnNextCharTest() {
+//		Translator translator = new Translator();
+//		assertEquals(translator.getPhoneticBasedOnNextChar('e', 'r', true), 'ɜ');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('e', 'r', false), 'ɜ');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('e', 's', true), 'e');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('e', 't', false), 'e');
+//		
+//		//Note: for s, isCoda does not matter
+//		assertEquals(translator.getPhoneticBasedOnNextChar('s', 't', false), 's');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('s', 't', true), 's');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('s', 'd', false), 'z');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('s', 'd', true), 'z');
+//		
+//		//just a random char
+//		assertEquals(translator.getPhoneticBasedOnNextChar('a', 'd', false), 'a');
+//		assertEquals(translator.getPhoneticBasedOnNextChar('b', 'd', true), 'b');
+//	}
 	
 	@Test
 	public void getPhoneticBasedOnPreviousCharsTest() {
@@ -43,15 +43,15 @@ public class TranslatorTest {
 	}
 	
 	
-	@Test
-	public void getPhoneticsWithArrayResizeTest() {
-		Translator translator = new Translator();
-		assertEquals(translator.getPhoneticsWithArrayResize("l", 't'), "l̪");
-		assertEquals(translator.getPhoneticsWithArrayResize("l", 's'), "l");
-		
-		assertEquals(translator.getPhoneticsWithArrayResize("s", 'r'), "");
-		assertEquals(translator.getPhoneticsWithArrayResize("s", 't'), "s");
-		
-		assertEquals(translator.getPhoneticsWithArrayResize("d", 't'), "d");
-	}
+//	@Test
+//	public void getPhoneticsWithArrayResizeTest() {
+//		Translator translator = new Translator();
+//		assertEquals(translator.getPhoneticsWithArrayResize("l", 't'), "l̪");
+//		assertEquals(translator.getPhoneticsWithArrayResize("l", 's'), "l");
+//		
+//		assertEquals(translator.getPhoneticsWithArrayResize("s", 'r'), "");
+//		assertEquals(translator.getPhoneticsWithArrayResize("s", 't'), "s");
+//		
+//		assertEquals(translator.getPhoneticsWithArrayResize("d", 't'), "d");
+//	}
 }
