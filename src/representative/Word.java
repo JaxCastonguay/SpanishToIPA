@@ -86,13 +86,5 @@ public class Word implements WordBase{
 			}
 		}
 		return word;
-	}
-	
-//	public class IllegalEndingLetterException extends Exception {
-//		 
-//	    public IllegalEndingLetterException(String message) {
-//	        super(message);
-//	    }
-//	}
-	
+	}	
 }

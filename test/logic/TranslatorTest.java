@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class TranslatorTest {
+	//TODO: I joined these two methods so this will have to be fixed.
 //	@Test
 //	public void getPhoneticBasedOnNextCharTest() {
 //		Translator translator = new Translator();

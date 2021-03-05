@@ -26,11 +26,15 @@ public class Sentence {
 		if(!matcher.find()) {
 			throw new PhonemNotFoundException("Only letter and punctuation characters are allowed");
 		}
-		//TODO: add , ¿ ¡
-		if(spanishSentence.contains(".") || spanishSentence.contains("!") || spanishSentence.contains("?")) {//TODO: want to put other non chars/period catch here
+		
+		if(spanishSentence.contains(".") || spanishSentence.contains("!") || spanishSentence.contains("?")) {
+			//TODO: want to put other non chars/period catch here
 			spanishSentence.replace('!', '|');
+			spanishSentence.replace('¡', '|');
 			spanishSentence.replace('?', '|');
+			spanishSentence.replace('¿', '|');
 			spanishSentence.replace('.', '|');
+			spanishSentence.replace(',', '|');
 		}
 		
 		List<String> words = populateWordsList();
@@ -67,20 +71,6 @@ public class Sentence {
 		}
 	}
 	
-//	private void AlterOuterSyllables(List<String> words) {
-//		for(int i = 1; i < words.size(); i++) {
-//			//Prep
-//			StringBuilder currentWord = new StringBuilder(words.get(i));
-//			boolean startsWithApostrophy = (currentWord.charAt(0) == '\'');
-//			if(startsWithApostrophy) {
-//				currentWord = new StringBuilder(currentWord.substring(1, currentWord.length()));
-//			}
-//			
-//			//
-//		}
-//	}
-	
-
 	private void adjustConsonantPlacements(List<String> words) {
 		for(int i = 1; i < words.size(); i++) {
 			//Prep
@@ -121,7 +111,6 @@ public class Sentence {
 			}
 			
 			//first letter will never be coda
-			//TODO: join both of the 'next' methods
 			String currentWordLastCharUpdated = translator.getPhoneticsBasedOnNextChar(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0), false);
 			currentWord = currentWord.replace(currentWord.length() - 1, currentWord.length(), currentWordLastCharUpdated);
 			

@@ -48,13 +48,6 @@ public class LetterImpl implements Letter{
 	}
 	
 	@Override
-	public Boolean isEffectedBy(Letter next) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
 	public Boolean isAccented() {
 		return hasAccent;
 	}

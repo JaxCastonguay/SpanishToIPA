@@ -28,7 +28,6 @@ public class Translator {
 				//Simple one possibility switch
 				if(charArray[i] == 'v') {
 					letter = vModifier(charArray, i);
-					//TODO: add soundTypes
 				}
 				else if(CharacterClassification.accentedVowels.contains(charArray[i])) {
 					letter = accentedModifier(charArray, i);
@@ -97,7 +96,7 @@ public class Translator {
 				}
 				
 			}
-			else {//a, b, d, e, f, k, m, n, o, p, s, t, w?,  
+			else {//a, b, d, e, f, m, n, o, s, w?,  
 				letter = new LetterImpl(charArray[i]);
 				letter.setPhonem(String.valueOf(charArray[i]));
 			}
@@ -428,7 +427,7 @@ public class Translator {
 	
 	private char ePhoneticExamination(char nextChar, boolean nextCharIsCoda) {
 		
-		//option 1: next is [r] or [x] //TODO: will need to refine to check if /ɾ/ changes to [r]
+		//option 1: next is [r] or [x]
 		if(nextChar == 'r' || nextChar == 'x') {
 			return 'ɜ';
 		}
