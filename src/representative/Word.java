@@ -38,12 +38,12 @@ public class Word implements WordBase{
 		return SyllableHelper.getWordWithSyllables(getIPAWord(), accentedVowelIndex);
 	}
 	
-	public String getCustomPhoneticsWithSyllables(List<CustomPhoneticsDTO> CustomPhonetics) {
-		Translator translator = new Translator();
-		
-		String phonetics = translator.translateIntoCustomPhonetics(getIPAWord().toCharArray(), CustomPhonetics);
-		return SyllableHelper.getWordWithSyllables(phonetics, accentedVowelIndex);
-	}
+//	public String getCustomPhoneticsWithSyllables(List<CustomPhoneticsDTO> CustomPhonetics) {
+//		Translator translator = new Translator();
+//		
+//		String phonetics = translator.translateIntoCustomPhonetics(getIPAWord().toCharArray(), CustomPhonetics);
+//		return SyllableHelper.getWordWithSyllables(phonetics, accentedVowelIndex);
+//	}
 	
 	public String getPhoneticsWithSyllables() {
 		Translator translator = new Translator();
@@ -86,13 +86,5 @@ public class Word implements WordBase{
 			}
 		}
 		return word;
-	}
-	
-//	public class IllegalEndingLetterException extends Exception {
-//		 
-//	    public IllegalEndingLetterException(String message) {
-//	        super(message);
-//	    }
-//	}
-	
+	}	
 }

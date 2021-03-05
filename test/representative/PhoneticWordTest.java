@@ -11,43 +11,43 @@ import logic.CustomPhoneticsDTO;
 import sounds.AlternatePronunciations;
 
 public class PhoneticWordTest {
-	@Test
-	void customPhoneticSwitch() throws Exception{
-		Word phonemicWord;
-		try {
-			//CUSTOM TEST
-			List<CustomPhoneticsDTO> customPhonetics = new ArrayList<CustomPhoneticsDTO>();
-			
-			customPhonetics.add(AlternatePronunciations.dToð);
-			customPhonetics.add(AlternatePronunciations.bToß);
-			customPhonetics.add(AlternatePronunciations.sToZ);
-			customPhonetics.add(AlternatePronunciations.ɟToʝ);
-			
-			String input = "desde";
-			phonemicWord = new Word(input);
-			String output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
-			String expected = "'dez.ðe";
-			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
-			assertEquals(expected, output);
-			
-			input = "bilabial";
-			phonemicWord = new Word(input);
-			output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
-			expected = "bi.la.'ßjal";
-			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
-			assertEquals(expected, output);
-			
-			input = "llamar";
-			phonemicWord = new Word(input);
-			output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
-			expected = "ɟa.'maɾ";
-			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
-			assertEquals(expected, output);			
-					
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-	}
+//	@Test
+//	void customPhoneticSwitch() throws Exception{
+//		Word phonemicWord;
+//		try {
+//			//CUSTOM TEST
+//			List<CustomPhoneticsDTO> customPhonetics = new ArrayList<CustomPhoneticsDTO>();
+//			
+//			customPhonetics.add(AlternatePronunciations.dToð);
+//			customPhonetics.add(AlternatePronunciations.bToß);
+//			customPhonetics.add(AlternatePronunciations.sToZ);
+//			customPhonetics.add(AlternatePronunciations.ɟToʝ);
+//			
+//			String input = "desde";
+//			phonemicWord = new Word(input);
+//			String output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
+//			String expected = "'dez.ðe";
+//			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+//			assertEquals(expected, output);
+//			
+//			input = "bilabial";
+//			phonemicWord = new Word(input);
+//			output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
+//			expected = "bi.la.'ßjal";
+//			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+//			assertEquals(expected, output);
+//			
+//			input = "llamar";
+//			phonemicWord = new Word(input);
+//			output = phonemicWord.getCustomPhoneticsWithSyllables(customPhonetics);
+//			expected = "ɟa.'maɾ";
+//			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+//			assertEquals(expected, output);			
+//					
+//		} catch (Exception e) {
+//			throw new Exception(e.getMessage());
+//		}
+//	}
 	
 	@Test
 	void bdgPhoneticSwitch() throws Exception{
