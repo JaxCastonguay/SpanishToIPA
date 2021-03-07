@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/logic/SyllableHelper.java=UTF-8
 encoding//src/logic/Translator.java=UTF-8
+encoding//src/representative/Sentence.java=UTF-8
 encoding//src/representative/Word.java=UTF-8
 encoding//src/sounds/AlternatePronunciations.java=UTF-8
 encoding//src/sounds/CharacterClassification.java=UTF-8

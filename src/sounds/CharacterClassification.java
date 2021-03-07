@@ -10,8 +10,10 @@ public class CharacterClassification {
 	//Consonants
 	public final static List<String> consonantBlends = new ArrayList<String>(List.of("bl", "fl", "cl", "gl", "pl", "cr", "br", "tr", "gr", "fr", "pr", "dr", "tl"));
 	
-	public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl", "t̪", "l̪", "n̪"));//the dental feels cheap... Not sure this is how it should be handle
+	public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl", "t̪", "l̪", "n̪"));//TODO: change extract: the dental feels cheap... Not sure this is how it should be handle
 
+	public final static List<String> nasalVowels = new ArrayList<String>(List.of("ã",  "ẽ", "ĩ", "õ", "ũ", "ɜ̃"));
+	
 	public final static List<Character> consonants = new ArrayList<Character>(List.of('b', 'ß', 'c', 'ʧ', 'd', 'ð', 'f', 'g', 'Ɣ', 'ʝ', 'ɉ', 'k', 'l', 'm', 'n', 'ɲ', 'p', 'r', 'ɾ', 's', 't', 'x', 'z')); //j & w are diptongs and are not consonants in this context
 		
 	//Consonant modification

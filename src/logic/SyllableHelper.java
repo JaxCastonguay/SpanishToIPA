@@ -17,7 +17,7 @@ public class SyllableHelper {
 		//V (Any type of vowel)
 		for(int i = 0; i < word.length() - 1; i++) {
 			if(CharacterClassification.phoneticvowels.contains(word.charAt(i))) {
-				evaluateIndexAsVowel(word, points, i);
+				evaluateIndexAsVowel(word, points, i);//TODO: nasal vowel break will be fixed somewhere in here
 			}
 			//C
 			else {
@@ -36,11 +36,19 @@ public class SyllableHelper {
 			sb.append(word.charAt(i));
 			sb.append(word.charAt(i+1));
 			//Not cons blend -> C.C
-			if(!CharacterClassification.phoneticConsonantBlends.contains(sb.toString())) {//TODO: can I add the dental here in the cons blends?
+			if(!CharacterClassification.phoneticConsonantBlends.contains(sb.toString())
+					&& word.charAt(i) != '̃') {
+				points.add(i);
+			}
+			else if(word.charAt(i) == '̃' 
+					&& i+2 < word.length() && CharacterClassification.phoneticvowels.contains(word.charAt(i+2))) {//we can assume i + 1 is a cons cause it has to be for accent at i
+				//Special case for how nasal accents are read.
+				//case V~CV -> V~.CV
 				points.add(i);
 			}
 			//Cons blend
 			else {
+				//Do nothing
 			}
 		}
 		//CV

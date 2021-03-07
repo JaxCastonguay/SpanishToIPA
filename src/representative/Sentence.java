@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import errors.PhonemNotFoundException;
 import logic.Translator;
+import sounds.CharacterClassification;
 
 public class Sentence {
 	
@@ -20,7 +21,7 @@ public class Sentence {
 	
 	public String getPhoneticSentence() throws PhonemNotFoundException {
 		//Scrub input
-		Pattern pattern = Pattern.compile("^[a-zA-Z·ÈÌÛ˙¡…Õ”⁄¸‹Ò—,.?ø!° ]*$");
+		Pattern pattern = Pattern.compile("^[a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√º√ú√±√ë,.?¬ø!¬° ]*$");
 		Matcher matcher = pattern.matcher(spanishSentence);
 			
 		if(!matcher.find()) {
@@ -30,9 +31,9 @@ public class Sentence {
 		if(spanishSentence.contains(".") || spanishSentence.contains("!") || spanishSentence.contains("?")) {
 			//TODO: want to put other non chars/period catch here
 			spanishSentence.replace('!', '|');
-			spanishSentence.replace('°', '|');
+			spanishSentence.replace('¬°', '|');
 			spanishSentence.replace('?', '|');
-			spanishSentence.replace('ø', '|');
+			spanishSentence.replace('¬ø', '|');
 			spanishSentence.replace('.', '|');
 			spanishSentence.replace(',', '|');
 		}
@@ -40,8 +41,9 @@ public class Sentence {
 		List<String> words = populateWordsList();
 		StringBuilder string = new StringBuilder();
 		
-		adjustConsonantPlacements(words);
+		//adjustConsonantPlacements(words);
 		AlterOuterPhonetics(words);
+		adjustConsonantPlacements(words);
 		
 		joinWordsIntoString(words, string);
 		
@@ -99,6 +101,7 @@ public class Sentence {
 	
 	public void AlterOuterPhonetics(List<String> words) {
 		for(int i = 0; i < words.size(); i++) {
+			//1) prep
 			Translator translator = new Translator();
 			StringBuilder currentWord = new StringBuilder(words.get(i));
 			StringBuilder nextWord = new StringBuilder("|");
@@ -110,24 +113,43 @@ public class Sentence {
 				nextWord = new StringBuilder(nextWord.substring(1, nextWord.length()));
 			}
 			
+			//2) Adjust current word
 			//first letter will never be coda
-			String currentWordLastCharUpdated = translator.getPhoneticsBasedOnNextChar(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0), false);
+			String currentWordLastCharUpdated = translator.getPhoneticsBasedOnNextChar(Character.toString(currentWord.charAt(currentWord.length() - 1)), nextWord.charAt(0), false);			
 			currentWord = currentWord.replace(currentWord.length() - 1, currentWord.length(), currentWordLastCharUpdated);
 			
+			//3) Prep for next word
 			char secondToLastOfCurrent = '|';
 			if(currentWord.length() > 1) {
 				secondToLastOfCurrent = currentWord.charAt(currentWord.length() - 2);
 			}
+			
+			//4) Adjust next word
 			char nextWordFirstCharUpdated = translator.getPhoneticBasedOnPreviousChars(secondToLastOfCurrent, currentWord.charAt(currentWord.length() - 1), nextWord.charAt(0));
 			nextWord = nextWord.replace(0, 1, Character.toString(nextWordFirstCharUpdated));
+			//if next word was given nasal accent we need to check if it still applies.
+			if(isNextWordHasExtraNasalAccent(nextWord, currentWordLastCharUpdated)) {
+				//remove nasal accent
+				nextWord.replace(1, 2, "");
+				//Why would his occur? if a word starts with a vowel plus nasal it will be nasalized as an individual word
+				// but, once put in a sentence the "beginning pause" will be replaced by the end of the word before it
+			}
 			
+			
+			//5) clean up/ set words
 			if (wordBeganWithApostrophy) {
 				nextWord.insert(0, '\'');
 			}
+			
 			words.set(i, currentWord.toString());
 			if(i < words.size() - 1) {
 				words.set(i + 1, nextWord.toString());
 			}
 		}
+	}
+
+	private boolean isNextWordHasExtraNasalAccent(StringBuilder nextWord, String currentWordLastCharUpdated) {
+		return nextWord.length() > 3 && nextWord.charAt(1) == 'ÃÉ' 
+				&& !CharacterClassification.nasales.contains(Character.toString(currentWordLastCharUpdated.charAt(currentWordLastCharUpdated.length() - 1)));
 	}
 }

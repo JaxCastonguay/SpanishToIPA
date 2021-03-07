@@ -133,6 +133,10 @@ public class Translator {
 			}
 			else if(charArray[i] == 'e') {
 				charArray[i] = ePhoneticExamination(safeReturnNextChar(charArray, i), isCoda(charArray, i+1));
+				if(isNasalVowel(safeReturnPreviousChar(charArray, i), safeReturnNextChar(charArray, i))) {
+					charArray = resizedCharArrayWithAddedChar(charArray, i, '̃');
+					i++;
+				}
 			}
 			else if(charArray[i] == 'ɾ') {
 				charArray[i] = ɾPhoneticExamination(safeReturnPreviousChar(charArray, i));
@@ -144,7 +148,7 @@ public class Translator {
 				//insert letter
 				charArray[i] = lPair.getResponseChar();
 				if(lPair.getAdditionalChar() != '*') {
-					charArray = resizedCharArrayWithAddedChar(charArray, i, lPair);
+					charArray = resizedCharArrayWithAddedChar(charArray, i, lPair.getAdditionalChar());
 					i++;
 				}
 			}
@@ -155,7 +159,14 @@ public class Translator {
 				
 				charArray[i] = nPair.getResponseChar();
 				if(nPair.getAdditionalChar() != '*') {
-					charArray = resizedCharArrayWithAddedChar(charArray, i, nPair);
+					charArray = resizedCharArrayWithAddedChar(charArray, i, nPair.getAdditionalChar());
+					i++;
+				}
+			}
+			else if(CharacterClassification.vowels.contains(charArray[i])) {
+				//Note: e will be handled above.
+				if(isNasalVowel(safeReturnPreviousChar(charArray, i), safeReturnNextChar(charArray, i))) {
+					charArray = resizedCharArrayWithAddedChar(charArray, i, '̃');
 					i++;
 				}
 			}
@@ -206,13 +217,13 @@ public class Translator {
 		}
 		
 		return currentChar;
-	}
+	} 
 	
 	//##############################################
 	//Logic Helpers
 	//##############################################
 	
-	private char[] resizedCharArrayWithAddedChar(char[] charArray, int i, CharPair lPair) {
+	private char[] resizedCharArrayWithAddedChar(char[] charArray, int i, char newChar) {
 		//if needed:
 		//resize array
 		int newLen = charArray.length + 1;
@@ -224,7 +235,7 @@ public class Translator {
 				newArray[k] = charArray[k];
 			}else if(k == dentalPos) {
 				//insert dental
-				newArray[k] = lPair.getAdditionalChar();
+				newArray[k] = newChar;
 			}
 			else {
 				newArray[k] = charArray[k - 1];
@@ -315,6 +326,17 @@ public class Translator {
 		else {
 			return '|';
 		}
+	}
+	
+	private boolean isNasalVowel(char previousChar, char nextChar) {
+		
+		if((CharacterClassification.nasales.contains(String.valueOf(previousChar))
+				|| previousChar == '|')
+			&& CharacterClassification.nasales.contains(String.valueOf(nextChar))) {
+			return true;
+		}
+		
+		return false;
 	}
 
 // I've move away from this logic but may want to revisit it later

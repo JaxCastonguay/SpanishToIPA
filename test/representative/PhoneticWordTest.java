@@ -186,7 +186,7 @@ public class PhoneticWordTest {
 			input = "enrique";
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "ɜn.'ri.ke";
+			expected = "ɜ̃n.'ri.ke";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 					
@@ -244,14 +244,14 @@ public class PhoneticWordTest {
 			String input = "unpoco";
 			phonemicWord = new Word(input);
 			String output = phonemicWord.getPhoneticsWithSyllables();
-			String expected = "um.'po.ko";
+			String expected = "ũm.'po.ko";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
 			input = "umbroso";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "um.'bɾo.so";
+			expected = "ũm.'bɾo.so";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -259,7 +259,7 @@ public class PhoneticWordTest {
 			input = "unfaro";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "uɱ.'fa.ɾo";
+			expected = "ũɱ.'fa.ɾo";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -267,14 +267,14 @@ public class PhoneticWordTest {
 			input = "untar";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "un̪.'taɾ";
+			expected = "ũn̪.'taɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
 			input = "untrar";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "un̪.'tɾaɾ";
+			expected = "ũn̪.'tɾaɾ";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -282,7 +282,7 @@ public class PhoneticWordTest {
 			input = "unlitro";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "un.'li.tɾo";
+			expected = "ũn.'li.tɾo";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -290,7 +290,7 @@ public class PhoneticWordTest {
 			input = "unchico";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "uɲ.'ʧi.ko";
+			expected = "ũɲ.'ʧi.ko";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -298,7 +298,7 @@ public class PhoneticWordTest {
 			input = "unchico";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "uɲ.'ʧi.ko";
+			expected = "ũɲ.'ʧi.ko";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -306,7 +306,7 @@ public class PhoneticWordTest {
 			input = "ungiro";//dental will need to be accounted for in sentence. ex: el taco
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
-			expected = "uŋ.'xi.ɾo";
+			expected = "ũŋ.'xi.ɾo";
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
@@ -416,6 +416,59 @@ public class PhoneticWordTest {
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
+	}
+
+	@Test
+	void vowelPhoneticSwitch() throws Exception{
+		Word phonemicWord;
+
+		//NV~NA
+		String input = "nina";
+		phonemicWord = new Word(input);
+		String output = phonemicWord.getPhoneticsWithSyllables();
+		String expected = "'nĩ.na";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
+		
+		//NV~NCV
+		input = "nenlace";//dental will need to be accounted for in sentence. ex: el taco
+		phonemicWord = new Word(input);
+		output = phonemicWord.getPhoneticsWithSyllables();
+		expected = "nɜ̃n.'la.se";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
+		
+		//NV~NCCV, NV~N_C
+		input = "nentre";//dental will need to be accounted for in sentence. ex: el taco
+		phonemicWord = new Word(input);
+		output = phonemicWord.getPhoneticsWithSyllables();
+		expected = "'nɜ̃n̪.tɾe";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
+		
+		//#V~N
+		input = "en";//dental will need to be accounted for in sentence. ex: el taco
+		phonemicWord = new Word(input);
+		output = phonemicWord.getPhoneticsWithSyllables();
+		expected = "'ɜ̃n";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
+		
+		//#V~NV
+		input = "amor";//dental will need to be accounted for in sentence. ex: el taco
+		phonemicWord = new Word(input);
+		output = phonemicWord.getPhoneticsWithSyllables();
+		expected = "ã.'moɾ";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
+		
+		//#V~NCCV, #V~N_C
+		input = "entre";//dental will need to be accounted for in sentence. ex: el taco
+		phonemicWord = new Word(input);
+		output = phonemicWord.getPhoneticsWithSyllables();
+		expected = "'ɜ̃n̪.tɾe";
+		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
+		assertEquals(expected, output);
 	}
 	
 }
