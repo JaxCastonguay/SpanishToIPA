@@ -275,11 +275,12 @@ public class Translator {
 			char potentialCoda = charArray[indexOfPotentialCoda];
 			char nextLetter = charArray[indexOfPotentialCoda + 1];
 			String potentialBlend = String.valueOf(potentialCoda) + String.valueOf(nextLetter);
-			if(!CharacterClassification.consonantBlends.contains(potentialBlend)) {
-				return true;
+			if(CharacterClassification.phoneticConsonantBlends.contains(potentialBlend)
+					|| CharacterClassification.consonantBlends.contains(potentialBlend)) {
+				return false;
 			}
 			else {
-				return false;
+				return true;
 
 			}
 					}
@@ -375,7 +376,7 @@ public class Translator {
 //					if(i + 1 < charArray.length 
 //							&& phonetic.getModifiers().contains(charArray[i + 1])) {
 //						charArray[i] = phonetic.getReplacement();
-//					}//TODO: Written but untested.
+//					}//Note: Written but untested.
 //					else if(i + 1 < charArray.length
 //							&& phonetic.determineisChangesUnlessModifiers()
 //							&& !phonetic.getModifiers().contains(charArray[i + 1])) {
@@ -437,7 +438,7 @@ public class Translator {
 		}
 	}
 	
-	//TODO: This is one valid config. But many places just use all ʝ.
+	//Note: This is one valid config. But many places just use all ʝ.
 	private char ɟPhoneticExamination(char previousChar) {
 		if (!CharacterClassification.bdgNonModifiers.contains(previousChar) 
 				&& previousChar != 'l') {
@@ -521,7 +522,6 @@ public class Translator {
 		return new CharPair(currentChar, '*');
 	}
 		
-	//TODO: nasal (vowels)
 	
 	/*##########################################################################################
 	 *### PHONEMIC modifiers ###################################################################

@@ -391,7 +391,7 @@ public class PhoneticWordTest {
 			System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 			assertEquals(expected, output);
 			
-			input = "probar";//dental will need to be accounted for in sentence. ex: el taco
+			input = "probar";
 			phonemicWord = new Word(input);
 			output = phonemicWord.getPhoneticsWithSyllables();
 			expected = "pɾo.'ßaɾ";
@@ -469,6 +469,8 @@ public class PhoneticWordTest {
 		expected = "'ɜ̃n̪.tɾe";
 		System.out.println("Input: " + input + ", Expected: " + expected + ", actual: " + output);
 		assertEquals(expected, output);
+		
+		//N_V~N won't happen. _ for N happen with nextChar, ie V so impossible
 	}
 	
 }

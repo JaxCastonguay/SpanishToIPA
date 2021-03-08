@@ -80,4 +80,12 @@ public class SentenceTests {
 		assertEquals(expected, output);
 
 	}
+	
+	@Test
+	public void variousTestSentences() throws PhonemNotFoundException {
+		Sentence sentence = new Sentence("En este mundo");
+		String output = sentence.getPhoneticSentence();
+		String expected = "/'ɜ̃.'nes.te.'mũn̪.do/";
+		assertEquals(expected, output);
+	}
 }
