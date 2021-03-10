@@ -41,7 +41,9 @@ public class Sentence {
 		List<String> words = populateWordsList();
 		StringBuilder string = new StringBuilder();
 		
-		//adjustConsonantPlacements(words);
+		if(words.contains("'ɟ") || words.contains("'ʝ")) {
+			moveYToWord(words);
+		}
 		AlterOuterPhonetics(words);
 		adjustConsonantPlacements(words);
 		
@@ -136,7 +138,7 @@ public class Sentence {
 			}
 			
 			
-			//5) clean up/ set words
+			//5) clean up / set words
 			if (wordBeganWithApostrophy) {
 				nextWord.insert(0, '\'');
 			}
@@ -152,4 +154,124 @@ public class Sentence {
 		return nextWord.length() > 3 && nextWord.charAt(1) == '̃' 
 				&& !CharacterClassification.nasales.contains(Character.toString(currentWordLastCharUpdated.charAt(currentWordLastCharUpdated.length() - 1)));
 	}
+	
+	
+	//The word y is usually tacked onto a surrounding word
+	private void moveYToWord(List<String> words) {
+		for(int i = 0; i < words.size(); i++) {
+			if(words.get(i).equals("'ɟ") || words.contains("'ʝ")) {
+				char previousWordLastChar = safeReturnPreviousWordLastChar(words, i);
+				char nextWordFirstChar = safeReturnNextWordFirstChar(words, i);
+				//C y C -> Ci.C
+				if(!LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
+					//Add char in current word
+					String replacementWord = "'" + String.valueOf(previousWordLastChar) + "i";
+					words.set(i, replacementWord);
+					//Remove char in past char
+					words.set(i - 1, words.get(i -1).substring(0, words.get(i - 1).length() -1));
+				}
+				// || y C -> i.C
+				else if(previousWordLastChar == '|' && !LetterImpl.isVowel(nextWordFirstChar)
+						&& nextWordFirstChar != '|') {
+					words.set(i, "'" + "i");
+				}
+				// V y V -> V.ʝV
+				else if(LetterImpl.isVowel(previousWordLastChar) && LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
+					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
+					//Remove old y word
+					words.remove(i);
+					i--;
+				}
+				// V y C -> Vj.C
+				else if(LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
+					
+				}
+				//C*(not /s/) y V -> .cjv. (joined)
+				else if(!LetterImpl.isVowel(previousWordLastChar) && previousWordLastChar != 's' && previousWordLastChar != 'z'
+						&& LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
+					
+				}
+				//C*s y V -> z.ʝv
+				else if(!LetterImpl.isVowel(previousWordLastChar) && (previousWordLastChar == 's' || previousWordLastChar == 'z')
+						&& LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
+					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
+					//Remove old y word
+					words.remove(i);
+					i--;
+				}
+				//|| y V -> ʝv
+				else if(previousWordLastChar == '|' && LetterImpl.isVowel(nextWordFirstChar)
+						&& nextWordFirstChar != '|') {
+					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
+					
+					//TODO: this is ugly but I want to move on for a bit. Make this nicer later
+					//Vowel no longer qualifies as nasal from leading ||
+					if(words.get(i + 1).length() > 2 && words.get(i + 1).charAt(2) == '̃') {//no accent before
+						words.set(i + 1, removeCharAt(words.get(i + 1), 2));
+					}
+					else if(words.get(i + 1).length() > 2 && words.get(i + 1).charAt(3) == '̃') {//accent before
+						words.set(i + 1, removeCharAt(words.get(i + 1), 3));
+					}
+					//Remove old y word
+					words.remove(i);
+					i--;
+				}
+				// C y || Not given in book. Want to change to i
+				else if(!LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar == '|') {
+					
+				}
+				// V y || Not given in book. Want to change to j? maybe separate syllable i?
+				else if(LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
+						&& previousWordLastChar != '|' && nextWordFirstChar == '|') {
+					
+				}
+				// || y || Hyper specific. Sentence of jus Y
+				else if(previousWordLastChar == '|' && nextWordFirstChar == '|') {
+					
+				}
+			}
+		}
+	}
+	
+	private String removeCharAt(String word, int i) {
+		StringBuilder sb = new StringBuilder(word);
+		sb.replace(i, i+1, "");
+		return sb.toString();
+	}
+	
+	private String safeInsertFirst(String word, char c) {
+		StringBuilder sb = new StringBuilder(word);
+		if(word.charAt(0) == '\'') {
+			sb.insert(1, c);
+		} else {
+			sb.insert(0, c);
+		}
+		return sb.toString();
+	}
+	
+	private char safeReturnPreviousWordLastChar(List<String> words, int currentIndex) {	
+		if(currentIndex <= 0) {
+			return '|';
+		}else {
+			return words.get(currentIndex - 1).charAt(words.get(currentIndex - 1).length() - 1);
+		}
+	}
+	
+	private char safeReturnNextWordFirstChar(List<String> words, int currentIndex) {
+		if(currentIndex >= words.size() - 1) {
+			return '|';
+		}else if(words.get(currentIndex + 1).charAt(0) == '\'') {
+			return words.get(currentIndex + 1).charAt(1);
+		}
+		else {
+			return words.get(currentIndex + 1).charAt(0);
+		}
+	}
+	
 }

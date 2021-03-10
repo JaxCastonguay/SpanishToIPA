@@ -78,6 +78,7 @@ public class SentenceTests {
 		output = sentence.getPhoneticSentence();
 		expected = "/'tan.dɾa.ma.'ti.ka/";
 		assertEquals(expected, output);
+		
 
 	}
 	
@@ -88,4 +89,40 @@ public class SentenceTests {
 		String expected = "/'ɜ̃.'nes.te.'mũn̪.do/";
 		assertEquals(expected, output);
 	}
+	
+	@Test
+	public void YWordTestSentences() throws PhonemNotFoundException {
+		//C y C -> Ci.C
+		Sentence sentence = new Sentence("los y los");
+		String output = sentence.getPhoneticSentence();
+		String expected = "/'lo.'si.'los/";
+		assertEquals(expected, output);
+		
+		// || y C -> i.C
+		sentence = new Sentence("y tuyo");
+		output = sentence.getPhoneticSentence();
+		expected = "/'i.'tu.ʝo/";
+		assertEquals(expected, output);
+		
+		// V y V -> V.ʝV
+		sentence = new Sentence("esa y eso");
+		output = sentence.getPhoneticSentence();
+		expected = "/'e.sa.'ʝe.so/";
+		assertEquals(expected, output);
+		
+		//C*s y V -> z.ʝv
+		sentence = new Sentence("los y eso");
+		output = sentence.getPhoneticSentence();
+		expected = "/'loz.'ʝe.so/";
+		assertEquals(expected, output);
+		
+		//|| y V -> ʝv
+		sentence = new Sentence("y Ana");
+		output = sentence.getPhoneticSentence();
+		expected = "/'ʝa.na/";
+		assertEquals(expected, output);
+	}
+	
+	
+	//TODO: nasal testing in sentences really needs more refinement.
 }

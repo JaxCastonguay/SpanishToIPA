@@ -28,6 +28,15 @@ public class LetterImpl implements Letter{
 		else
 			return false;
 	}
+	
+	public static Boolean isVowel(Character c) {
+		
+		if(CharacterClassification.vowels.contains(c) 
+				|| CharacterClassification.accentedVowels.contains(c))
+			return true;
+		else
+			return false;
+	}
 
 
 	@Override

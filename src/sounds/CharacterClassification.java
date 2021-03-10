@@ -27,7 +27,7 @@ public class CharacterClassification {
 	//Sound Map
 	//TODO: do nasales count as sonoras?
 	//lip placement
-	public final static List<Character> sonoras = new ArrayList<Character>(List.of('b', 'd', 'ɉ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'));
+	public final static List<Character> sonoras = new ArrayList<Character>(List.of('b', 'd', 'ɉ', 'ʝ', 'g', 'v', 'x', 'ß', 'ð', 'Ɣ'));
 	
 	public final static List<Character> bilabiales = new ArrayList<Character>(List.of('p', 'b', 'β', 'm', 'ɸ'));
 
