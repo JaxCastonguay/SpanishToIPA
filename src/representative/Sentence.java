@@ -159,7 +159,9 @@ public class Sentence {
 	//The word y is usually tacked onto a surrounding word
 	private void moveYToWord(List<String> words) {
 		for(int i = 0; i < words.size(); i++) {
-			if(words.get(i).equals("'ɟ") || words.contains("'ʝ")) {
+			//TODO: many of these assume y has accentuation, should it be?
+			//TODO: beginning accent doesn't seem to be checked.
+			if(words.get(i).equals("'ɟ") || words.equals("'ʝ")) {
 				char previousWordLastChar = safeReturnPreviousWordLastChar(words, i);
 				char nextWordFirstChar = safeReturnNextWordFirstChar(words, i);
 				//C y C -> Ci.C
@@ -168,8 +170,10 @@ public class Sentence {
 					//Add char in current word
 					String replacementWord = "'" + String.valueOf(previousWordLastChar) + "i";
 					words.set(i, replacementWord);
-					//Remove char in past char
-					words.set(i - 1, words.get(i -1).substring(0, words.get(i - 1).length() -1));
+					//does previous C need a re-examine? it's no longer a coda.
+					//Yes although the only changes are k, p, t back to original letters. But we don't know at this point what the original was, k/g, p/b, t/d
+					
+					removePreviousWordLastChar(words, i);
 				}
 				// || y C -> i.C
 				else if(previousWordLastChar == '|' && !LetterImpl.isVowel(nextWordFirstChar)
@@ -180,6 +184,7 @@ public class Sentence {
 				else if(LetterImpl.isVowel(previousWordLastChar) && LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
 					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
+					stripWordOfPotentialNasalAccent(words, i + 1);
 					//Remove old y word
 					words.remove(i);
 					i--;
@@ -187,19 +192,29 @@ public class Sentence {
 				// V y C -> Vj.C
 				else if(LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
-					
+					yJoinVowelConsonant(words, i);
+					//Remove old y word
+					words.remove(i);
+					i--;
 				}
 				//C*(not /s/) y V -> .cjv. (joined)
 				else if(!LetterImpl.isVowel(previousWordLastChar) && previousWordLastChar != 's' && previousWordLastChar != 'z'
 						&& LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
 					
+					yJoinConsonantVowel(words, i, previousWordLastChar);
+					if(words.get(i + 1).length() == 0) {
+						words.remove(i + 1);
+						i--;
+					}
 				}
 				//C*s y V -> z.ʝv
 				else if(!LetterImpl.isVowel(previousWordLastChar) && (previousWordLastChar == 's' || previousWordLastChar == 'z')
 						&& LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar != '|') {
 					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
+					
+					stripWordOfPotentialNasalAccent(words, i + 1);
 					//Remove old y word
 					words.remove(i);
 					i--;
@@ -208,34 +223,100 @@ public class Sentence {
 				else if(previousWordLastChar == '|' && LetterImpl.isVowel(nextWordFirstChar)
 						&& nextWordFirstChar != '|') {
 					words.set(i + 1, safeInsertFirst(words.get(i + 1), 'ʝ'));
-					
-					//TODO: this is ugly but I want to move on for a bit. Make this nicer later
 					//Vowel no longer qualifies as nasal from leading ||
-					if(words.get(i + 1).length() > 2 && words.get(i + 1).charAt(2) == '̃') {//no accent before
-						words.set(i + 1, removeCharAt(words.get(i + 1), 2));
-					}
-					else if(words.get(i + 1).length() > 2 && words.get(i + 1).charAt(3) == '̃') {//accent before
-						words.set(i + 1, removeCharAt(words.get(i + 1), 3));
-					}
+					stripWordOfPotentialNasalAccent(words, i + 1);
 					//Remove old y word
 					words.remove(i);
 					i--;
 				}
-				// C y || Not given in book. Want to change to i
+				// C y || Not given in examples. Want to change to i
 				else if(!LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar == '|') {
-					
+					//Add char in current word
+					String replacementWord = "'" + String.valueOf(previousWordLastChar) + "i";
+					words.set(i, replacementWord);
+					//Remove char in past char
+					removePreviousWordLastChar(words, i);
 				}
-				// V y || Not given in book. Want to change to j? maybe separate syllable i?
+				// V y || Not given in examples. Want to change to j? maybe separate syllable i?
 				else if(LetterImpl.isVowel(previousWordLastChar) && !LetterImpl.isVowel(nextWordFirstChar)
 						&& previousWordLastChar != '|' && nextWordFirstChar == '|') {
-					
+					//Doing the same this as V y C, so reuse method
+					yJoinVowelConsonant(words, i);
+					//Remove old y word
+					words.remove(i);
+					i--;
 				}
 				// || y || Hyper specific. Sentence of jus Y
 				else if(previousWordLastChar == '|' && nextWordFirstChar == '|') {
-					
+					words.set(i, "'i");
 				}
 			}
+		}
+	}
+
+	private void yJoinVowelConsonant(List<String> words, int i) {
+		//If the last vowel was an e it will change since it changes with codas.
+		if(words.get(i - 1).charAt(words.get(i - 1).length() - 1) == 'e') {
+			String replacementWord = words.get(i-1).substring(0, words.get(i-1).length() - 1);
+			replacementWord = replacementWord.concat("ɜj");
+			words.set(i -1, replacementWord);
+		}else {
+			words.set(i - 1, words.get(i - 1).concat("j"));
+		}
+	}
+
+	private void yJoinConsonantVowel(List<String> words, int i, char previousWordLastChar) {
+		//1)Add left consonant to j
+		//TODO: if y doesn't require accent by itself we should only add it if following syll accentuated
+		String replacementWord = "'" + String.valueOf(previousWordLastChar) + "j";
+		//2) Add Next word's syllable
+		//2.1) strip accent
+		boolean wordBeganWithApostrophy = (words.get(i + 1).charAt(0) == '\'');
+		if(wordBeganWithApostrophy) {
+			words.set(i + 1, removeCharAt(words.get(i + 1), 0));
+		}
+		
+		//2.2) strip nasal
+		stripWordOfPotentialNasalAccent(words, i + 1);
+		
+		//2.3)Add right syllable
+		String firstSyllableOfNextWord = getFirstSyllable(words.get(i + 1));
+		replacementWord = replacementWord.concat(firstSyllableOfNextWord);
+		
+		//3) set replacement
+		words.set(i, replacementWord);
+		//4) remove left end
+		removePreviousWordLastChar(words, i);
+		//5) remove right beginning syllable
+		words.set(i + 1, words.get(i + 1).substring(firstSyllableOfNextWord.length()));
+		//remove dot. Dot will not exist if syllable removed length = word length.
+		if(words.get(i + 1).length() > 0 && words.get(i + 1).charAt(0) == '.') {
+			words.set(i + 1, removeCharAt(words.get(i + 1), 0));
+		}
+	}
+
+	private void removePreviousWordLastChar(List<String> words, int currentIndex) {
+		String replacementWord = words.get(currentIndex -1).substring(0, words.get(currentIndex - 1).length() -1);
+		
+		words.set(currentIndex - 1, replacementWord);
+	}
+	
+	private String getFirstSyllable(String word) {
+		int firstDot = word.indexOf('.');
+		if(firstDot > 0) {
+			return word.substring(0, firstDot);
+		}else {
+			//No dot, 1 syllable word;
+			return word;
+		}
+	}
+
+	private void stripWordOfPotentialNasalAccent(List<String> words, int i) {
+		
+		int nasalPoint = words.get(i).indexOf('̃');
+		if(nasalPoint > -1) {//length higher than -1 means it does exist.
+			words.set(i, removeCharAt(words.get(i), nasalPoint));
 		}
 	}
 	

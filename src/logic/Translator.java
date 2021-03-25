@@ -264,7 +264,7 @@ public class Translator {
 	}
 	
 	//NOTE: currently does not handle if a word was already translated and has syllable markings (.)
-	public Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
+	public static Boolean isCoda(char[] charArray, int indexOfPotentialCoda) {
 		//TODO: this should really get more testing
 		//1) potential coda is consonant
 		//2) next letter is consonant

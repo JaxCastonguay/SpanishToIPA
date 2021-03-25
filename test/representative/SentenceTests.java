@@ -92,34 +92,121 @@ public class SentenceTests {
 	
 	@Test
 	public void YWordTestSentences() throws PhonemNotFoundException {
-		//C y C -> Ci.C
+		//C y C -> Ci.C-------------------------------------
 		Sentence sentence = new Sentence("los y los");
 		String output = sentence.getPhoneticSentence();
 		String expected = "/'lo.'si.'los/";
 		assertEquals(expected, output);
 		
-		// || y C -> i.C
+		// || y C -> i.C-------------------------------------
 		sentence = new Sentence("y tuyo");
 		output = sentence.getPhoneticSentence();
 		expected = "/'i.'tu.ʝo/";
 		assertEquals(expected, output);
 		
-		// V y V -> V.ʝV
+		// V y V -> V.ʝV--------------------------------------
 		sentence = new Sentence("esa y eso");
 		output = sentence.getPhoneticSentence();
 		expected = "/'e.sa.'ʝe.so/";
 		assertEquals(expected, output);
 		
-		//C*s y V -> z.ʝv
+		//nasal + e change
+		sentence = new Sentence("esa y entre");
+		output = sentence.getPhoneticSentence();
+		expected = "/'e.sa.'ʝɜn̪.tɾe/";
+		assertEquals(expected, output);
+		
+		//C*(not /s/) y V -> .cjv. (joined)------------------
+		//v doesn't have coda
+		sentence = new Sentence("david y adel");
+		output = sentence.getPhoneticSentence();
+		expected = "/da.'ßi.'ðja.'ðɜl/";
+		assertEquals(expected, output);
+		
+		//v doesn't have coda, but is accentuated
+		sentence = new Sentence("david y ada");
+		output = sentence.getPhoneticSentence();
+		expected = "/da.'ßi.'ðja.ða/";
+		assertEquals(expected, output);
+		
+		//v has coda
+		sentence = new Sentence("david y admel");//weird made up name
+		output = sentence.getPhoneticSentence();
+		expected = "/da.'ßi.'ðjað.'mɜl/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("david y ad");//weird made up name
+		output = sentence.getPhoneticSentence();
+		expected = "/da.'ßi.'ðjað/";
+		assertEquals(expected, output);
+		
+		//v has coda with dental accent
+		sentence = new Sentence("david y ana");
+		output = sentence.getPhoneticSentence();
+		expected = "/da.'ßi.'ðja.na/";
+		assertEquals(expected, output);
+		
+		//v has coda and is nasal
+		sentence = new Sentence("ir y entre");
+		output = sentence.getPhoneticSentence();
+		expected = "/'i.'ɾjɜn̪.tɾe/";
+		assertEquals(expected, output);
+		//^covers the rest
+		//v coda changes e
+		//v coda changes nasal e
+		
+		//C*s y V -> z.ʝv------------------------------------
 		sentence = new Sentence("los y eso");
 		output = sentence.getPhoneticSentence();
 		expected = "/'loz.'ʝe.so/";
 		assertEquals(expected, output);
 		
-		//|| y V -> ʝv
+		//nasal + e
+		sentence = new Sentence("los y entre");
+		output = sentence.getPhoneticSentence();
+		expected = "/'loz.'ʝɜn̪.tɾe/";
+		assertEquals(expected, output);
+		
+		//|| y V -> ʝv---------------------------------------
 		sentence = new Sentence("y Ana");
 		output = sentence.getPhoneticSentence();
 		expected = "/'ʝa.na/";
+		assertEquals(expected, output);
+		
+		// V y C -> Vj.C-------------------------------------
+		//e change
+		sentence = new Sentence("ale y jac");
+		output = sentence.getPhoneticSentence();
+		expected = "/'a.lɜj.'xaƔ/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("ella y jac");
+		output = sentence.getPhoneticSentence();
+		expected = "/'e.ʝaj.'xaƔ/";
+		assertEquals(expected, output);
+		
+		
+		// V y || Not given in book. Want to change to j?------
+		sentence = new Sentence("ella y");
+		output = sentence.getPhoneticSentence();
+		expected = "/'e.ʝaj/";
+		assertEquals(expected, output);
+		
+		sentence = new Sentence("tome y");
+		output = sentence.getPhoneticSentence();
+		expected = "/'to.mɜj/";
+		assertEquals(expected, output);
+		
+		// C y || Not given in book. Want to change to i
+		sentence = new Sentence("tod y");
+		output = sentence.getPhoneticSentence();
+		expected = "/'to.'ði/";
+		assertEquals(expected, output);
+		
+		// || y || Hyper specific. Sentence of just Y------------
+		sentence = new Sentence("y");
+		output = sentence.getPhoneticSentence();
+		expected = "/'i/";
 		assertEquals(expected, output);
 	}
 	
