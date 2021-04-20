@@ -1,15 +1,10 @@
 package representative;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import errors.PhonemNotFoundException;
 import logic.Translator;
-import logic.CustomPhoneticsDTO;
 import logic.SyllableHelper;
-import sounds.CharacterClassification;
 
 public class Word implements WordBase{
 	
@@ -17,7 +12,7 @@ public class Word implements WordBase{
 	private List<Letter> letters;
 	private int accentedVowelIndex;
 	
-	Word(String inputWord) throws PhonemNotFoundException{
+	public Word(String inputWord) throws PhonemNotFoundException{
 		accentedVowelIndex = -1;
 		spanishWord = inputWord;
 				

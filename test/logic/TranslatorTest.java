@@ -57,49 +57,48 @@ public class TranslatorTest {
 
 	@Test
 	public void isCodaTests() {
-		Translator translator = new Translator();
 		//V.CVC
 		String string = "esos";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertFalse(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertTrue(translator.isCoda(string.toCharArray(), 3));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertFalse(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertTrue(Translator.isCoda(string.toCharArray(), 3));
 		//VC.CV
 		string = "este";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertTrue(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertFalse(translator.isCoda(string.toCharArray(), 3));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertTrue(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertFalse(Translator.isCoda(string.toCharArray(), 3));
 		
 		//V.CCV
 		string = "atɾas";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertFalse(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertFalse(translator.isCoda(string.toCharArray(), 3));
-		assertTrue(translator.isCoda(string.toCharArray(), 4));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertFalse(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertFalse(Translator.isCoda(string.toCharArray(), 3));
+		assertTrue(Translator.isCoda(string.toCharArray(), 4));
 		//CV.CV
 		string = "nena";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertFalse(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertFalse(translator.isCoda(string.toCharArray(), 3));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertFalse(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertFalse(Translator.isCoda(string.toCharArray(), 3));
 		//CV.CCV
 		string = "detɾas";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertFalse(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertFalse(translator.isCoda(string.toCharArray(), 3));
-		assertFalse(translator.isCoda(string.toCharArray(), 4));
-		assertTrue(translator.isCoda(string.toCharArray(), 5));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertFalse(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertFalse(Translator.isCoda(string.toCharArray(), 3));
+		assertFalse(Translator.isCoda(string.toCharArray(), 4));
+		assertTrue(Translator.isCoda(string.toCharArray(), 5));
 		//VC.CCV
 		string = "entɾaɾ";
-		assertFalse(translator.isCoda(string.toCharArray(), 0));
-		assertTrue(translator.isCoda(string.toCharArray(), 1));
-		assertFalse(translator.isCoda(string.toCharArray(), 2));
-		assertFalse(translator.isCoda(string.toCharArray(), 3));
-		assertFalse(translator.isCoda(string.toCharArray(), 4));
-		assertTrue(translator.isCoda(string.toCharArray(), 5));
+		assertFalse(Translator.isCoda(string.toCharArray(), 0));
+		assertTrue(Translator.isCoda(string.toCharArray(), 1));
+		assertFalse(Translator.isCoda(string.toCharArray(), 2));
+		assertFalse(Translator.isCoda(string.toCharArray(), 3));
+		assertFalse(Translator.isCoda(string.toCharArray(), 4));
+		assertTrue(Translator.isCoda(string.toCharArray(), 5));
 		
 	}
 }

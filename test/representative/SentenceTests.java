@@ -2,8 +2,6 @@ package representative;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -155,6 +153,11 @@ public class SentenceTests {
 		//v coda changes e
 		//v coda changes nasal e
 		
+		//one letter word next
+		sentence = new Sentence("ir y a los");
+		output = sentence.getPhoneticSentence();
+		expected = "/'i.'ɾja.'los";
+		
 		//C*s y V -> z.ʝv------------------------------------
 		sentence = new Sentence("los y eso");
 		output = sentence.getPhoneticSentence();
@@ -168,6 +171,7 @@ public class SentenceTests {
 		assertEquals(expected, output);
 		
 		//|| y V -> ʝv---------------------------------------
+		//nasal
 		sentence = new Sentence("y Ana");
 		output = sentence.getPhoneticSentence();
 		expected = "/'ʝa.na/";

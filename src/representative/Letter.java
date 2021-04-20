@@ -1,6 +1,5 @@
 package representative;
 
-import java.util.List;
 public interface Letter {
 	
 	Boolean isVowel();
