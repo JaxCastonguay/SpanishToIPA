@@ -28,6 +28,7 @@ public class Sentence {
 			throw new PhonemNotFoundException("Only letter and punctuation characters are allowed");
 		}
 		
+		//TODO: add the chars already withing the if
 		if(spanishSentence.contains(".") || spanishSentence.contains("!") || spanishSentence.contains("?")) {
 			//TODO: want to put other non chars/period catch here
 			spanishSentence.replace('!', '|');
@@ -259,7 +260,7 @@ public class Sentence {
 		//If the last vowel was an e it will change since it changes with codas.
 		if(words.get(i - 1).charAt(words.get(i - 1).length() - 1) == 'e') {
 			String replacementWord = words.get(i-1).substring(0, words.get(i-1).length() - 1);
-			replacementWord = replacementWord.concat("ɜj");
+			replacementWord = replacementWord.concat("ɛj");
 			words.set(i -1, replacementWord);
 		}else {
 			words.set(i - 1, words.get(i - 1).concat("j"));

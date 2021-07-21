@@ -54,7 +54,7 @@ public class SentenceTests {
 	public void OuterSyllablesShouldEffectOtherWords() throws PhonemNotFoundException {
 		Sentence sentence = new Sentence("el taco");
 		String output = sentence.getPhoneticSentence();
-		String expected = "/'ɜl̪.'ta.ko/";
+		String expected = "/'ɛl̪.'ta.ko/";
 		assertEquals(expected, output);
 		
 		sentence = new Sentence("los ricos");
@@ -64,7 +64,7 @@ public class SentenceTests {
 		
 		sentence = new Sentence("el drogo");
 		output = sentence.getPhoneticSentence();
-		expected = "/'ɜl̪.'dɾo.Ɣo/";
+		expected = "/'ɛl̪.'dɾo.Ɣo/";
 		assertEquals(expected, output);
 		
 		sentence = new Sentence("los drogos");
@@ -84,7 +84,7 @@ public class SentenceTests {
 	public void variousTestSentences() throws PhonemNotFoundException {
 		Sentence sentence = new Sentence("En este mundo");
 		String output = sentence.getPhoneticSentence();
-		String expected = "/'ɜ̃.'nes.te.'mũn̪.do/";
+		String expected = "/'ɛ̃.'nes.te.'mũn̪.do/";
 		assertEquals(expected, output);
 	}
 	
@@ -111,14 +111,14 @@ public class SentenceTests {
 		//nasal + e change
 		sentence = new Sentence("esa y entre");
 		output = sentence.getPhoneticSentence();
-		expected = "/'e.sa.'ʝɜn̪.tɾe/";
+		expected = "/'e.sa.'ʝɛn̪.tɾe/";
 		assertEquals(expected, output);
 		
 		//C*(not /s/) y V -> .cjv. (joined)------------------
 		//v doesn't have coda
 		sentence = new Sentence("david y adel");
 		output = sentence.getPhoneticSentence();
-		expected = "/da.'ßi.'ðja.'ðɜl/";
+		expected = "/da.'ßi.'ðja.'ðɛl/";
 		assertEquals(expected, output);
 		
 		//v doesn't have coda, but is accentuated
@@ -130,7 +130,7 @@ public class SentenceTests {
 		//v has coda
 		sentence = new Sentence("david y admel");//weird made up name
 		output = sentence.getPhoneticSentence();
-		expected = "/da.'ßi.'ðjað.'mɜl/";
+		expected = "/da.'ßi.'ðjað.'mɛl/";
 		assertEquals(expected, output);
 		
 		sentence = new Sentence("david y ad");//weird made up name
@@ -147,7 +147,7 @@ public class SentenceTests {
 		//v has coda and is nasal
 		sentence = new Sentence("ir y entre");
 		output = sentence.getPhoneticSentence();
-		expected = "/'i.'ɾjɜn̪.tɾe/";
+		expected = "/'i.'ɾjɛn̪.tɾe/";
 		assertEquals(expected, output);
 		//^covers the rest
 		//v coda changes e
@@ -167,7 +167,7 @@ public class SentenceTests {
 		//nasal + e
 		sentence = new Sentence("los y entre");
 		output = sentence.getPhoneticSentence();
-		expected = "/'loz.'ʝɜn̪.tɾe/";
+		expected = "/'loz.'ʝɛn̪.tɾe/";
 		assertEquals(expected, output);
 		
 		//|| y V -> ʝv---------------------------------------
@@ -181,7 +181,7 @@ public class SentenceTests {
 		//e change
 		sentence = new Sentence("ale y jac");
 		output = sentence.getPhoneticSentence();
-		expected = "/'a.lɜj.'xaƔ/";
+		expected = "/'a.lɛj.'xaƔ/";
 		assertEquals(expected, output);
 		
 		sentence = new Sentence("ella y jac");
@@ -198,7 +198,7 @@ public class SentenceTests {
 		
 		sentence = new Sentence("tome y");
 		output = sentence.getPhoneticSentence();
-		expected = "/'to.mɜj/";
+		expected = "/'to.mɛj/";
 		assertEquals(expected, output);
 		
 		// C y || Not given in book. Want to change to i

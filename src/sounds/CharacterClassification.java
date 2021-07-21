@@ -11,8 +11,8 @@ public class CharacterClassification {
 	//public final static List<String> phoneticConsonantBlends = new ArrayList<String>(List.of("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl", "t̪", "l̪", "n̪"));//TODO: change extract: the dental feels cheap... Not sure this is how it should be handle
 	public final static List<String> phoneticConsonantBlends = Arrays.asList("bl", "ßl",  "fl", "kl", "gl", "Ɣl", "pl", "kɾ", "bɾ", "ßɾ", "tɾ", "gɾ", "Ɣɾ", "fɾ", "pɾ", "dɾ", "ðɾ" , "tl", "t̪", "l̪", "n̪");//TODO: change extract: the dental feels cheap... Not sure this is how it should be handle
 	
-	//public final static List<String> nasalVowels = new ArrayList<String>(List.of("ã",  "ẽ", "ĩ", "õ", "ũ", "ɜ̃"));
-	public final static List<String> nasalVowels = Arrays.asList("ã",  "ẽ", "ĩ", "õ", "ũ", "ɜ̃");
+	//public final static List<String> nasalVowels = new ArrayList<String>(List.of("ã",  "ẽ", "ĩ", "õ", "ũ", "ɛ̃"));
+	public final static List<String> nasalVowels = Arrays.asList("ã",  "ẽ", "ĩ", "õ", "ũ", "ɛ̃");
 
 	
 	//public final static List<Character> consonants = new ArrayList<Character>(List.of('b', 'ß', 'c', 'ʧ', 'd', 'ð', 'f', 'g', 'Ɣ', 'ʝ', 'ɉ', 'k', 'l', 'm', 'n', 'ɲ', 'p', 'r', 'ɾ', 's', 't', 'x', 'z')); //j & w are diptongs and are not consonants in this context
@@ -24,8 +24,8 @@ public class CharacterClassification {
 	public final static List<Character> bdgNonModifiers = Arrays.asList('|','m','n','ɲ');//TODO: | is a place holder for no letter before.
 
 	
-	//public final static List<Character> cModifiers = new ArrayList<Character>(List.of('e', 'ɜ', 'i'));
-	public final static List<Character> cModifiers = Arrays.asList('e', 'ɜ', 'i');
+	//public final static List<Character> cModifiers = new ArrayList<Character>(List.of('e', 'ɛ', 'i'));
+	public final static List<Character> cModifiers = Arrays.asList('e', 'ɛ', 'i');
 	
 	//Placement
 	//public final static List<Character> penultimas = new ArrayList<Character>(List.of('s','n','o', 'a', 'e', 'i', 'u'));
@@ -68,14 +68,14 @@ public class CharacterClassification {
 	public final static List<String> sibilante = Arrays.asList("s", "z", "s̺", "z̺", "ʒ", "ʃ");	
 	
 	//Vowels
-	//public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'i', 'o', 'u'));
-	public final static List<Character> vowels = Arrays.asList('a', 'e', 'ɜ', 'i', 'o', 'u');
+	//public final static List<Character> vowels = new ArrayList<Character>(List.of('a', 'e', 'ɛ', 'i', 'o', 'u'));
+	public final static List<Character> vowels = Arrays.asList('a', 'e', 'ɛ', 'i', 'o', 'u');
 
-	//public final static List<Character> phoneticvowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'o', 'i', 'u', 'w', 'j'));
-	public final static List<Character> phoneticvowels = Arrays.asList('a', 'e', 'ɜ', 'o', 'i', 'u', 'w', 'j');
+	//public final static List<Character> phoneticvowels = new ArrayList<Character>(List.of('a', 'e', 'ɛ', 'o', 'i', 'u', 'w', 'j'));
+	public final static List<Character> phoneticvowels = Arrays.asList('a', 'e', 'ɛ', 'o', 'i', 'u', 'w', 'j');
 
-	//public final static List<Character> strongVowels = new ArrayList<Character>(List.of('a', 'e', 'ɜ', 'o'));
-	public final static List<Character> strongVowels = Arrays.asList('a', 'e', 'ɜ', 'o');
+	//public final static List<Character> strongVowels = new ArrayList<Character>(List.of('a', 'e', 'ɛ', 'o'));
+	public final static List<Character> strongVowels = Arrays.asList('a', 'e', 'ɛ', 'o');
 
 	//public final static List<Character> diptongVowels = new ArrayList<Character>(List.of('i', 'u'));
 	public final static List<Character> diptongVowels = Arrays.asList('i', 'u');

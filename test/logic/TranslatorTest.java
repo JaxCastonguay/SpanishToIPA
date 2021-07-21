@@ -11,8 +11,8 @@ public class TranslatorTest {
 	@Test
 	public void getPhoneticBasedOnNextCharTest() {
 		Translator translator = new Translator();
-		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 'r', true), "ɜ");
-		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 'r', false), "ɜ");
+		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 'r', true), "ɛ");
+		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 'r', false), "ɛ");
 		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 's', true), "e");
 		assertEquals(translator.getPhoneticsBasedOnNextChar(String.valueOf('e'), 't', false), "e");
 		

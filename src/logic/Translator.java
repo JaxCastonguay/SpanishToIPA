@@ -452,12 +452,12 @@ public class Translator {
 		
 		//option 1: next is [r] or [x]
 		if(nextChar == 'r' || nextChar == 'x') {
-			return 'ɜ';
+			return 'ɛ';
 		}
 		//option 2: next is coda & coda is not [s]. Hint: yes even [j] it would seem (ex: peine)
 		else if(nextCharIsCoda
 				&& nextChar != 's') {
-			return 'ɜ';		
+			return 'ɛ';		
 		}
 		else {
 			return 'e';
